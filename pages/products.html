@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos - Beautiful Girl</title>
+    <meta name="description" content="Explora nuestra colección completa de productos de belleza y cosméticos" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- AOS Animate -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .table img {
+            object-fit: cover;
+            border: 1px solid #dee2e6;
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+        }
+        .page-header {
+            background: linear-gradient(rgba(var(--bs-primary-rgb), 0.8), rgba(var(--bs-primary-rgb), 0.9)),
+                        url('../assets/img/header-bg.jpg') center/cover no-repeat;
+            padding: 8rem 0 4rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="../index.html">
+                    <span class="text-primary">Beautiful</span>Girl
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="products.html">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">Nosotros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.html">Contacto</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center">
+                        <a href="cart.html" class="btn btn-outline-primary position-relative me-2">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
+                                0
+                            </span>
+                        </a>
+                        <a href="login.html" class="btn btn-primary">
+                            <i class="fas fa-user me-1"></i> Iniciar Sesión
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+        <!-- Page Header -->
+    <div class="page-header text-center text-white">
+        <div class="container" data-aos="fade-up">
+            <h1 class="display-4 fw-bold mb-4">Nuestros Productos</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb justify-content-center">
+                    <li class="breadcrumb-item"><a href="../index.html" class="text-white">Inicio</a></li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">Productos</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <main class="container py-5">
+        <!-- Filters Section -->
+        <div class="bg-white rounded-4 shadow-sm p-4 mb-4" data-aos="fade-up">
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" class="form-control border-start-0 ps-0" id="filtroBusqueda" 
+                               placeholder="Buscar productos por nombre o descripción...">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <select class="form-select" id="filtroCategoria">
+                        <option value="">Todas las categorías</option>
+                        <option value="maquillaje">Maquillaje</option>
+                        <option value="facial">Cuidado Facial</option>
+                        <option value="corporal">Cuidado Corporal</option>
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <div id="productsCount" class="text-muted text-center pt-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sort Controls -->
+        <div class="row mb-4" data-aos="fade-up">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div id="productsCount" class="text-muted"></div>
+                    <div class="d-flex align-items-center">
+                        <label class="me-2 text-nowrap">Ordenar por:</label>
+                        <select class="form-select form-select-sm w-auto shadow-sm" id="sortProducts">
+                            <option value="name-asc">Nombre (A-Z)</option>
+                            <option value="name-desc">Nombre (Z-A)</option>
+                            <option value="price-asc">Precio (Menor a Mayor)</option>
+                            <option value="price-desc">Precio (Mayor a Menor)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="text-center py-5 d-none">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="text-center py-5 d-none">
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h3>No se encontraron productos</h3>
+            <p class="text-muted">Intenta con otros criterios de búsqueda</p>
+        </div>
+
+        <!-- Grid View -->
+        <div class="row g-4" id="productsGrid"></div>
+
+        <!-- Products Table -->
+        <div class="table-responsive" id="productsTable">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Categoría</th>
+                        <th>Stock</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Paginación -->
+        <nav aria-label="Navegación de productos" class="my-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <span class="me-2">Productos por página:</span>
+                    <select class="form-select form-select-sm w-auto" id="itemsPorPagina">
+                        <option value="5" selected>5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+                <ul class="pagination mb-0" id="paginacion"></ul>
+            </div>
+        </nav>
+
+        <!-- Quick View Modal -->
+        <div class="modal fade" id="quickViewModal" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="" class="img-fluid rounded" alt="">
+                            </div>
+                            <div class="col-md-6">
+                                <h3 class="product-title"></h3>
+                                <p class="product-price fs-4 text-primary"></p>
+                                <div class="product-stock mb-3"></div>
+                                <p class="product-description"></p>
+                                <div class="product-category mb-3">
+                                    <span class="badge bg-secondary"></span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary add-to-cart">
+                                        <i class="fas fa-cart-plus me-2"></i>Agregar al Carrito
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Newsletter Section -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <div class="row justify-content-center text-center" data-aos="fade-up">
+                <div class="col-md-8">
+                    <h3>¡Suscríbete a nuestro boletín!</h3>
+                    <p class="text-muted mb-4">Recibe las últimas novedades y ofertas exclusivas directamente en tu correo.</p>
+                    <form class="row g-3 justify-content-center">
+                        <div class="col-auto">
+                            <input type="email" class="form-control" placeholder="Tu correo electrónico">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary">Suscribirse</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-light">
+        <div class="container py-4">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="mb-3">Beautiful Girl</h5>
+                    <p class="mb-3">Tu destino de belleza favorito, donde encontrarás los mejores productos para resaltar tu belleza natural.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-light me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-whatsapp fa-lg"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-tiktok fa-lg"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="mb-3">Enlaces Rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="../index.html" class="text-light text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="products.html" class="text-light text-decoration-none">Productos</a></li>
+                        <li class="mb-2"><a href="about.html" class="text-light text-decoration-none">Nosotros</a></li>
+                        <li class="mb-2"><a href="contact.html" class="text-light text-decoration-none">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="mb-3">Categorías</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Cuidado Facial</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Cuidado Corporal</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Maquillaje</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Fragancias</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="mb-3">Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> Los Olivos, Lima - Perú</li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i> +51 987 654 321</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@beautifulgirl.com</li>
+                        <li class="mb-2"><i class="fas fa-clock me-2"></i> Lun - Sáb: 9:00 - 18:00</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="text-center py-3 border-top border-secondary">
+            <small>&copy; 2024 Beautiful Girl. Todos los derechos reservados.</small>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Custom JS -->
+    <script src="../assets/js/products.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    </script>
+</body>
+</html>
+
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="h5 mb-3">Beautiful Girl</h3>
+                    <p class="text-muted">Tu destino de belleza favorito</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="h5 mb-3">Enlaces Rápidos</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="products.html" class="text-muted text-decoration-none">Productos</a></li>
+                        <li class="mb-2"><a href="about.html" class="text-muted text-decoration-none">Sobre Nosotros</a></li>
+                        <li class="mb-2"><a href="contact.html" class="text-muted text-decoration-none">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="h5 mb-3">Contacto</h3>
+                    <ul class="list-unstyled text-muted">
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i> +1234567890</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@beautystore.com</li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="h5 mb-3">Síguenos</h3>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white fs-5"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center text-muted">
+                <p class="mb-0">&copy; 2025 Beautiful Girl. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../assets/js/products.js"></script>
+</body>
+</html>

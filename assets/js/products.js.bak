@@ -1,0 +1,865 @@
+// Carrito de compras
+let cart = [];
+
+// Funciones del carrito
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function loadCart() {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+        cart = JSON.parse(savedCart);
+        updateCartCount();
+    }
+}
+
+function updateCartCount() {
+    const cartCount = document.querySelector('.cart-count');
+    if (cartCount) {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = totalItems;
+    }
+}
+
+// Carrito de compras
+let cart = [];
+
+// Funciones del carrito
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function loadCart() {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+        cart = JSON.parse(savedCart);
+        updateCartCount();
+    }
+}
+
+function updateCartCount() {
+    const cartCount = document.querySelector('.cart-count');
+    if (cartCount) {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = totalItems;
+    }
+}
+
+// Datos de los productos
+const products = [
+    // Skincare
+    {
+        id: 1,
+        name: 'Primer Watermelon',
+        category: 'skincare',
+        price: 20000,
+        stock: 50,
+        image: '../assets/img/products/primer-watermelon.jpg',
+        description: 'Refresca y prepara tu piel con el dulce toque de sandía, ideal para un acabado suave y natural.'
+    },
+    {
+        id: 2,
+        name: 'Primer Summer',
+        category: 'skincare',
+        price: 20000,
+        discountPrice: 15000,
+        stock: 45,
+        image: '../assets/img/products/primer-summer.jpg',
+        description: 'Da a tu piel ese brillo veraniego todo el año, hidratando y dejando una textura ligera.'
+    },
+    {
+        id: 3,
+        name: 'Primer Carrusel',
+        category: 'skincare',
+        price: 15000,
+        stock: 40,
+        image: '../assets/img/products/primer-carrusel.jpg',
+        description: 'Un primer divertido y colorido que empareja el tono de la piel mientras la mantiene radiante.'
+    },
+    {
+        id: 4,
+        name: 'Primer Pop',
+        category: 'skincare',
+        price: 15000,
+        stock: 40,
+        image: '../assets/img/products/primer-pop.jpg',
+        description: 'Perfecto para lograr un acabado luminoso y fresco; realza el maquillaje sin sentirlo pesado.'
+    },
+    {
+        id: 5,
+        name: 'Suero Detox',
+        category: 'skincare',
+        price: 35000,
+        stock: 30,
+        image: '../assets/img/products/suero-detox.jpg',
+        description: 'Purifica y revitaliza tu piel, ayudando a eliminar impurezas y dar un aspecto saludable.'
+    },
+    // Continuando con Skincare
+    {
+        id: 6,
+        name: 'Suero Hidratante',
+        category: 'skincare',
+        price: 35000,
+        stock: 35,
+        image: '../assets/img/products/suero-hidratante.jpg',
+        description: 'Restaura la hidratación profunda y deja la piel suave y tersa durante todo el día.'
+    },
+    {
+        id: 7,
+        name: 'Suero Vitamina C',
+        category: 'skincare',
+        price: 35000,
+        stock: 25,
+        image: '../assets/img/products/suero-vitaminac.jpg',
+        description: 'Aporta luminosidad y combate los signos del envejecimiento con el poder antioxidante de la vitamina C.'
+    },
+    {
+        id: 8,
+        name: 'Serum Hidratante',
+        category: 'skincare',
+        price: 20000,
+        stock: 40,
+        image: '../assets/img/products/serum-hidratante.jpg',
+        description: 'Ideal para pieles secas o apagadas; devuelve la elasticidad y el brillo natural.'
+    },
+    {
+        id: 9,
+        name: 'Bruma Facial',
+        category: 'skincare',
+        price: 25000,
+        stock: 45,
+        image: '../assets/img/products/bruma-facial.jpg',
+        description: 'Refresca, hidrata y fija el maquillaje; un toque de frescura para cualquier momento del día.'
+    },
+    {
+        id: 10,
+        name: 'Contorno de Ojos',
+        category: 'skincare',
+        price: 30000,
+        stock: 30,
+        image: '../assets/img/products/contorno-ojos.jpg',
+        description: 'Reduce ojeras e hinchazón, dejando una mirada más descansada y luminosa.'
+    },
+    // Más productos Skincare
+    {
+        id: 11,
+        name: 'Crema Facial',
+        category: 'skincare',
+        price: 35000,
+        stock: 40,
+        image: '../assets/img/products/crema-facial.jpg',
+        description: 'Nutre y protege tu piel, manteniéndola suave y saludable cada día.'
+    },
+    {
+        id: 12,
+        name: 'Crema Hidratante',
+        category: 'skincare',
+        price: 25000,
+        stock: 50,
+        image: '../assets/img/products/crema-hidratante.jpg',
+        description: 'Hidratación duradera sin sensación grasosa; perfecta para todo tipo de piel.'
+    },
+    {
+        id: 13,
+        name: 'Agua de Rosas',
+        category: 'skincare',
+        price: 25000,
+        discountPrice: 15000,
+        stock: 35,
+        image: '../assets/img/products/agua-rosas.jpg',
+        description: 'Tonifica, calma y refresca; un clásico natural para revitalizar la piel.'
+    },
+    {
+        id: 14,
+        name: 'Aceite Desmaquillante',
+        category: 'skincare',
+        price: 25000,
+        stock: 40,
+        image: '../assets/img/products/aceite-desmaquillante.jpg',
+        description: 'Elimina el maquillaje y las impurezas sin resecar; deja la piel limpia y suave.'
+    },
+    {
+        id: 15,
+        name: 'Toallas Desmaquillante',
+        category: 'skincare',
+        price: 15000,
+        stock: 60,
+        image: '../assets/img/products/toallas-desmaquillante.jpg',
+        description: 'Prácticas y suaves, ideales para limpiar el rostro en cualquier momento.'
+    },
+    {
+        id: 16,
+        name: 'Protector Solar',
+        category: 'skincare',
+        price: 38000,
+        discountPrice: 28000,
+        stock: 45,
+        image: '../assets/img/products/protector-solar.jpg',
+        description: 'Ligero y eficaz; protege del sol mientras hidrata y cuida la piel.'
+    },
+    {
+        id: 17,
+        name: 'Mascarillas Acné',
+        category: 'skincare',
+        price: 15000,
+        stock: 40,
+        image: '../assets/img/products/mascarilla-acne.jpg',
+        description: 'Ayudan a controlar el exceso de grasa y a mantener una piel libre de imperfecciones.'
+    },
+    {
+        id: 18,
+        name: 'Mascarillas Ojos',
+        category: 'skincare',
+        price: 20000,
+        stock: 35,
+        image: '../assets/img/products/mascarilla-ojos.jpg',
+        description: 'Reducen bolsas y ojeras, brindando una mirada más fresca y luminosa.'
+    },
+    {
+        id: 19,
+        name: 'Kit de Labios',
+        category: 'skincare',
+        price: 18000,
+        stock: 30,
+        image: '../assets/img/products/kit-labios.jpg',
+        description: 'Exfolia, hidrata y da brillo a tus labios para un acabado perfecto.'
+    },
+    {
+        id: 20,
+        name: 'Mantequilla Corporal',
+        category: 'skincare',
+        price: 20000,
+        stock: 40,
+        image: '../assets/img/products/mantequilla-corporal.jpg',
+        description: 'Nutre profundamente y deja la piel suave, perfumada y radiante.'
+    },
+    // Productos de Maquillaje
+    {
+        id: 21,
+        name: 'Base Aura',
+        category: 'maquillaje',
+        price: 30000,
+        stock: 45,
+        image: '../assets/img/products/base-aura.jpg',
+        description: 'Cobertura ligera con acabado natural que deja la piel radiante y fresca todo el día.'
+    },
+    {
+        id: 22,
+        name: 'Base Queen',
+        category: 'maquillaje',
+        price: 25000,
+        discountPrice: 10000,
+        stock: 40,
+        image: '../assets/img/products/base-queen.jpg',
+        description: 'Fórmula de alta cobertura que unifica el tono y deja una piel de reina: suave, impecable y duradera.'
+    },
+    {
+        id: 23,
+        name: 'Base Mouse',
+        category: 'maquillaje',
+        price: 25000,
+        discountPrice: 10000,
+        stock: 35,
+        image: '../assets/img/products/base-mouse.jpg',
+        description: 'Textura aterciopelada y ligera que brinda un acabado mate sin resecar la piel.'
+    },
+    {
+        id: 24,
+        name: 'Corrector Aura',
+        category: 'maquillaje',
+        price: 20000,
+        stock: 50,
+        image: '../assets/img/products/corrector-aura.jpg',
+        description: 'Ilumina y corrige las ojeras dejando un acabado natural y fresco.'
+    },
+    {
+        id: 25,
+        name: 'Corrector Magic',
+        category: 'maquillaje',
+        price: 30000,
+        stock: 40,
+        image: '../assets/img/products/corrector-magic.jpg',
+        description: 'Su textura cremosa borra imperfecciones y aporta un efecto de piel perfecta al instante.'
+    },
+    {
+        id: 26,
+        name: 'Corrector Naranja',
+        category: 'maquillaje',
+        price: 10000,
+        stock: 55,
+        image: '../assets/img/products/corrector-naranja.jpg',
+        description: 'Ideal para neutralizar ojeras oscuras y manchas profundas, dejando el rostro uniforme.'
+    },
+    {
+        id: 27,
+        name: 'Corrector Verde',
+        category: 'maquillaje',
+        price: 10000,
+        stock: 55,
+        image: '../assets/img/products/corrector-verde.jpg',
+        description: 'Corrige rojeces y granitos para un acabado parejo antes de aplicar la base.'
+    },
+    {
+        id: 28,
+        name: 'Corrector Magic Mini',
+        category: 'maquillaje',
+        price: 12000,
+        stock: 60,
+        image: '../assets/img/products/corrector-magic-mini.jpg',
+        description: 'Práctico y compacto, perfecto para retoques rápidos donde sea.'
+    },
+    {
+        id: 29,
+        name: 'Polvos Jack',
+        category: 'maquillaje',
+        price: 30000,
+        stock: 40,
+        image: '../assets/img/products/polvos-jack.jpg',
+        description: 'Fijan el maquillaje dejando una textura suave y un acabado profesional.'
+    },
+    {
+        id: 30,
+        name: 'Polvos Sueltos Banana',
+        category: 'maquillaje',
+        price: 15000,
+        stock: 45,
+        image: '../assets/img/products/polvos-banana.jpg',
+        description: 'Aclaran sutilmente y sellan el maquillaje con un efecto luminoso y natural.'
+    },
+    {
+        id: 31,
+        name: 'Polvos Compactos Golden',
+        category: 'maquillaje',
+        price: 25000,
+        stock: 40,
+        image: '../assets/img/products/polvos-golden.jpg',
+        description: 'Cobertura ligera y tono dorado que realza la piel con un toque cálido.'
+    },
+    {
+        id: 32,
+        name: 'Polvo Suelto Bakery',
+        category: 'maquillaje',
+        price: 15000,
+        stock: 50,
+        image: '../assets/img/products/polvo-bakery.jpg',
+        description: 'Ideal para baking o sellar maquillaje; deja un acabado impecable y duradero.'
+    },
+    {
+        id: 33,
+        name: 'Polvo Sueltos Osito',
+        category: 'maquillaje',
+        price: 15000,
+        stock: 45,
+        image: '../assets/img/products/polvo-osito.jpg',
+        description: 'Polvo ligero con empaque adorable; sella el maquillaje dejando la piel suave y sin brillo.'
+    },
+    {
+        id: 34,
+        name: 'Polvos Sueltos Master',
+        category: 'maquillaje',
+        price: 25000,
+        stock: 35,
+        image: '../assets/img/products/polvos-master.jpg',
+        description: 'Polvo ultra fino que controla el brillo y deja la piel con acabado aterciopelado.'
+    },
+    {
+        id: 35,
+        name: 'Contorno Cupcake',
+        category: 'maquillaje',
+        price: 15000,
+        stock: 40,
+        image: '../assets/img/products/contorno-cupcake.jpg',
+        description: 'Define el rostro con un toque dulce y natural; fácil de difuminar.'
+    },
+    {
+        id: 36,
+        name: 'Contorno Rubor Villanos',
+        category: 'maquillaje',
+        price: 25000,
+        stock: 35,
+        image: '../assets/img/products/rubor-villanos.jpg',
+        description: 'Rubor e iluminación con tonos intensos y atrevidos para un look poderoso.'
+    },
+    {
+        id: 37,
+        name: 'Contorno en Crema Queen',
+        category: 'maquillaje',
+        price: 20000,
+        discountPrice: 10000,
+        stock: 40,
+        image: '../assets/img/products/contorno-queen.jpg',
+        description: 'Textura cremosa que se difumina a la perfección, ideal para contornos definidos.'
+    },
+    {
+        id: 38,
+        name: 'Contorno Crema Star',
+        category: 'maquillaje',
+        price: 15000,
+        stock: 45,
+        image: '../assets/img/products/contorno-star.jpg',
+        description: 'Brinda un acabado luminoso y profesional con una aplicación suave y precisa.'
+    },
+    {
+        id: 39,
+        name: 'Contorno en Barra',
+        category: 'maquillaje',
+        price: 12000,
+        stock: 50,
+        image: '../assets/img/products/contorno-barra.jpg',
+        description: 'Práctico y fácil de aplicar; define el rostro con acabado natural y profesional.'
+    },
+    {
+        id: 40,
+        name: 'Contorno en Barra Chocolate',
+        category: 'maquillaje',
+        price: 12000,
+        stock: 50,
+        image: '../assets/img/products/contorno-chocolate.jpg',
+        description: 'Práctico formato en barra con tono cálido y aroma irresistible; define y perfila al instante.'
+    },
+    {
+        id: 41,
+        name: 'Rubor Baked Lucky',
+        category: 'maquillaje',
+        price: 15000,
+        stock: 45,
+        image: '../assets/img/products/rubor-lucky.jpg',
+        description: 'Aporta un toque de color con efecto luminoso y textura suave.'
+    },
+    {
+        id: 42,
+        name: 'Rubor en Crema Star',
+        category: 'maquillaje',
+        price: 15000,
+        stock: 40,
+        image: '../assets/img/products/rubor-star.jpg',
+        description: 'Fórmula cremosa y ligera que se funde con la piel para un acabado fresco.'
+    },
+    {
+        id: 43,
+        name: 'Rubor Verguenza',
+        category: 'maquillaje',
+        price: 20000,
+        stock: 35,
+        image: '../assets/img/products/rubor-verguenza.jpg',
+        description: 'Dale a tus mejillas un rubor natural y encantador con su pigmento duradero.'
+    },
+    {
+        id: 44,
+        name: 'Rubor Blush Stamp',
+        category: 'maquillaje',
+        price: 20000,
+        stock: 40,
+        image: '../assets/img/products/rubor-stamp.jpg',
+        description: 'Divertido y práctico formato en sello para un toque de color instantáneo y juvenil.'
+    },
+    {
+        id: 45,
+        name: 'Polvo de Hadas Golden',
+        category: 'maquillaje',
+        price: 12000,
+        stock: 55,
+        image: '../assets/img/products/polvo-hadas.jpg',
+        description: 'Brillo dorado de ensueño; ilumina tu piel con un toque mágico y radiante.'
+    },
+    {
+        id: 46,
+        name: 'Iluminador Alegria',
+        category: 'maquillaje',
+        price: 20000,
+        stock: 40,
+        image: '../assets/img/products/iluminador-alegria.jpg',
+        description: 'Aporta luz al rostro con un acabado sutil y luminoso que resalta tus facciones.'
+    },
+    {
+        id: 47,
+        name: 'Iluminador Wonderland',
+        category: 'maquillaje',
+        price: 20000,
+        stock: 35,
+        image: '../assets/img/products/iluminador-wonderland.jpg',
+        description: 'Brillo intenso y sofisticado para un look de fantasía irresistible.'
+    },
+    {
+        id: 48,
+        name: 'Tinta Gloss Jack',
+        category: 'maquillaje',
+        price: 20000,
+        discountPrice: 12000,
+        stock: 45,
+        image: '../assets/img/products/tinta-jack.jpg',
+        description: 'Tono vibrante con acabado brillante; labios jugosos y con color duradero.'
+    },
+    {
+        id: 49,
+        name: 'Tinta Villanos',
+        category: 'maquillaje',
+        price: 15000,
+        discountPrice: 10000,
+        stock: 50,
+        image: '../assets/img/products/tinta-villanos.jpg',
+        description: 'Colores intensos y atrevidos que te harán destacar con estilo.'
+    },
+    {
+        id: 50,
+        name: 'Tinta Frutas',
+        category: 'maquillaje',
+        price: 10000,
+        stock: 60,
+        image: '../assets/img/products/tinta-frutas.jpg',
+        description: 'Toques frutales y frescos para un look natural y lleno de vida.'
+    },
+    {
+        id: 51,
+        name: 'Kit Labios Furia',
+        category: 'maquillaje',
+        price: 25000,
+        stock: 30,
+        image: '../assets/img/products/kit-furia.jpg',
+        description: 'Incluye todo lo necesario para unos labios definidos, hidratados y radiantes.'
+    },
+    {
+        id: 52,
+        name: 'Barra Multipropósito',
+        category: 'maquillaje',
+        price: 15000,
+        stock: 45,
+        image: '../assets/img/products/barra-multi.jpg',
+        description: 'Ideal para labios, mejillas o párpados; aporta color y practicidad en un solo paso.'
+    },
+    {
+        id: 53,
+        name: 'Labial Beauty Glazed',
+        category: 'maquillaje',
+        price: 10000,
+        discountPrice: 5000,
+        stock: 55,
+        image: '../assets/img/products/labial-glazed.jpg',
+        description: 'Fórmula cremosa de alta duración que deja un acabado suave y elegante.'
+    },
+    {
+        id: 54,
+        name: 'Pestañina Fresh',
+        category: 'maquillaje',
+        price: 15000,
+        stock: 50,
+        image: '../assets/img/products/pestanina-fresh.jpg',
+        description: 'Alarga y define con acabado natural; pestañas frescas y sin grumos.'
+    },
+    {
+        id: 55,
+        name: 'Pestañina Pastel',
+        category: 'maquillaje',
+        price: 15000,
+        stock: 45,
+        image: '../assets/img/products/pestanina-pastel.jpg',
+        description: 'Toques de color suaves y divertidos para un look creativo y único.'
+    },
+    {
+        id: 56,
+        name: 'Pestañina Boom',
+        category: 'maquillaje',
+        price: 20000,
+        stock: 40,
+        image: '../assets/img/products/pestanina-boom.jpg',
+        description: 'Máximo volumen y longitud para unas pestañas impactantes desde la primera pasada.'
+    },
+    {
+        id: 57,
+        name: 'Sombra Metálica Jack',
+        category: 'maquillaje',
+        price: 30000,
+        discountPrice: 20000,
+        stock: 35,
+        image: '../assets/img/products/sombra-jack.jpg',
+        description: 'Pigmentos metálicos intensos que aportan brillo y profundidad a la mirada.'
+    },
+    {
+        id: 58,
+        name: 'Sombra Cloud Trendy',
+        category: 'maquillaje',
+        price: 15000,
+        stock: 45,
+        image: '../assets/img/products/sombra-cloud.jpg',
+        description: 'Tonos suaves y difuminables que crean un look etéreo y delicado.'
+    },
+    {
+        id: 59,
+        name: 'Sombra Hollywood',
+        category: 'maquillaje',
+        price: 15000,
+        stock: 40,
+        image: '../assets/img/products/sombra-hollywood.jpg',
+        description: 'Glamour puro con acabado brillante, ideal para noches especiales.'
+    },
+    {
+        id: 60,
+        name: 'Sombra Puppy',
+        category: 'maquillaje',
+        price: 25000,
+        stock: 35,
+        image: '../assets/img/products/sombra-puppy.jpg',
+        description: 'Colores cálidos y dulces para un look tierno y natural.'
+    }
+];
+    {
+        id: 2,
+        name: 'Crema Hidratante',
+        category: 'skincare',
+        price: 24.99,
+        stock: 30,
+        image: '../assets/img/products/moisturizer.jpg'
+    },
+    {
+        id: 3,
+        name: 'Shampoo Reparador',
+        category: 'haircare',
+        price: 18.99,
+        stock: 40,
+        image: '../assets/img/products/shampoo.jpg'
+    },
+    {
+        id: 4,
+        name: 'Perfume Floral',
+        category: 'fragrance',
+        price: 49.99,
+        stock: 25,
+        image: '../assets/img/products/perfume.jpg'
+    }
+];
+
+// Estado de la aplicación
+let currentView = 'table'; // 'table' o 'grid'
+let currentPage = 1;
+const itemsPerPage = 10;
+let filteredProducts = [...products];
+
+// Elementos DOM
+const searchInput = document.getElementById('searchInput');
+const categoryFilter = document.getElementById('categoryFilter');
+const sortFilter = document.getElementById('sortFilter');
+const productsTableBody = document.getElementById('productsTableBody');
+const productsGrid = document.querySelector('.products-grid');
+const viewButtons = document.querySelectorAll('[data-view]');
+
+// Funciones de utilidad
+function formatPrice(price) {
+    return '$' + price.toFixed(2);
+}
+
+function getStockStatus(stock) {
+    if (stock > 30) return ['En stock', 'success'];
+    if (stock > 10) return ['Stock bajo', 'warning'];
+    return ['Últimas unidades', 'danger'];
+}
+
+// Funciones de filtrado
+function filterProducts() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const category = categoryFilter.value;
+    const sortBy = sortFilter.value;
+
+    // Aplicar filtros
+    filteredProducts = products.filter(product => {
+        const matchesSearch = product.name.toLowerCase().includes(searchTerm);
+        const matchesCategory = !category || product.category === category;
+        return matchesSearch && matchesCategory;
+    });
+
+    // Aplicar ordenamiento
+    filteredProducts.sort((a, b) => {
+        switch (sortBy) {
+            case 'price-low':
+                return a.price - b.price;
+            case 'price-high':
+                return b.price - a.price;
+            case 'newest':
+                return b.id - a.id;
+            default: // popular
+                return 0;
+        }
+    });
+
+    renderProducts();
+    updatePagination();
+}
+
+// Funciones de renderizado
+function renderTableRow(product) {
+    const [stockText, stockClass] = getStockStatus(product.stock);
+    return `
+        <tr>
+            <td>
+                <div class="d-flex align-items-center">
+                    <img src="${product.image}" alt="${product.name}" class="me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                    <span>${product.name}</span>
+                </div>
+            </td>
+            <td>${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</td>
+            <td>${formatPrice(product.price)}</td>
+            <td><span class="badge bg-${stockClass}">${stockText}</span></td>
+            <td>
+                <button class="btn btn-sm btn-primary add-to-cart" data-product-id="${product.id}">
+                    <i class="fas fa-cart-plus"></i>
+                </button>
+            </td>
+        </tr>
+    `;
+}
+
+function renderGridItem(product) {
+    const [stockText, stockClass] = getStockStatus(product.stock);
+    return `
+        <div class="col-md-4 col-lg-3">
+            <div class="card h-100">
+                <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                <div class="card-body">
+                    <h5 class="card-title">${product.name}</h5>
+                    <p class="card-text">
+                        <small class="text-muted">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</small>
+                        <br>
+                        <span class="fw-bold">${formatPrice(product.price)}</span>
+                        <br>
+                        <span class="badge bg-${stockClass}">${stockText}</span>
+                    </p>
+                    <button class="btn btn-primary w-100 add-to-cart" data-product-id="${product.id}">
+                        <i class="fas fa-cart-plus me-1"></i> Agregar al carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function renderProducts() {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const pageProducts = filteredProducts.slice(startIndex, endIndex);
+
+    if (currentView === 'table') {
+        productsTableBody.innerHTML = pageProducts.map(renderTableRow).join('');
+        document.querySelector('.table-responsive').classList.remove('d-none');
+        productsGrid.classList.add('d-none');
+    } else {
+        productsGrid.innerHTML = pageProducts.map(renderGridItem).join('');
+        document.querySelector('.table-responsive').classList.add('d-none');
+        productsGrid.classList.remove('d-none');
+    }
+}
+
+function updatePagination() {
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+    const pagination = document.querySelector('.pagination');
+    let paginationHTML = `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+            <a class="page-link" href="#" data-page="${currentPage - 1}">Anterior</a>
+        </li>
+    `;
+
+    for (let i = 1; i <= totalPages; i++) {
+        paginationHTML += `
+            <li class="page-item ${currentPage === i ? 'active' : ''}">
+                <a class="page-link" href="#" data-page="${i}">${i}</a>
+            </li>
+        `;
+    }
+
+    paginationHTML += `
+        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+            <a class="page-link" href="#" data-page="${currentPage + 1}">Siguiente</a>
+        </li>
+    `;
+
+    pagination.innerHTML = paginationHTML;
+}
+
+function addToCart(productId) {
+    const product = products.find(p => p.id === parseInt(productId));
+    if (product) {
+        // Buscar si el producto ya está en el carrito
+        const existingItem = cart.find(item => item.productId === parseInt(productId));
+        
+        if (existingItem) {
+            // Si ya existe, incrementar la cantidad
+            existingItem.quantity++;
+        } else {
+            // Si no existe, agregar nuevo item
+            cart.push({
+                productId: parseInt(productId),
+                name: product.name,
+                price: product.price,
+                quantity: 1,
+                image: product.image
+            });
+        }
+
+        // Guardar el carrito y actualizar la interfaz
+        saveCart();
+        updateCartCount();
+
+        // Mostrar mensaje de confirmación
+        const toast = document.createElement('div');
+        toast.className = 'position-fixed bottom-0 end-0 p-3';
+        toast.style.zIndex = '11';
+        toast.innerHTML = `
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header bg-primary text-white">
+                    <strong class="me-auto">Carrito actualizado</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body">
+                    ${product.name} agregado al carrito
+                </div>
+            </div>
+        `;
+        document.body.appendChild(toast);
+
+        // Remover el toast después de 3 segundos
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // Cargar el carrito guardado
+    loadCart();
+    
+    searchInput.addEventListener('input', filterProducts);
+    categoryFilter.addEventListener('change', filterProducts);
+    sortFilter.addEventListener('change', filterProducts);
+
+    viewButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            viewButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            currentView = button.dataset.view;
+            renderProducts();
+        });
+    });
+
+    document.querySelector('.pagination').addEventListener('click', (e) => {
+        e.preventDefault();
+        if (e.target.classList.contains('page-link')) {
+            const newPage = parseInt(e.target.dataset.page);
+            if (newPage && newPage !== currentPage) {
+                currentPage = newPage;
+                renderProducts();
+                updatePagination();
+            }
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.add-to-cart')) {
+            const button = e.target.closest('.add-to-cart');
+            const productId = button.dataset.productId;
+            addToCart(productId);
+        }
+    });
+
+    // Inicialización
+    filterProducts();
+});
