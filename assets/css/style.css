@@ -28,7 +28,6 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Page Headers */
 .page-header {
     background: linear-gradient(135deg, var(--pink-accent) 0%, var(--pink-dark) 100%);
     padding: 6rem 0 4rem;
