@@ -48,7 +48,7 @@ function handleLogin(e) {
 
         // Redireccionar al panel de administración
         setTimeout(() => {
-            window.location.href = '../admin/dashboard.html';
+            window.location.href = '../pages/admin/dashboard.html';
         }, 1000);
     } else {
         // Validar si es un cliente regular
@@ -80,7 +80,7 @@ function checkSession() {
     if (session) {
         // Verificar si la sesión es de administrador y estamos en la página correcta
         if (session.isAdmin && !isAdminPage && !currentPath.includes('/pages/login.html')) {
-            window.location.href = '/admin/dashboard.html';
+            window.location.href = '/pages/admin/dashboard.html';
         } else if (!session.isAdmin && isAdminPage) {
             window.location.href = '../index.html';
         }

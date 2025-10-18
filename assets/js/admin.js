@@ -35,7 +35,7 @@ function initializeTables(config) {
                 { data: 'category' },
                 { 
                     data: 'price',
-                    render: data => `$${parseFloat(data).toFixed(2)}`
+                    render: data => `$${parseFloat(data).toFixed(0)}`
                 },
                 { data: 'stock' },
                 {
@@ -61,7 +61,7 @@ function initializeTables(config) {
                 { data: 'date' },
                 { 
                     data: 'total',
-                    render: data => `$${parseFloat(data).toFixed(2)}`
+                    render: data => `$${parseFloat(data).toFixed(0)}`
                 },
                 {
                     data: 'status',
@@ -306,7 +306,7 @@ function showNotification(message, type = 'info') {
 
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializar gráficos si estamos en el dashboard
-    if (window.location.href.includes('/admin/dashboard.html')) {
+    if (window.location.href.includes('/pages/admin/dashboard.html')) {
         initializeDashboard();
     }
 });
@@ -376,7 +376,7 @@ function loadAdminProducts() {
             <td>${product.id}</td>
             <td><img src="${product.image}" alt="${product.name}" width="50"></td>
             <td>${product.name}</td>
-            <td>$${product.price.toFixed(2)}</td>
+            <td>$${product.price.toFixed(0)}</td>
             <td>${product.stock}</td>
             <td>
                 <button onclick="editProduct(${product.id})" class="btn btn-small">

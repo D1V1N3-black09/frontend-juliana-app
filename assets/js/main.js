@@ -62,7 +62,7 @@ function loadProducts() {
                 <div class="card-body text-center">
                     <h3 class="h5 mb-2">${product.name}</h3>
                     <p class="text-muted mb-3">${product.description}</p>
-                    <p class="h4 text-primary mb-3">$${product.price.toFixed(2)}</p>
+                    <p class="h4 text-primary mb-3">$${product.price.toFixed(0)}</p>
                     <button onclick="addToCart(${product.id})" class="btn btn-primary">
                         <i class="fas fa-shopping-cart me-2"></i>Añadir al Carrito
                     </button>

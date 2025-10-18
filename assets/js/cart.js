@@ -1,6 +1,6 @@
 // Obtener el carrito del localStorage
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
-const shipping = 5.00; // Costo fijo de envío
+const shipping = 50000; // Costo fijo de envío
 
 // Renderizar items del carrito
 function renderCartItems() {
@@ -28,7 +28,7 @@ function renderCartItems() {
             </div>
             <div class="ms-3 flex-grow-1">
                 <h4 class="h6 mb-1">${item.name}</h4>
-                <p class="text-muted mb-0">S/${item.price.toFixed(2)}</p>
+                <p class="text-muted mb-0">$${item.price.toFixed(0)}</p>
                 <div class="mt-2 text-muted small">Cantidad:</div>
             </div>
             <div class="d-flex align-items-center">
@@ -77,9 +77,9 @@ function updateTotals() {
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
     const total = subtotal + shipping;
 
-    document.getElementById('subtotal').textContent = `S/${subtotal.toFixed(2)}`;
-    document.getElementById('shipping').textContent = `S/${shipping.toFixed(2)}`;
-    document.getElementById('total').textContent = `S/${total.toFixed(2)}`;
+    document.getElementById('subtotal').textContent = `$${subtotal.toFixed(0)}`;
+    document.getElementById('shipping').textContent = `$${shipping.toFixed(0)}`;
+    document.getElementById('total').textContent = `$${total.toFixed(0)}`;
 }
 
 // Actualizar contador del carrito
