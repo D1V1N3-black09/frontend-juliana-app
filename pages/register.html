@@ -1,188 +1,289 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrarse - Beautiful Girl</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../assets/css/style.css">
-</head>
-<body>
-    <header class="fixed-top">
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand fw-bold" href="../index.html">
-                    <span class="text-primary">Beautiful</span>Girl
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="../index.html">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="products.html">Productos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="about.html">Nosotros</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contacto</a>
-                        </li>
-                    </ul>
-                    <div class="d-flex align-items-center">
-                        <a href="cart.html" class="btn btn-outline-primary position-relative me-2">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
-                                0
-                            </span>
-                        </a>
-                        <a href="login.html" class="btn btn-primary">
-                            <i class="fas fa-user me-1"></i> Iniciar Sesión
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Register Section -->
-    <main class="container py-5">
-        <div class="row justify-content-center min-vh-75 align-items-center py-5">
-            <div class="col-12 col-md-8 col-lg-6">
-                <div class="card border-0 shadow-lg">
-                    <div class="card-body p-5">
-                        <div class="text-center mb-4">
-                            <h2 class="h3 text-primary mb-2">¡Únete a Beautiful Girl!</h2>
-                            <p class="text-muted">Crea una cuenta para acceder a ofertas exclusivas</p>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registrarse - Beautiful Girl</title>
+        <!-- Bootstrap CSS -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+        <!-- Font Awesome -->
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="../assets/css/style.css">
+    </head>
+    <body>
+        <header class="fixed-top">
+            <nav
+                class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+                <div class="container">
+                    <a class="navbar-brand fw-bold" href="../index.html">
+                        <span class="text-primary">Beautiful</span>Girl
+                    </a>
+                    <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                    href="../index.html">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                    href="products.html">Productos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                    href="about.html">Nosotros</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                    href="contact.html">Contacto</a>
+                            </li>
+                        </ul>
+                        <div class="d-flex align-items-center">
+                            <a href="cart.html"
+                                class="btn btn-outline-primary position-relative me-2">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
+                                    0
+                                </span>
+                            </a>
+                            <a href="login.html" class="btn btn-primary">
+                                <i class="fas fa-user me-1"></i> Iniciar Sesión
+                            </a>
                         </div>
-                        <form id="registerForm">
-                            <div class="mb-4">
-                                <label for="name" class="form-label">Nombre completo</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white border-end-0">
-                                        <i class="fas fa-user text-muted"></i>
-                                    </span>
-                                    <input type="text" class="form-control border-start-0" id="name" 
-                                           placeholder="Tu nombre completo" required>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label for="email" class="form-label">Correo electrónico</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white border-end-0">
-                                        <i class="fas fa-envelope text-muted"></i>
-                                    </span>
-                                    <input type="email" class="form-control border-start-0" id="email" 
-                                           placeholder="nombre@ejemplo.com" required>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label for="phone" class="form-label">Teléfono (opcional)</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white border-end-0">
-                                        <i class="fas fa-phone text-muted"></i>
-                                    </span>
-                                    <input type="tel" class="form-control border-start-0" id="phone" 
-                                           placeholder="Tu número de teléfono">
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label for="password" class="form-label">Contraseña</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white border-end-0">
-                                        <i class="fas fa-lock text-muted"></i>
-                                    </span>
-                                    <input type="password" class="form-control border-start-0" id="password" 
-                                           placeholder="Crea una contraseña segura" required>
-                                </div>
-                                <div class="form-text">
-                                    La contraseña debe tener al menos 8 caracteres
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label for="confirmPassword" class="form-label">Confirmar contraseña</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white border-end-0">
-                                        <i class="fas fa-lock text-muted"></i>
-                                    </span>
-                                    <input type="password" class="form-control border-start-0" id="confirmPassword" 
-                                           placeholder="Repite tu contraseña" required>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="newsletter">
-                                    <label class="form-check-label" for="newsletter">
-                                        Quiero recibir ofertas y novedades por email
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="terms" required>
-                                    <label class="form-check-label" for="terms">
-                                        Acepto los <a href="#" class="text-primary">términos y condiciones</a>
-                                    </label>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100 mb-3">
-                                <i class="fas fa-user-plus me-2"></i>Crear cuenta
-                            </button>
-                        </form>
                     </div>
-                    <div class="card-footer bg-light text-center border-0 py-4">
-                        ¿Ya tienes una cuenta? 
-                        <a href="login.html" class="text-primary text-decoration-none">
-                            Inicia sesión aquí <i class="fas fa-arrow-right ms-1"></i>
-                        </a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Register Section -->
+        <main class="container py-5">
+            <div
+                class="row justify-content-center min-vh-75 align-items-center py-5">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <div class="card border-0 shadow-lg">
+                        <div class="card-body p-5">
+                            <div class="text-center mb-4">
+                                <h2 class="h3 text-primary mb-2">¡Únete a
+                                    Beautiful Girl!</h2>
+                                <p class="text-muted">Crea una cuenta para
+                                    acceder a ofertas exclusivas</p>
+                            </div>
+                            <form id="registerForm">
+                                <div class="mb-4">
+                                    <label for="name" class="form-label">Nombre
+                                        completo</label>
+                                    <div class="input-group">
+                                        <span
+                                            class="input-group-text bg-white border-end-0">
+                                            <i
+                                                class="fas fa-user text-muted"></i>
+                                        </span>
+                                        <input type="text"
+                                            class="form-control border-start-0"
+                                            id="name"
+                                            placeholder="Tu nombre completo"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="email" class="form-label">Correo
+                                        electrónico</label>
+                                    <div class="input-group">
+                                        <span
+                                            class="input-group-text bg-white border-end-0">
+                                            <i
+                                                class="fas fa-envelope text-muted"></i>
+                                        </span>
+                                        <input type="email"
+                                            class="form-control border-start-0"
+                                            id="email"
+                                            placeholder="nombre@ejemplo.com"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="phone"
+                                        class="form-label">Teléfono
+                                        (opcional)</label>
+                                    <div class="input-group">
+                                        <span
+                                            class="input-group-text bg-white border-end-0">
+                                            <i
+                                                class="fas fa-phone text-muted"></i>
+                                        </span>
+                                        <input type="tel"
+                                            class="form-control border-start-0"
+                                            id="phone"
+                                            placeholder="Tu número de teléfono">
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="password"
+                                        class="form-label">Contraseña</label>
+                                    <div class="input-group">
+                                        <span
+                                            class="input-group-text bg-white border-end-0">
+                                            <i
+                                                class="fas fa-lock text-muted"></i>
+                                        </span>
+                                        <input type="password"
+                                            class="form-control border-start-0"
+                                            id="password"
+                                            placeholder="Crea una contraseña segura"
+                                            required>
+                                    </div>
+                                    <div class="form-text">
+                                        La contraseña debe tener al menos 8
+                                        caracteres
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="confirmPassword"
+                                        class="form-label">Confirmar
+                                        contraseña</label>
+                                    <div class="input-group">
+                                        <span
+                                            class="input-group-text bg-white border-end-0">
+                                            <i
+                                                class="fas fa-lock text-muted"></i>
+                                        </span>
+                                        <input type="password"
+                                            class="form-control border-start-0"
+                                            id="confirmPassword"
+                                            placeholder="Repite tu contraseña"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="form-check">
+                                        <input type="checkbox"
+                                            class="form-check-input"
+                                            id="newsletter">
+                                        <label class="form-check-label"
+                                            for="newsletter">
+                                            Quiero recibir ofertas y novedades
+                                            por email
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="form-check">
+                                        <input type="checkbox"
+                                            class="form-check-input" id="terms"
+                                            required>
+                                        <label class="form-check-label"
+                                            for="terms">
+                                            Acepto los <a href="#"
+                                                class="text-primary">términos y
+                                                condiciones</a>
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit"
+                                    class="btn btn-primary w-100 mb-3">
+                                    <i class="fas fa-user-plus me-2"></i>Crear
+                                    cuenta
+                                </button>
+                            </form>
+                        </div>
+                        <div
+                            class="card-footer bg-light text-center border-0 py-4">
+                            ¿Ya tienes una cuenta?
+                            <a href="login.html"
+                                class="text-primary text-decoration-none">
+                                Inicia sesión aquí <i
+                                    class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
 
-    <!-- Footer -->
-    <footer class="site-footer mt-auto">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <h3 class="h5 mb-3">Beautiful Girl</h3>
-                    <p class="text-muted mb-0">Tu destino de belleza preferido.</p>
-                </div>
-                <div class="col-md-4">
-                    <h3 class="h5 mb-3">Enlaces rápidos</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="../index.html" class="text-decoration-none text-muted">Inicio</a></li>
-                        <li><a href="products.html" class="text-decoration-none text-muted">Productos</a></li>
-                        <li><a href="#" class="text-decoration-none text-muted">Sobre nosotros</a></li>
-                        <li><a href="#" class="text-decoration-none text-muted">Contacto</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h3 class="h5 mb-3">Síguenos</h3>
-                    <div class="d-flex gap-3">
-                        <a href="#" class="text-muted"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-muted"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-muted"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-muted"><i class="fab fa-pinterest"></i></a>
+        <!-- Footer -->
+        <footer class="bg-dark text-light mt-5">
+            <div class="container py-4">
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6">
+                        <h5 class="mb-3">Beautiful Girl</h5>
+                        <p class="mb-3">Tu destino de belleza favorito, donde
+                            encontrarás los mejores productos para resaltar tu
+                            belleza natural.</p>
+                        <div class="social-links">
+                            <a href="#" class="text-light me-3"><i
+                                    class="fab fa-facebook fa-lg"></i></a>
+                            <a href="#" class="text-light me-3"><i
+                                    class="fab fa-instagram fa-lg"></i></a>
+                            <a href="#" class="text-light me-3"><i
+                                    class="fab fa-whatsapp fa-lg"></i></a>
+                            <a href="#" class="text-light"><i
+                                    class="fab fa-tiktok fa-lg"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <h5 class="mb-3">Enlaces Rápidos</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="../index.html"
+                                    class="text-light text-decoration-none">Inicio</a></li>
+                            <li class="mb-2"><a href="products.html"
+                                    class="text-light text-decoration-none">Productos</a></li>
+                            <li class="mb-2"><a href="about.html"
+                                    class="text-light text-decoration-none">Nosotros</a></li>
+                            <li class="mb-2"><a href="contact.html"
+                                    class="text-light text-decoration-none">Contacto</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5 class="mb-3">Categorías</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="#"
+                                    class="text-light text-decoration-none">Cuidado
+                                    Facial</a></li>
+                            <li class="mb-2"><a href="#"
+                                    class="text-light text-decoration-none">Cuidado
+                                    Corporal</a></li>
+                            <li class="mb-2"><a href="#"
+                                    class="text-light text-decoration-none">Maquillaje</a></li>
+                            <li class="mb-2"><a href="#"
+                                    class="text-light text-decoration-none">Fragancias</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5 class="mb-3">Contacto</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i
+                                    class="fas fa-map-marker-alt me-2"></i>Bogotá,
+                                Colombia</li>
+                            <li class="mb-2"><i
+                                    class="fas fa-phone me-2"></i>+57 320 477
+                                9222</li>
+                            <li class="mb-2"><i
+                                    class="fas fa-envelope me-2"></i>info@beautifulgirl.com</li>
+                            <li class="mb-2"><i
+                                    class="fas fa-clock me-2"></i>Lun - Sáb:
+                                9:00 - 18:00</li>
+                        </ul>
                     </div>
                 </div>
             </div>
-            <hr class="my-4">
-            <p class="mb-0 text-center">&copy; 2025 Beautiful Girl. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+            <div class="text-center py-3 border-top border-secondary">
+                <small>&copy; 2025 Beautiful Girl. Todos los derechos
+                    reservados.</small>
+            </div>
+        </footer>
 
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="../assets/js/auth.js"></script>
-</body>
+        <!-- Bootstrap Bundle with Popper -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Custom JS -->
+        <script src="../assets/js/auth.js"></script>
+    </body>
 </html>
