@@ -173,7 +173,7 @@
                     </div>
 
                     <!-- Charts -->
-                    <div class="row g-4">
+                    <div class="row g-4 mb-4">
                         <div class="col-12 col-lg-8">
                             <div class="card border-0 shadow-sm">
                                 <div class="card-body">
@@ -192,7 +192,115 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Sección de Gestión de Productos -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-white py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0"><i class="fas fa-box me-2"></i>Gestión de Productos</h5>
+                                        <button class="btn btn-primary" id="addProductBtn">
+                                            <i class="fas fa-plus me-2"></i>Crear Producto
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle" id="productsTable">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th style="width: 80px;">Imagen</th>
+                                                    <th>Nombre</th>
+                                                    <th>Categoría</th>
+                                                    <th>Precio</th>
+                                                    <th>Stock</th>
+                                                    <th>Estado</th>
+                                                    <th style="width: 200px;">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="productsTableBody">
+                                                <!-- Los productos se cargarán dinámicamente -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </main>
+            </div>
+        </div>
+
+        <!-- Modal para Crear/Editar Producto -->
+        <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="productModalLabel">Crear Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="productForm">
+                        <div class="modal-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="productName" class="form-label">Nombre del Producto *</label>
+                                    <input type="text" class="form-control" id="productName" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="productCategory" class="form-label">Categoría *</label>
+                                    <select class="form-select" id="productCategory" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="Cuidado Facial">Cuidado Facial</option>
+                                        <option value="Cuidado Corporal">Cuidado Corporal</option>
+                                        <option value="Maquillaje">Maquillaje</option>
+                                        <option value="Fragancias">Fragancias</option>
+                                        <option value="Cabello">Cabello</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="productPrice" class="form-label">Precio *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="productPrice" min="0" step="0.01" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="productStock" class="form-label">Stock *</label>
+                                    <input type="number" class="form-control" id="productStock" min="0" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="productStatus" class="form-label">Estado *</label>
+                                    <select class="form-select" id="productStatus" required>
+                                        <option value="visible">Visible</option>
+                                        <option value="hidden">Oculto</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="productDescription" class="form-label">Descripción</label>
+                                    <textarea class="form-control" id="productDescription" rows="3"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label for="productImage" class="form-label">URL de la Imagen *</label>
+                                    <input type="url" class="form-control" id="productImage" placeholder="https://ejemplo.com/imagen.jpg" required>
+                                    <small class="text-muted">Ingresa la URL de la imagen del producto</small>
+                                </div>
+                                <div class="col-12">
+                                    <div class="image-preview" id="imagePreview" style="display: none;">
+                                        <label class="form-label">Vista Previa:</label>
+                                        <img id="previewImg" src="" alt="Preview" class="img-thumbnail" style="max-width: 200px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Guardar Producto
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
