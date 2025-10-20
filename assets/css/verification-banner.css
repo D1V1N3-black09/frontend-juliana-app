@@ -1,0 +1,115 @@
+/* ============================================
+   SISTEMA DE VERIFICACIÓN DE EMAIL
+   Beautiful Girl - Estilos para banner y alertas
+   ============================================ */
+
+/* Banner de Verificación */
+.verification-banner {
+    position: fixed;
+    top: 76px;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+    color: white;
+    z-index: 1040;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    animation: slideDown 0.3s ease-out;
+}
+
+.verification-banner strong {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.verification-banner p {
+    font-size: 13px;
+    opacity: 0.95;
+    margin: 0;
+}
+
+.verification-banner .btn-warning {
+    background: white;
+    color: #f57c00;
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.verification-banner .btn-warning:hover {
+    background: #fff3e0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    color: #e65100;
+}
+
+.verification-banner .btn-outline-light {
+    border-color: rgba(255,255,255,0.5);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.verification-banner .btn-outline-light:hover {
+    background: rgba(255,255,255,0.2);
+    border-color: white;
+    color: white;
+}
+
+/* Animación de entrada del banner */
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Ajuste de padding cuando el banner está visible */
+body.has-verification-banner {
+    padding-top: 135px !important;
+}
+
+/* Estilos para alertas de verificación dentro de SweetAlert */
+.swal2-popup .alert-info {
+    background: #e3f2fd;
+    border-left: 4px solid #2196f3;
+    color: #1565c0;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.swal2-popup .alert-info i {
+    margin-right: 8px;
+}
+
+/* Responsive para el banner */
+@media (max-width: 768px) {
+    .verification-banner .btn-warning,
+    .verification-banner .btn-outline-light {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+    
+    .verification-banner strong {
+        font-size: 14px;
+    }
+    
+    .verification-banner p {
+        font-size: 12px;
+    }
+}
+
+/* Animación de parpadeo para advertencias */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.verification-banner.urgent {
+    animation: blink 2s infinite;
+}

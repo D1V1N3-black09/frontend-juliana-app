@@ -82,6 +82,7 @@ async function handleLogin(e) {
             }
         }
 
+        // Mostrar bienvenida simple (verificación de email deshabilitada)
         showNotification(`¡Bienvenid@ ${user.first_name}!`, 'success');
         
         const redirectTo = localStorage.getItem('redirectAfterLogin');
@@ -139,12 +140,44 @@ async function handleRegister(e) {
             phone: phone
         };
 
-        await API.register(userData);
-        
-        showNotification('¡Registro exitoso! Ahora puedes iniciar sesión', 'success');
-        setTimeout(() => {
-            window.location.href = './login.html';
-        }, 1500);
+        // Usar el nuevo endpoint de registro con verificación
+        const response = await fetch('http://localhost:5000/api/email-verification/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || 'Error al registrar usuario');
+        }
+
+        // Si requiere verificación, guardar email y redirigir
+        if (data.requires_verification) {
+            sessionStorage.setItem('verificationEmail', email);
+            
+            await Swal.fire({
+                icon: 'success',
+                title: '¡Registro Exitoso!',
+                html: `
+                    <p>${data.message}</p>
+                    <p><strong>Revisa tu email</strong> para el código de verificación.</p>
+                `,
+                confirmButtonText: 'Verificar Email'
+            });
+
+            // Redirigir a página de verificación
+            window.location.href = './verify-email.html';
+        } else {
+            // Registro sin verificación (backward compatibility)
+            showNotification('¡Registro exitoso! Ahora puedes iniciar sesión', 'success');
+            setTimeout(() => {
+                window.location.href = './login.html';
+            }, 1500);
+        }
     } catch (error) {
         showNotification(error.message, 'danger');
     }
