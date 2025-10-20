@@ -134,17 +134,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Configurar botón de cerrar sesión
-    const logoutBtn = document.querySelector('.logout-btn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', function() {
+    // Configurar botones de cerrar sesión (navbar y sidebar)
+    const logoutBtns = document.querySelectorAll('.logout-btn');
+    logoutBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
             if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
                 sessionStorage.removeItem('user');
                 sessionStorage.removeItem('userType');
                 window.location.href = '../login.html';
             }
         });
-    }
+    });
 });
 
 // ==========================================
@@ -762,15 +763,23 @@ function initializeSidebarNavigation() {
             // Agregar clase active al link clickeado
             this.classList.add('active');
             
-            // Ocultar todas las secciones
-            document.querySelectorAll('.admin-section').forEach(s => {
+            // Ocultar TODAS las secciones con force
+            const allSections = document.querySelectorAll('.admin-section');
+            allSections.forEach(s => {
                 s.style.display = 'none';
+                s.style.visibility = 'hidden';
             });
             
-            // Mostrar la sección seleccionada
+            // Mostrar SOLO la sección seleccionada
             const targetSection = document.getElementById(`section-${section}`);
+            
             if (targetSection) {
+                // Forzar display block
                 targetSection.style.display = 'block';
+                targetSection.style.visibility = 'visible';
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
                 
                 // Cargar datos específicos de la sección
                 switch(section) {
@@ -1165,8 +1174,11 @@ function initializeReportDates() {
     const today = new Date();
     const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
     
-    document.getElementById('reportStartDate').valueAsDate = firstDay;
-    document.getElementById('reportEndDate').valueAsDate = today;
+    const startDateInput = document.getElementById('reportStartDate');
+    const endDateInput = document.getElementById('reportEndDate');
+    
+    if (startDateInput) startDateInput.valueAsDate = firstDay;
+    if (endDateInput) endDateInput.valueAsDate = today;
     
     const generateBtn = document.getElementById('generateReportBtn');
     if (generateBtn) {
