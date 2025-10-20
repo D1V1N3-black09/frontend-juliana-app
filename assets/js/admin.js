@@ -5,14 +5,20 @@ let customers = [];
 let currentPage = 1;
 let itemsPerPage = 10;
 let filteredProducts = [];
+let productsSortColumn = null;
+let productsSortDirection = 'asc';
 
 let currentOrdersPage = 1;
 let ordersPerPage = 10;
 let filteredOrders = [];
+let ordersSortColumn = null;
+let ordersSortDirection = 'asc';
 
 let currentCustomersPage = 1;
 let customersPerPage = 10;
 let filteredCustomers = [];
+let customersSortColumn = null;
+let customersSortDirection = 'asc';
 
 async function cargarProductosAdmin() {
     try {
@@ -103,6 +109,68 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
+    // Event listeners para filtros de órdenes
+    const searchOrder = document.getElementById('searchOrder');
+    const filterOrderStatus = document.getElementById('filterOrderStatus');
+    const filterOrderDate = document.getElementById('filterOrderDate');
+    const ordersPerPageSelect = document.getElementById('ordersPerPage');
+
+    if (searchOrder) {
+        searchOrder.addEventListener('input', function() {
+            currentOrdersPage = 1;
+            applyOrdersFilters();
+        });
+    }
+
+    if (filterOrderStatus) {
+        filterOrderStatus.addEventListener('change', function() {
+            currentOrdersPage = 1;
+            applyOrdersFilters();
+        });
+    }
+
+    if (filterOrderDate) {
+        filterOrderDate.addEventListener('change', function() {
+            currentOrdersPage = 1;
+            applyOrdersFilters();
+        });
+    }
+
+    if (ordersPerPageSelect) {
+        ordersPerPageSelect.addEventListener('change', function() {
+            ordersPerPage = parseInt(this.value);
+            currentOrdersPage = 1;
+            loadOrdersTable();
+        });
+    }
+
+    // Event listeners para filtros de clientes
+    const searchCustomer = document.getElementById('searchCustomer');
+    const sortCustomers = document.getElementById('sortCustomers');
+    const customersPerPageSelect = document.getElementById('customersPerPage');
+
+    if (searchCustomer) {
+        searchCustomer.addEventListener('input', function() {
+            currentCustomersPage = 1;
+            applyCustomersFilters();
+        });
+    }
+
+    if (sortCustomers) {
+        sortCustomers.addEventListener('change', function() {
+            const sortBy = this.value;
+            sortCustomersByField(sortBy);
+        });
+    }
+
+    if (customersPerPageSelect) {
+        customersPerPageSelect.addEventListener('change', function() {
+            customersPerPage = parseInt(this.value);
+            currentCustomersPage = 1;
+            loadCustomersTable();
+        });
+    }
+
     
     const logoutBtns = document.querySelectorAll('.logout-btn');
     logoutBtns.forEach(btn => {
@@ -111,9 +179,17 @@ document.addEventListener('DOMContentLoaded', async function() {
             // Mostrar modal de confirmación de logout
             const confirmed = await showLogoutConfirm();
             if (confirmed) {
-                sessionStorage.removeItem('user');
-                sessionStorage.removeItem('userType');
-                window.location.href = '../login.html';
+                // Remover las claves correctas de sesión
+                localStorage.removeItem('userSession');
+                sessionStorage.removeItem('userSession');
+                
+                // Mostrar mensaje de éxito
+                showSuccess('Sesión cerrada', 'Has cerrado sesión exitosamente');
+                
+                // Redirigir después de mostrar el mensaje
+                setTimeout(() => {
+                    window.location.href = '../login.html';
+                }, 1000);
             }
         });
     });
@@ -136,6 +212,61 @@ function applyFilters() {
         const matchStatus = statusFilter === '' || product.status === statusFilter;
 
         return matchSearch && matchCategory && matchStatus;
+    });
+
+    // Aplicar ordenamiento si existe
+    if (productsSortColumn) {
+        sortProducts(productsSortColumn, false);
+    }
+
+    loadProductsTable();
+}
+
+function sortProducts(column, toggleDirection = true) {
+    if (toggleDirection) {
+        if (productsSortColumn === column) {
+            productsSortDirection = productsSortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            productsSortColumn = column;
+            productsSortDirection = 'asc';
+        }
+    }
+
+    filteredProducts.sort((a, b) => {
+        let valA, valB;
+
+        switch(column) {
+            case 'id':
+                valA = a.id;
+                valB = b.id;
+                break;
+            case 'name':
+                valA = a.name.toLowerCase();
+                valB = b.name.toLowerCase();
+                break;
+            case 'category':
+                valA = a.category.toLowerCase();
+                valB = b.category.toLowerCase();
+                break;
+            case 'price':
+                valA = a.price;
+                valB = b.price;
+                break;
+            case 'stock':
+                valA = a.stock;
+                valB = b.stock;
+                break;
+            case 'status':
+                valA = a.status;
+                valB = b.status;
+                break;
+            default:
+                return 0;
+        }
+
+        if (valA < valB) return productsSortDirection === 'asc' ? -1 : 1;
+        if (valA > valB) return productsSortDirection === 'asc' ? 1 : -1;
+        return 0;
     });
 
     loadProductsTable();
@@ -254,6 +385,7 @@ function loadProductsTable() {
         `;
         updatePaginationInfo();
         renderPagination();
+        updateSortIcons('products');
         return;
     }
 
@@ -324,6 +456,62 @@ function loadProductsTable() {
     
     updatePaginationInfo();
     renderPagination();
+    updateSortIcons('products');
+}
+
+// Actualizar íconos de ordenamiento
+function updateSortIcons(table) {
+    if (table === 'products') {
+        // Resetear todos los iconos
+        ['id', 'name', 'category', 'price', 'stock', 'status'].forEach(col => {
+            const icon = document.getElementById(`sort-icon-${col}`);
+            if (icon) {
+                icon.className = 'fas fa-sort text-muted';
+            }
+        });
+        
+        // Actualizar icono de la columna activa
+        if (productsSortColumn) {
+            const activeIcon = document.getElementById(`sort-icon-${productsSortColumn}`);
+            if (activeIcon) {
+                activeIcon.className = productsSortDirection === 'asc' 
+                    ? 'fas fa-sort-up text-primary' 
+                    : 'fas fa-sort-down text-primary';
+            }
+        }
+    } else if (table === 'orders') {
+        ['id', 'customer', 'date', 'total', 'status'].forEach(col => {
+            const icon = document.getElementById(`sort-icon-order-${col}`);
+            if (icon) {
+                icon.className = 'fas fa-sort text-muted';
+            }
+        });
+        
+        if (ordersSortColumn) {
+            const activeIcon = document.getElementById(`sort-icon-order-${ordersSortColumn}`);
+            if (activeIcon) {
+                activeIcon.className = ordersSortDirection === 'asc' 
+                    ? 'fas fa-sort-up text-primary' 
+                    : 'fas fa-sort-down text-primary';
+            }
+        }
+    } else if (table === 'customers') {
+        ['id', 'name', 'email', 'orders', 'totalSpent', 'registerDate'].forEach(col => {
+            const icon = document.getElementById(`sort-icon-customer-${col}`);
+            if (icon) {
+                icon.className = 'fas fa-sort text-muted';
+            }
+        });
+        
+        if (customersSortColumn) {
+            const activeIcon = document.getElementById(`sort-icon-customer-${customersSortColumn}`);
+            if (activeIcon) {
+                activeIcon.className = customersSortDirection === 'asc' 
+                    ? 'fas fa-sort-up text-primary' 
+                    : 'fas fa-sort-down text-primary';
+            }
+        }
+    }
 }
 
 
@@ -905,6 +1093,81 @@ async function loadDemoOrders() {
     }
 }
 
+// Aplicar filtros a órdenes
+function applyOrdersFilters() {
+    const searchTerm = document.getElementById('searchOrder')?.value.toLowerCase() || '';
+    const statusFilter = document.getElementById('filterOrderStatus')?.value || '';
+    const dateFilter = document.getElementById('filterOrderDate')?.value || '';
+
+    filteredOrders = orders.filter(order => {
+        const matchSearch = searchTerm === '' || 
+                           order.id.toString().includes(searchTerm) ||
+                           order.customer.name.toLowerCase().includes(searchTerm);
+        
+        const matchStatus = statusFilter === '' || order.status === statusFilter;
+        
+        const matchDate = dateFilter === '' || 
+                         order.date.startsWith(dateFilter);
+
+        return matchSearch && matchStatus && matchDate;
+    });
+
+    // Aplicar ordenamiento si existe
+    if (ordersSortColumn) {
+        sortOrders(ordersSortColumn, false);
+    }
+
+    currentOrdersPage = 1;
+    loadOrdersTable();
+}
+
+// Ordenar órdenes
+function sortOrders(column, toggleDirection = true) {
+    if (toggleDirection) {
+        if (ordersSortColumn === column) {
+            ordersSortDirection = ordersSortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            ordersSortColumn = column;
+            ordersSortDirection = 'asc';
+        }
+    }
+
+    filteredOrders.sort((a, b) => {
+        let valA, valB;
+
+        switch(column) {
+            case 'id':
+                valA = a.id;
+                valB = b.id;
+                break;
+            case 'customer':
+                valA = a.customer.name.toLowerCase();
+                valB = b.customer.name.toLowerCase();
+                break;
+            case 'date':
+                valA = new Date(a.date);
+                valB = new Date(b.date);
+                break;
+            case 'total':
+                valA = a.total;
+                valB = b.total;
+                break;
+            case 'status':
+                valA = a.status;
+                valB = b.status;
+                break;
+            default:
+                return 0;
+        }
+
+        if (valA < valB) return ordersSortDirection === 'asc' ? -1 : 1;
+        if (valA > valB) return ordersSortDirection === 'asc' ? 1 : -1;
+        return 0;
+    });
+
+    loadOrdersTable();
+}
+
 function loadOrdersTable() {
     const tbody = document.getElementById('ordersTableBody');
     if (!tbody) return;
@@ -914,10 +1177,14 @@ function loadOrdersTable() {
             <tr>
                 <td colspan="7" class="text-center py-4 text-muted">
                     <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
-                    No hay órdenes registradas.
+                    ${orders.length === 0 
+                        ? 'No hay órdenes registradas.'
+                        : 'No se encontraron órdenes con los filtros aplicados.'}
                 </td>
             </tr>
         `;
+        updateOrdersPagination();
+        updateSortIcons('orders');
         return;
     }
     
@@ -958,6 +1225,7 @@ function loadOrdersTable() {
     }).join('');
     
     updateOrdersPagination();
+    updateSortIcons('orders');
 }
 
 function updateOrdersPagination() {
@@ -1088,6 +1356,93 @@ async function loadDemoCustomers() {
     }
 }
 
+// Aplicar filtros a clientes
+function applyCustomersFilters() {
+    const searchTerm = document.getElementById('searchCustomer')?.value.toLowerCase() || '';
+
+    filteredCustomers = customers.filter(customer => {
+        const matchSearch = searchTerm === '' || 
+                           customer.name.toLowerCase().includes(searchTerm) ||
+                           customer.email.toLowerCase().includes(searchTerm) ||
+                           customer.id.toString().includes(searchTerm);
+
+        return matchSearch;
+    });
+
+    // Aplicar ordenamiento si existe
+    if (customersSortColumn) {
+        sortCustomers(customersSortColumn, false);
+    }
+
+    currentCustomersPage = 1;
+    loadCustomersTable();
+}
+
+// Ordenar clientes por campo del selector
+function sortCustomersByField(field) {
+    customersSortColumn = field;
+    customersSortDirection = 'desc'; // Por defecto descendente para valores numéricos
+
+    if (field === 'name') {
+        customersSortDirection = 'asc'; // Ascendente para nombre
+    }
+
+    sortCustomers(field, false);
+}
+
+// Ordenar clientes
+function sortCustomers(column, toggleDirection = true) {
+    if (toggleDirection) {
+        if (customersSortColumn === column) {
+            customersSortDirection = customersSortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            customersSortColumn = column;
+            customersSortDirection = 'asc';
+        }
+    }
+
+    filteredCustomers.sort((a, b) => {
+        let valA, valB;
+
+        switch(column) {
+            case 'id':
+                valA = a.id;
+                valB = b.id;
+                break;
+            case 'name':
+                valA = a.name.toLowerCase();
+                valB = b.name.toLowerCase();
+                break;
+            case 'email':
+                valA = a.email.toLowerCase();
+                valB = b.email.toLowerCase();
+                break;
+            case 'orders':
+                valA = a.orders;
+                valB = b.orders;
+                break;
+            case 'totalSpent':
+            case 'total':
+                valA = a.totalSpent;
+                valB = b.totalSpent;
+                break;
+            case 'registerDate':
+            case 'date':
+                valA = new Date(a.registerDate);
+                valB = new Date(b.registerDate);
+                break;
+            default:
+                return 0;
+        }
+
+        if (valA < valB) return customersSortDirection === 'asc' ? -1 : 1;
+        if (valA > valB) return customersSortDirection === 'asc' ? 1 : -1;
+        return 0;
+    });
+
+    loadCustomersTable();
+}
+
 function loadCustomersTable() {
     const tbody = document.getElementById('customersTableBody');
     if (!tbody) return;
@@ -1097,10 +1452,14 @@ function loadCustomersTable() {
             <tr>
                 <td colspan="9" class="text-center py-4 text-muted">
                     <i class="fas fa-users fa-3x mb-3 d-block"></i>
-                    No hay clientes registrados.
+                    ${customers.length === 0 
+                        ? 'No hay clientes registrados.'
+                        : 'No se encontraron clientes con los filtros aplicados.'}
                 </td>
             </tr>
         `;
+        updateCustomersPagination();
+        updateSortIcons('customers');
         return;
     }
     
@@ -1135,6 +1494,7 @@ function loadCustomersTable() {
     }).join('');
     
     updateCustomersPagination();
+    updateSortIcons('customers');
 }
 
 function updateCustomersPagination() {

@@ -1,30 +1,384 @@
 /**
  * Beautiful Girl - Custom SweetAlert2 Styles
  * Estilos personalizados para modales y alertas
+ * Colores: Rosa #FF69B4, Blanco #FFFFFF, Texto oscuro #2c3e50
  */
 
-/* Modal principal */
+/* Modal principal - Fondo blanco limpio */
 .beautiful-girl-modal {
+    background: #FFFFFF !important;
     border-radius: 20px !important;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3) !important;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border: 2px solid rgba(255, 105, 180, 0.2) !important;
 }
 
-/* Título del modal */
+/* Título del modal - Texto oscuro con acento rosa */
 .beautiful-girl-modal-title {
     font-size: 1.75rem !important;
     font-weight: 600 !important;
     color: #2c3e50 !important;
     padding: 1.5rem 2rem 0.5rem !important;
+    background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
 }
 
-/* Texto del modal */
+/* Texto del modal - Texto gris oscuro legible */
 .beautiful-girl-modal-text {
     font-size: 1.1rem !important;
-    color: #5a6c7d !important;
+    color: #495057 !important;
     padding: 0.5rem 2rem 1.5rem !important;
     line-height: 1.6 !important;
+    background: transparent !important;
 }
+
+/* Contenedor de botones */
+.swal2-actions {
+    padding: 1rem 2rem 1.5rem !important;
+    gap: 1rem !important;
+    background: transparent !important;
+}
+
+/* Personalización de iconos con colores Beautiful Girl */
+.swal2-icon {
+    margin: 2rem auto 1rem !important;
+    border-width: 4px !important;
+}
+
+.swal2-icon.swal2-success {
+    border-color: #198754 !important;
+}
+
+.swal2-icon.swal2-success [class^='swal2-success-line'] {
+    background-color: #198754 !important;
+}
+
+.swal2-icon.swal2-success .swal2-success-ring {
+    border-color: rgba(25, 135, 84, 0.3) !important;
+}
+
+.swal2-icon.swal2-error {
+    border-color: #dc3545 !important;
+}
+
+.swal2-icon.swal2-error [class^='swal2-x-mark-line'] {
+    background-color: #dc3545 !important;
+}
+
+.swal2-icon.swal2-warning {
+    border-color: #ffc107 !important;
+    color: #856404 !important;
+}
+
+.swal2-icon.swal2-info {
+    border-color: #FF69B4 !important;
+    color: #FF69B4 !important;
+}
+
+.swal2-icon.swal2-question {
+    border-color: #FF1493 !important;
+    color: #FF1493 !important;
+}
+
+/* Animación de entrada suave */
+.swal2-popup.swal2-show {
+    animation: swal2-show 0.3s ease-out !important;
+}
+
+/* Animación de salida suave */
+.swal2-popup.swal2-hide {
+    animation: swal2-hide 0.2s ease-in !important;
+}
+
+/* Backdrop más suave con tinte rosa */
+.swal2-container.swal2-backdrop-show {
+    background: rgba(255, 105, 180, 0.15) !important;
+}
+
+/* Toast personalizados - Fondo blanco */
+.swal2-popup.swal2-toast {
+    background: #FFFFFF !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.25) !important;
+    padding: 1rem 1.5rem !important;
+    border: 1px solid rgba(255, 105, 180, 0.2) !important;
+}
+
+.swal2-popup.swal2-toast .swal2-title {
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    color: #2c3e50 !important;
+    margin: 0 !important;
+}
+
+.swal2-popup.swal2-toast .swal2-icon {
+    margin: 0 0.75rem 0 0 !important;
+    width: 2rem !important;
+    height: 2rem !important;
+    border-width: 2px !important;
+}
+
+/* Progress bar del toast con color rosa */
+.swal2-timer-progress-bar {
+    background: #FF69B4 !important;
+    height: 3px !important;
+}
+
+/* Inputs personalizados - Fondo blanco con borde rosa */
+.swal2-input,
+.swal2-textarea,
+.swal2-select {
+    background: #FFFFFF !important;
+    color: #2c3e50 !important;
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 10px !important;
+    font-size: 1rem !important;
+    padding: 0.75rem 1rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.swal2-input:focus,
+.swal2-textarea:focus,
+.swal2-select:focus {
+    border-color: #FF69B4 !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 105, 180, 0.25) !important;
+    outline: none !important;
+}
+
+.swal2-input::placeholder,
+.swal2-textarea::placeholder {
+    color: #adb5bd !important;
+}
+
+/* Validación de inputs */
+.swal2-input.swal2-inputerror,
+.swal2-textarea.swal2-inputerror,
+.swal2-select.swal2-inputerror {
+    border-color: #dc3545 !important;
+}
+
+.swal2-validation-message {
+    background: #dc3545 !important;
+    color: white !important;
+    border-radius: 8px !important;
+    font-size: 0.9rem !important;
+    padding: 0.5rem 1rem !important;
+    margin-top: 0.5rem !important;
+}
+
+/* Loading spinner personalizado con color rosa */
+.swal2-loader {
+    border-color: #FF69B4 transparent #FF1493 transparent !important;
+    border-width: 3px !important;
+}
+
+/* HTML content personalizado */
+.swal2-html-container {
+    color: #495057 !important;
+}
+
+.swal2-html-container p {
+    margin-bottom: 0.5rem !important;
+    color: #495057 !important;
+}
+
+.swal2-html-container .text-danger {
+    color: #dc3545 !important;
+}
+
+.swal2-html-container .text-muted {
+    color: #6c757d !important;
+}
+
+.swal2-html-container .fw-bold {
+    font-weight: 600 !important;
+    color: #2c3e50 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .beautiful-girl-modal {
+        width: 90% !important;
+        padding: 1rem !important;
+    }
+    
+    .beautiful-girl-modal-title {
+        font-size: 1.5rem !important;
+        padding: 1rem 1rem 0.5rem !important;
+    }
+    
+    .beautiful-girl-modal-text {
+        font-size: 1rem !important;
+        padding: 0.5rem 1rem 1rem !important;
+    }
+    
+    .swal2-actions {
+        padding: 0.75rem 1rem 1rem !important;
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+    
+    .swal2-actions button {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+}
+
+/* Mejoras para botones */
+.swal2-actions button {
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    letter-spacing: 0.5px !important;
+}
+
+.swal2-actions button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3) !important;
+}
+
+.swal2-actions button:active {
+    transform: translateY(0) !important;
+}
+
+/* Icono de cierre personalizado */
+.swal2-close {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    font-size: 1.5rem !important;
+    color: #adb5bd !important;
+    transition: all 0.3s ease !important;
+}
+
+.swal2-close:hover {
+    color: #FF1493 !important;
+    transform: rotate(90deg) !important;
+}
+
+/* Footer personalizado */
+.swal2-footer {
+    background: rgba(255, 105, 180, 0.05) !important;
+    border-top: 1px solid rgba(255, 105, 180, 0.2) !important;
+    padding: 1rem 2rem !important;
+    color: #6c757d !important;
+    font-size: 0.9rem !important;
+}
+
+/* Animaciones personalizadas con Animate.css */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -100%, 0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes fadeOutUp {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: translate3d(0, -100%, 0);
+    }
+}
+
+.animate__animated {
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+}
+
+.animate__faster {
+    animation-duration: 0.5s !important;
+}
+
+.animate__fadeInDown {
+    animation-name: fadeInDown;
+}
+
+.animate__fadeOutUp {
+    animation-name: fadeOutUp;
+}
+
+/* REMOVIDO: Tema oscuro automático */
+/* Siempre usar fondo blanco independientemente de la preferencia del sistema */
+.swal2-popup {
+    background: #FFFFFF !important;
+}
+
+/* Asegurar que todos los textos sean legibles en fondo blanco */
+.swal2-title,
+.swal2-html-container,
+.swal2-content {
+    color: #2c3e50 !important;
+}
+
+/* Estilos específicos para diferentes tipos de alertas */
+.swal2-icon.swal2-success .swal2-success-ring {
+    border-color: rgba(25, 135, 84, 0.3) !important;
+}
+
+.swal2-icon.swal2-error .swal2-x-mark {
+    background-color: transparent !important;
+}
+
+/* Overlay/backdrop suave */
+.swal2-container {
+    backdrop-filter: blur(3px) !important;
+}
+
+/* Botones con estilo Beautiful Girl */
+.btn-primary {
+    background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%) !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    font-weight: 500 !important;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #FF1493 0%, #FF69B4 100%) !important;
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4) !important;
+}
+
+.btn-danger {
+    background: #dc3545 !important;
+    border: none !important;
+    color: #FFFFFF !important;
+}
+
+.btn-danger:hover {
+    background: #c82333 !important;
+}
+
+.btn-outline-secondary {
+    border: 2px solid #6c757d !important;
+    color: #6c757d !important;
+    background: transparent !important;
+}
+
+.btn-outline-secondary:hover {
+    background: #6c757d !important;
+    color: #FFFFFF !important;
+}
+
+/* Texto en negrita más visible */
+strong, .fw-bold {
+    color: #2c3e50 !important;
+}
+
+/* Links dentro de modales */
+a {
+    color: #FF1493 !important;
+}
+
+a:hover {
+    color: #FF69B4 !important;
+}
+
 
 /* Contenedor de botones */
 .swal2-actions {
@@ -283,25 +637,129 @@
     animation-name: fadeOutUp;
 }
 
-/* Tema oscuro (opcional) */
+/* ===================================================
+   BEAUTIFUL GIRL THEME - FORZAR FONDO BLANCO/ROSA
+   ================================================== */
+
+/* CRÍTICO: Sobrescribir TODOS los fondos oscuros de SweetAlert2 */
+.swal2-popup,
+.swal2-modal,
+div.swal2-popup,
+div.swal2-modal {
+    background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
+}
+
+/* Título siempre en rosa Beautiful Girl */
+.swal2-title {
+    color: #FF1493 !important;
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+}
+
+/* Texto siempre oscuro para contraste */
+.swal2-html-container,
+.swal2-content {
+    color: #2c3e50 !important;
+}
+
+/* Botones con gradiente rosa Beautiful Girl */
+.swal2-confirm {
+    background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%) !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    padding: 0.75rem 2rem !important;
+    border-radius: 15px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3) !important;
+}
+
+.swal2-confirm:hover {
+    background: linear-gradient(135deg, #FF1493 0%, #C71585 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(255, 20, 147, 0.4) !important;
+}
+
+.swal2-cancel {
+    background: transparent !important;
+    border: 2px solid #6c757d !important;
+    color: #6c757d !important;
+    padding: 0.75rem 2rem !important;
+    border-radius: 15px !important;
+    font-weight: 500 !important;
+}
+
+.swal2-cancel:hover {
+    background: #6c757d !important;
+    color: #FFFFFF !important;
+    transform: translateY(-2px) !important;
+}
+
+.swal2-deny {
+    background: #dc3545 !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    padding: 0.75rem 2rem !important;
+    border-radius: 15px !important;
+    font-weight: 600 !important;
+}
+
+/* Backdrop con tinte rosa claro */
+.swal2-container {
+    background: rgba(255, 182, 217, 0.3) !important;
+    backdrop-filter: blur(5px) !important;
+}
+
+/* Borde rosa para el modal */
+.beautiful-girl-modal,
+.swal2-popup {
+    border: 3px solid #FFB6D9 !important;
+    border-radius: 25px !important;
+    box-shadow: 0 15px 50px rgba(255, 20, 147, 0.25) !important;
+}
+
+/* Icono de advertencia con colores correctos */
+.swal2-icon.swal2-warning {
+    border-color: #ffc107 !important;
+    color: #856404 !important;
+}
+
+.swal2-icon.swal2-warning .swal2-icon-content {
+    color: #856404 !important;
+    font-size: 3.75em !important;
+}
+
+/* NO aplicar tema oscuro NUNCA */
 @media (prefers-color-scheme: dark) {
+    /* Forzar tema claro incluso en modo oscuro del sistema */
+    .swal2-popup,
     .beautiful-girl-modal {
-        background: #2c3e50 !important;
+        background: #FFFFFF !important;
+        color: #2c3e50 !important;
     }
     
+    .swal2-title,
     .beautiful-girl-modal-title {
-        color: #ecf0f1 !important;
+        color: #FF1493 !important;
     }
     
+    .swal2-html-container,
     .beautiful-girl-modal-text {
-        color: #bdc3c7 !important;
+        color: #2c3e50 !important;
     }
     
     .swal2-input,
     .swal2-textarea,
     .swal2-select {
-        background: #34495e !important;
-        color: #ecf0f1 !important;
-        border-color: #4a5f7f !important;
+        background: #FFFFFF !important;
+        color: #2c3e50 !important;
+        border: 2px solid #FFB6D9 !important;
+    }
+    
+    .swal2-input:focus,
+    .swal2-textarea:focus,
+    .swal2-select:focus {
+        border-color: #FF69B4 !important;
+        box-shadow: 0 0 0 0.25rem rgba(255, 105, 180, 0.25) !important;
     }
 }

@@ -84,8 +84,9 @@ body {
 
 /* Hero Section */
 .hero-section {
-    margin-top: -76px;
-    padding: 200px 0 100px;
+    margin-top: 0;
+    padding-top: 30px;
+    padding-bottom: 60px;
 }
 
 .floating-card {

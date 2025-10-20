@@ -119,10 +119,18 @@ async function handleLogoutFromNavbar(event) {
         localStorage.removeItem('userSession');
         sessionStorage.removeItem('userSession');
         
-        const isInPages = window.location.pathname.includes('/pages/');
-        window.location.href = isInPages ? '../index.html' : './index.html';
+        showSuccess('Sesión cerrada', 'Has cerrado sesión exitosamente');
+        
+        setTimeout(() => {
+            const isInPages = window.location.pathname.includes('/pages/');
+            window.location.href = isInPages ? '../index.html' : './index.html';
+        }, 1000);
     }
+    // Si canceló, no hacer nada
 }
+
+// Hacer la función disponible globalmente
+window.handleLogoutFromNavbar = handleLogoutFromNavbar;
 
 async function updateCartCountDisplay() {
     await window.updateCartCountGlobal();

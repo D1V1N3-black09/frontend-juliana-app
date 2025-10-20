@@ -381,14 +381,49 @@
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th
-                                                            style="width: 60px;">ID</th>
+                                                            style="width: 60px; cursor: pointer;"
+                                                            onclick="sortProducts('id')">
+                                                            ID <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-id"></i>
+                                                        </th>
                                                         <th
                                                             style="width: 80px;">Imagen</th>
-                                                        <th>Nombre</th>
-                                                        <th>Categoría</th>
-                                                        <th>Precio</th>
-                                                        <th>Stock</th>
-                                                        <th>Estado</th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortProducts('name')">
+                                                            Nombre <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-name"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortProducts('category')">
+                                                            Categoría <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-category"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortProducts('price')">
+                                                            Precio <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-price"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortProducts('stock')">
+                                                            Stock <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-stock"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortProducts('status')">
+                                                            Estado <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-status"></i>
+                                                        </th>
                                                         <th
                                                             style="width: 200px;">Acciones</th>
                                                     </tr>
@@ -494,12 +529,41 @@
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th
-                                                            style="width: 80px;">ID</th>
-                                                        <th>Cliente</th>
-                                                        <th>Fecha</th>
+                                                            style="width: 80px; cursor: pointer;"
+                                                            onclick="sortOrders('id')">
+                                                            ID <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-order-id"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortOrders('customer')">
+                                                            Cliente <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-order-customer"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortOrders('date')">
+                                                            Fecha <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-order-date"></i>
+                                                        </th>
                                                         <th>Productos</th>
-                                                        <th>Total</th>
-                                                        <th>Estado</th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortOrders('total')">
+                                                            Total <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-order-total"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortOrders('status')">
+                                                            Estado <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-order-status"></i>
+                                                        </th>
                                                         <th
                                                             style="width: 150px;">Acciones</th>
                                                     </tr>
@@ -598,16 +662,49 @@
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th
-                                                            style="width: 60px;">ID</th>
-                                                        <th>Nombre</th>
-                                                        <th>Email</th>
+                                                            style="width: 60px; cursor: pointer;"
+                                                            onclick="sortCustomers('id')">
+                                                            ID <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-customer-id"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortCustomers('name')">
+                                                            Nombre <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-customer-name"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortCustomers('email')">
+                                                            Email <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-customer-email"></i>
+                                                        </th>
                                                         <th>Teléfono</th>
-                                                        <th>Órdenes</th>
-                                                        <th>Total
-                                                            Gastado</th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortCustomers('orders')">
+                                                            Órdenes <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-customer-orders"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortCustomers('totalSpent')">
+                                                            Total Gastado <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-customer-totalSpent"></i>
+                                                        </th>
                                                         <th>Rol</th>
-                                                        <th>Fecha
-                                                            Registro</th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortCustomers('registerDate')">
+                                                            Fecha Registro <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-customer-registerDate"></i>
+                                                        </th>
                                                         <th
                                                             style="width: 120px;">Acciones</th>
                                                     </tr>

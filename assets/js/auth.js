@@ -35,7 +35,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const logoutBtn = document.querySelector('.logout-btn');
     if (logoutBtn) {
-        logoutBtn.addEventListener('click', handleLogout);
+        logoutBtn.addEventListener('click', async function(event) {
+            event.preventDefault();
+            await handleLogout();
+        });
     }
 });
 
@@ -150,18 +153,22 @@ async function handleRegister(e) {
 
 
 
-function handleLogout() {
+async function handleLogout() {
+    // Mostrar modal de confirmación de logout
+    const confirmed = await showLogoutConfirm();
     
-    localStorage.removeItem('userSession');
-    sessionStorage.removeItem('userSession');
-    
-    
-    showNotification('Sesión cerrada exitosamente', 'info');
-    
-    
-    setTimeout(() => {
-        window.location.href = '../../index.html';
-    }, 500);
+    // Solo cerrar sesión si el usuario confirmó
+    if (confirmed) {
+        localStorage.removeItem('userSession');
+        sessionStorage.removeItem('userSession');
+        
+        showSuccess('Sesión cerrada', 'Has cerrado sesión exitosamente');
+        
+        setTimeout(() => {
+            window.location.href = '../../index.html';
+        }, 500);
+    }
+    // Si canceló, no hacer nada (la sesión permanece activa)
 }
 
 
