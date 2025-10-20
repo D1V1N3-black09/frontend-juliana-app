@@ -202,7 +202,8 @@ async function a(i) {
         var c = localStorage.getItem("cart");
         c = c ? JSON.parse(c) : [];
         var e = c.find(function(e) { return e.id === i });
-        e ? e.qty++ : c.push({id:x.id, name:x.name, price:x.price, qty:1, img:x.image});
+        // Usar 'image' en lugar de 'img' para consistencia con el backend
+        e ? e.qty++ : c.push({id:x.id, name:x.name, price:x.price, qty:1, image:x.image});
         localStorage.setItem("cart", JSON.stringify(c));
         if (typeof window.updateCartCountGlobal === 'function') {
             await window.updateCartCountGlobal();
