@@ -1,31 +1,6 @@
-// ============================================
-// SISTEMA DE AUTENTICACIÓN - Beautiful Girl
-// ============================================
-// Proyecto Escolar - Sistema Simple de Login
-//
-// CREDENCIALES PARA PRUEBAS:
-// ---------------------------
-// ADMINISTRADOR:
-//   Email: admin@beautifulgirl.com
-//   Password: admin123
-//   Acceso: Dashboard de Administración
-//
-// CLIENTE DE PRUEBA:
-//   Email: cliente@ejemplo.com
-//   Password: cliente123
-//   Acceso: Perfil de Cliente
-//
-// NOTA: En producción real, las credenciales 
-// estarían en una base de datos segura
-// ============================================
-
-// Credenciales de administrador
+// Credenciales de administrador (en un entorno real esto estaría en el backend)
 const ADMIN_EMAIL = 'admin@beautifulgirl.com';
 const ADMIN_PASSWORD = 'admin123';
-
-// Credenciales de cliente de ejemplo
-const CUSTOMER_EMAIL = 'cliente@ejemplo.com';
-const CUSTOMER_PASSWORD = 'cliente123';
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
@@ -45,9 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// ============================================
-// FUNCIÓN PRINCIPAL DE LOGIN
-// ============================================
+// Funciones de autenticación
 function handleLogin(e) {
     e.preventDefault();
     
@@ -55,154 +28,65 @@ function handleLogin(e) {
     const password = document.getElementById('password').value;
     const remember = document.getElementById('remember').checked;
 
-    // ========================================
-    // VALIDACIÓN 1: ¿Es el ADMINISTRADOR?
-    // ========================================
+    // Validar credenciales
     if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-        // Crear sesión de administrador
+        // Guardar sesión
         const session = {
             email: email,
-            firstName: 'Admin',
-            lastName: 'Beautiful Girl',
             isAdmin: true,
             timestamp: new Date().getTime()
         };
 
-        // Guardar sesión
         if (remember) {
             localStorage.setItem('userSession', JSON.stringify(session));
         } else {
             sessionStorage.setItem('userSession', JSON.stringify(session));
         }
 
-        // Mostrar notificación y redirigir al dashboard
-        showNotification('¡Bienvenido Administrador!', 'success');
+        // Mostrar notificación de éxito
+        showNotification('¡Inicio de sesión exitoso!', 'success');
+
+        // Redireccionar al panel de administración
         setTimeout(() => {
             window.location.href = '../pages/admin/dashboard.html';
         }, 1000);
-        return;
+    } else {
+        // Validar si es un cliente regular
+        handleCustomerLogin(email, password);
     }
-
-    // ========================================
-    // VALIDACIÓN 2: ¿Es un CLIENTE?
-    // ========================================
-    if (email === CUSTOMER_EMAIL && password === CUSTOMER_PASSWORD) {
-        // Crear sesión de cliente
-        const session = {
-            email: email,
-            firstName: 'María',
-            lastName: 'González',
-            phone: '+57 300 123 4567',
-            address: 'Calle 123 #45-67',
-            city: 'Bogotá',
-            postalCode: '110111',
-            isAdmin: false,
-            timestamp: new Date().getTime()
-        };
-
-        // Guardar sesión
-        if (remember) {
-            localStorage.setItem('userSession', JSON.stringify(session));
-        } else {
-            sessionStorage.setItem('userSession', JSON.stringify(session));
-        }
-
-        // Mostrar notificación y redirigir al perfil
-        showNotification('¡Bienvenida María!', 'success');
-        setTimeout(() => {
-            window.location.href = '../pages/profile.html';
-        }, 1000);
-        return;
-    }
-
-    // ========================================
-    // VALIDACIÓN 3: Credenciales incorrectas
-    // ========================================
-    showNotification('Email o contraseña incorrectos', 'danger');
 }
 
-// ============================================
-// FUNCIÓN DE CIERRE DE SESIÓN
-// ============================================
+function handleCustomerLogin(email, password) {
+    // Aquí iría la lógica para clientes regulares
+    // Por ahora, mostrar error
+    showNotification('Credenciales incorrectas', 'danger');
+}
+
 function handleLogout() {
-    // Limpiar toda la sesión
+    // Limpiar sesión
     localStorage.removeItem('userSession');
     sessionStorage.removeItem('userSession');
     
-    // Mostrar mensaje
-    showNotification('Sesión cerrada exitosamente', 'info');
-    
-    // Redireccionar al inicio después de un momento
-    setTimeout(() => {
-        window.location.href = '../index.html';
-    }, 500);
+    // Redireccionar al inicio
+    window.location.href = '../index.html';
 }
 
-// ============================================
-// FUNCIÓN DE VERIFICACIÓN DE SESIÓN
-// ============================================
-// Esta función protege las páginas y redirige
-// a los usuarios según su tipo de cuenta
-// ============================================
 function checkSession() {
-    // Obtener sesión activa
-    const sessionData = localStorage.getItem('userSession') || sessionStorage.getItem('userSession');
-    const session = sessionData ? JSON.parse(sessionData) : null;
-    
-    // Detectar en qué página estamos
+    // Verificar si hay una sesión activa
+    const session = JSON.parse(localStorage.getItem('userSession') || sessionStorage.getItem('userSession'));
     const currentPath = window.location.pathname;
     const isAdminPage = currentPath.includes('/admin/');
-    const isProfilePage = currentPath.includes('/profile.html');
-    const isLoginPage = currentPath.includes('/login.html');
     
-    // ========================================
-    // CASO 1: Usuario NO autenticado
-    // ========================================
-    if (!session) {
-        // Si intenta acceder a página protegida, redirigir a login
-        if (isAdminPage || isProfilePage) {
-            window.location.href = '../pages/login.html';
+    if (session) {
+        // Verificar si la sesión es de administrador y estamos en la página correcta
+        if (session.isAdmin && !isAdminPage && !currentPath.includes('/pages/login.html')) {
+            window.location.href = '/pages/admin/dashboard.html';
+        } else if (!session.isAdmin && isAdminPage) {
+            window.location.href = '../index.html';
         }
-        return;
-    }
-    
-    // ========================================
-    // CASO 2: Usuario SÍ autenticado
-    // ========================================
-    
-    // Si es ADMIN y está en página de admin, todo OK
-    if (session.isAdmin && isAdminPage) {
-        return;
-    }
-    
-    // Si es CLIENTE y está en su perfil, todo OK
-    if (!session.isAdmin && isProfilePage) {
-        return;
-    }
-    
-    // Si está en login y ya tiene sesión, redirigir a su área
-    if (isLoginPage) {
-        if (session.isAdmin) {
-            window.location.href = '../pages/admin/dashboard.html';
-        } else {
-            window.location.href = '../pages/profile.html';
-        }
-        return;
-    }
-    
-    // Si ADMIN intenta acceder a área de cliente
-    if (session.isAdmin && isProfilePage) {
-        window.location.href = '../pages/admin/dashboard.html';
-        return;
-    }
-    
-    // Si CLIENTE intenta acceder a área de admin
-    if (!session.isAdmin && isAdminPage) {
-        showNotification('No tienes permisos para acceder a esta área', 'danger');
-        setTimeout(() => {
-            window.location.href = '../pages/profile.html';
-        }, 1000);
-        return;
+    } else if (isAdminPage) {
+        // Si no hay sesión y estamos en una página de admin, redirigir al login
+        window.location.href = '../pages/login.html';
     }
 }
 

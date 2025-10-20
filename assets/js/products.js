@@ -149,19 +149,23 @@ function actualizarPaginacion(totalItems) {
 function filtrar() {
     var categoria = document.querySelector("#filtroCategoria").value;
     var busqueda = document.querySelector("#filtroBusqueda").value.toLowerCase();
-    
+    var precioMin = document.querySelector("#precioMin").value;
+    var precioMax = document.querySelector("#precioMax").value;
+
     var productosFiltrados = p.filter(function(item) {
         var matchCategoria = categoria === "" || item.cat === categoria;
         var matchBusqueda = item.name.toLowerCase().includes(busqueda) || 
                            item.desc.toLowerCase().includes(busqueda);
-        return matchCategoria && matchBusqueda;
+        var matchPrecioMin = !precioMin || item.price >= parseInt(precioMin);
+        var matchPrecioMax = !precioMax || item.price <= parseInt(precioMax);
+        return matchCategoria && matchBusqueda && matchPrecioMin && matchPrecioMax;
     });
-    
+
     // Calcular productos para la página actual
     var inicio = (paginaActual - 1) * itemsPorPagina;
     var fin = inicio + itemsPorPagina;
     var productosEnPagina = productosFiltrados.slice(inicio, fin);
-    
+
     actualizarPaginacion(productosFiltrados.length);
     r(productosEnPagina);
 }
@@ -212,7 +216,9 @@ document.addEventListener("DOMContentLoaded", function() {
     var filtroCategoria = document.querySelector("#filtroCategoria");
     var filtroBusqueda = document.querySelector("#filtroBusqueda");
     var itemsPorPaginaSelect = document.querySelector("#itemsPorPagina");
-    
+    var precioMin = document.querySelector("#precioMin");
+    var precioMax = document.querySelector("#precioMax");
+
     if (filtroCategoria && filtroBusqueda) {
         filtroCategoria.addEventListener("change", function() {
             paginaActual = 1;
@@ -223,7 +229,20 @@ document.addEventListener("DOMContentLoaded", function() {
             filtrar();
         });
     }
-    
+
+    if (precioMin) {
+        precioMin.addEventListener("input", function() {
+            paginaActual = 1;
+            filtrar();
+        });
+    }
+    if (precioMax) {
+        precioMax.addEventListener("input", function() {
+            paginaActual = 1;
+            filtrar();
+        });
+    }
+
     if (itemsPorPaginaSelect) {
         itemsPorPaginaSelect.addEventListener("change", function() {
             itemsPorPagina = parseInt(this.value);
@@ -231,6 +250,6 @@ document.addEventListener("DOMContentLoaded", function() {
             filtrar();
         });
     }
-    
+
     actualizarPaginacion(p.length);
 });

@@ -1,458 +1,335 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Sobre Nosotros - Beautiful Girl</title>
-        <meta name="description"
-            content="Conoce la historia detrás de Beautiful Girl, tu tienda de cosméticos de confianza" />
-        <!-- Bootstrap CSS -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet">
-        <!-- Font Awesome -->
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-        <!-- AOS Animate -->
-        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="../assets/css/style.css">
-    </head>
-    <body>
-        <header class="fixed-top">
-            <nav
-                class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-                <div class="container">
-                    <a class="navbar-brand fw-bold" href="../index.html">
-                        <span class="text-primary">Beautiful</span>Girl
-                    </a>
-                    <button class="navbar-toggler" type="button"
-                        data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav me-auto">
-                            <li class="nav-item">
-                                <a class="nav-link"
-                                    href="../index.html">Inicio</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link"
-                                    href="products.html">Productos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active"
-                                    href="about.html">Nosotros</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link"
-                                    href="contact.html">Contacto</a>
-                            </li>
-                        </ul>
-                        <div class="d-flex align-items-center">
-                            <a href="cart.html"
-                                class="btn btn-outline-primary position-relative me-2">
-                                <i class="fas fa-shopping-cart"></i>
-                                <span
-                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
-                                    0
-                                </span>
-                            </a>
-                            <a href="login.html" class="btn btn-primary">
-                                <i class="fas fa-user me-1"></i> Iniciar Sesión
-                            </a>
-                        </div>
+<head>
+    <!-- Fuente llamativa para títulos -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros - Beautiful Girl</title>
+    <meta name="description" content="Conoce la historia detrás de Beautiful Girl, tu tienda de cosméticos de confianza" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- AOS Animate -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <header class="fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="../index.html">
+                    <img src="../assets/img/logo.png" alt="Logo Beautiful Girl" style="height: 70px; margin-right: 10px; vertical-align: middle;"> <span class="text-primary">Beautiful</span>Girl
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="products.html">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="about.html">Nosotros</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.html">Contacto</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center">
+                        <a href="cart.html" class="btn btn-outline-primary position-relative me-2">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
+                                0
+                            </span>
+                        </a>
+                        <a href="login.html" class="btn btn-primary">
+                            <i class="fas fa-user me-1"></i> Iniciar Sesión
+                        </a>
                     </div>
                 </div>
-            </nav>
-        </header>
+            </div>
+        </nav>
+    </header>
 
-        <main>
-            <!-- Hero Section -->
-            <section class="py-5 bg-gradient"
-                style="background: linear-gradient(135deg, #CC1F5D 0%, #800D3A 100%);">
-                <div class="container py-5">
-                    <div class="row py-5 align-items-center">
-                        <div class="col-lg-6" data-aos="fade-right">
-                            <h1 class="display-4 text-white mb-4">Nuestra
-                                Historia</h1>
-                            <p class="lead text-white mb-4">
-                                Descubre cómo Beautiful Girl nació de un sueño y
-                                se convirtió en tu destino de belleza favorito
-                            </p>
-                        </div>
-                        <div class="col-lg-6" data-aos="fade-left">
-                            <img
-                                src="https://via.placeholder.com/600x400?text=Beautiful+Girl"
-                                alt="Beautiful Girl Store"
-                                class="img-fluid rounded-4 shadow-lg">
-                        </div>
+    <main>
+        <!-- Hero Section -->
+        <section class="py-5 bg-gradient" style="background: linear-gradient(135deg, #CC1F5D 0%, #800D3A 100%);">
+            <div class="container py-5">
+                <div class="row py-5 align-items-center">
+                    <div class="col-lg-6" data-aos="fade-right">
+                        <h1 class="display-4 titulo-historia-nueva mb-4">Nuestra Historia</h1>
+                        <p class="lead descripcion-historia mb-4">
+                            Descubre cómo Beautiful Girl nació de un sueño y se convirtió en tu destino de belleza favorito
+                        </p>
+                    </div>
+                    <div class="col-lg-6" data-aos="fade-left">
+                        <img src="../assets/img/nosotros imagen principal.jpeg" alt="Nuestra Historia Beautiful Girl" class="img-fluid rounded-4 shadow-lg">
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- Historia Section -->
-            <section class="py-5">
-                <div class="container">
-                    <div class="row g-4">
-                        <div class="col-lg-6" data-aos="fade-up">
-                            <div class="p-4 bg-white rounded-4 shadow-sm h-100">
-                                <h2 class="h3 mb-4">Nuestros Inicios</h2>
-                                <p class="text-muted">Beautiful Girl comenzó en
-                                    2020 como un pequeño emprendimiento
-                                    familiar. Juliana González, nuestra
-                                    fundadora, siempre tuvo una pasión por la
-                                    belleza y el cuidado personal. Con
-                                    experiencia como maquilladora profesional,
-                                    identificó la necesidad de productos de
-                                    calidad a precios accesibles.</p>
-                                <p class="text-muted">Lo que comenzó como una
-                                    pequeña tienda en línea desde casa,
-                                    rápidamente creció gracias al apoyo de
-                                    nuestras fieles clientas y al compromiso con
-                                    la calidad y el servicio personalizado.</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-6" data-aos="fade-up"
-                            data-aos-delay="100">
-                            <div class="p-4 bg-white rounded-4 shadow-sm h-100">
-                                <h2 class="h3 mb-4">Nuestra Misión</h2>
-                                <p class="text-muted">En Beautiful Girl, nuestra
-                                    misión es empoderar a cada mujer para que se
-                                    sienta bella y segura. Creemos que la
-                                    belleza es única y personal, y nos dedicamos
-                                    a proporcionar productos y consejos que
-                                    realcen la belleza natural de cada
-                                    persona.</p>
-                                <p class="text-muted">Nos esforzamos por ofrecer
-                                    una experiencia de compra excepcional, con
-                                    asesoramiento personalizado y productos
-                                    cuidadosamente seleccionados.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Valores Section -->
-            <section class="py-5 bg-light">
-                <div class="container">
-                    <h2 class="text-center mb-5" data-aos="fade-up">Nuestros
-                        Valores</h2>
-                    <div class="row g-4">
-                        <div class="col-md-4" data-aos="fade-up">
-                            <div class="text-center p-4">
-                                <i
-                                    class="fas fa-heart fa-3x text-primary mb-4"></i>
-                                <h3 class="h5 mb-3">Calidad</h3>
-                                <p class="text-muted mb-0">Seleccionamos
-                                    cuidadosamente cada producto para garantizar
-                                    los mejores resultados.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4" data-aos="fade-up"
-                            data-aos-delay="100">
-                            <div class="text-center p-4">
-                                <i
-                                    class="fas fa-leaf fa-3x text-primary mb-4"></i>
-                                <h3 class="h5 mb-3">Sustentabilidad</h3>
-                                <p class="text-muted mb-0">Comprometidos con
-                                    productos eco-friendly y empaques
-                                    reciclables.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4" data-aos="fade-up"
-                            data-aos-delay="200">
-                            <div class="text-center p-4">
-                                <i
-                                    class="fas fa-smile fa-3x text-primary mb-4"></i>
-                                <h3 class="h5 mb-3">Satisfacción</h3>
-                                <p class="text-muted mb-0">Tu felicidad es
-                                    nuestra prioridad. Garantía de satisfacción
-                                    en cada compra.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Logros Section -->
-            <section class="py-5">
-                <div class="container">
-                    <h2 class="text-center mb-5" data-aos="fade-up">Nuestros
-                        Logros</h2>
-                    <div class="row g-4">
-                        <div class="col-6 col-md-3" data-aos="fade-up">
-                            <div class="text-center">
-                                <h3
-                                    class="display-4 fw-bold text-primary mb-2">5K+</h3>
-                                <p class="text-muted">Clientes Satisfechas</p>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3" data-aos="fade-up"
-                            data-aos-delay="100">
-                            <div class="text-center">
-                                <h3
-                                    class="display-4 fw-bold text-primary mb-2">100+</h3>
-                                <p class="text-muted">Productos Exclusivos</p>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3" data-aos="fade-up"
-                            data-aos-delay="200">
-                            <div class="text-center">
-                                <h3
-                                    class="display-4 fw-bold text-primary mb-2">4.9</h3>
-                                <p class="text-muted">Calificación Promedio</p>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3" data-aos="fade-up"
-                            data-aos-delay="300">
-                            <div class="text-center">
-                                <h3
-                                    class="display-4 fw-bold text-primary mb-2">3</h3>
-                                <p class="text-muted">Años de Experiencia</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Equipo Section -->
-            <section class="py-5 bg-light">
-                <div class="container">
-                    <h2 class="text-center mb-5" data-aos="fade-up">Nuestro
-                        Equipo</h2>
-                    <div class="row g-4">
-                        <div class="col-md-4" data-aos="fade-up">
-                            <div class="card border-0 shadow-sm">
-                                <img
-                                    src="https://via.placeholder.com/400x400?text=Juliana"
-                                    class="card-img-top" alt="Juliana González">
-                                <div class="card-body text-center">
-                                    <h3 class="h5 mb-2">Juliana González</h3>
-                                    <p class="text-muted mb-3">Fundadora y
-                                        CEO</p>
-                                    <p class="small text-muted">Maquilladora
-                                        profesional con más de 8 años de
-                                        experiencia en la industria de la
-                                        belleza.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4" data-aos="fade-up"
-                            data-aos-delay="100">
-                            <div class="card border-0 shadow-sm">
-                                <img
-                                    src="https://via.placeholder.com/400x400?text=Marina"
-                                    class="card-img-top" alt="Marina Torres">
-                                <div class="card-body text-center">
-                                    <h3 class="h5 mb-2">Marina Torres</h3>
-                                    <p class="text-muted mb-3">Directora de
-                                        Producto</p>
-                                    <p class="small text-muted">Experta en
-                                        cosmética con especialización en
-                                        formulaciones naturales y
-                                        sostenibles.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4" data-aos="fade-up"
-                            data-aos-delay="200">
-                            <div class="card border-0 shadow-sm">
-                                <img
-                                    src="https://via.placeholder.com/400x400?text=Carolina"
-                                    class="card-img-top" alt="Carolina Ruiz">
-                                <div class="card-body text-center">
-                                    <h3 class="h5 mb-2">Carolina Ruiz</h3>
-                                    <p class="text-muted mb-3">Asesora de
-                                        Belleza</p>
-                                    <p class="small text-muted">Especialista en
-                                        atención al cliente y asesoramiento
-                                        personalizado de productos.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Testimonios Section -->
-            <section class="py-5">
-                <div class="container">
-                    <h2 class="text-center mb-5" data-aos="fade-up">Lo Que Dicen
-                        Nuestras Clientas</h2>
-                    <div class="row g-4">
-                        <div class="col-md-4" data-aos="fade-up">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-body p-4">
-                                    <div class="mb-3">
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                    </div>
-                                    <p
-                                        class="text-muted mb-3">"Los productos son increíbles y el servicio al cliente es excepcional. Siempre encuentro lo que necesito."</p>
-                                    <div class="d-flex align-items-center">
-                                        <img
-                                            src="https://via.placeholder.com/50x50"
-                                            class="rounded-circle me-3"
-                                            alt="Cliente">
-                                        <div>
-                                            <h4 class="h6 mb-1">María Pérez</h4>
-                                            <p
-                                                class="small text-muted mb-0">Cliente
-                                                desde 2023</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4" data-aos="fade-up"
-                            data-aos-delay="100">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-body p-4">
-                                    <div class="mb-3">
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                    </div>
-                                    <p
-                                        class="text-muted mb-3">"Beautiful Girl transformó mi rutina de belleza. Sus productos son de alta calidad y los precios son excelentes."</p>
-                                    <div class="d-flex align-items-center">
-                                        <img
-                                            src="https://via.placeholder.com/50x50"
-                                            class="rounded-circle me-3"
-                                            alt="Cliente">
-                                        <div>
-                                            <h4 class="h6 mb-1">Ana García</h4>
-                                            <p
-                                                class="small text-muted mb-0">Cliente
-                                                desde 2022</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4" data-aos="fade-up"
-                            data-aos-delay="200">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-body p-4">
-                                    <div class="mb-3">
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                    </div>
-                                    <p
-                                        class="text-muted mb-3">"Me encanta la atención personalizada y los consejos de belleza que siempre recibo. ¡Son los mejores!"</p>
-                                    <div class="d-flex align-items-center">
-                                        <img
-                                            src="https://via.placeholder.com/50x50"
-                                            class="rounded-circle me-3"
-                                            alt="Cliente">
-                                        <div>
-                                            <h4 class="h6 mb-1">Laura
-                                                Martínez</h4>
-                                            <p
-                                                class="small text-muted mb-0">Cliente
-                                                desde 2021</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <!-- Footer -->
-        <footer class="bg-dark text-light py-5">
-            <div class="container py-4">
+        <!-- Historia Section -->
+        <section class="py-5">
+            <div class="container">
                 <div class="row g-4">
-                    <div class="col-lg-4 col-md-6">
-                        <h5 class="mb-3">Beautiful Girl</h5>
-                        <p class="mb-3">Tu destino de belleza favorito, donde
-                            encontrarás los mejores productos para resaltar tu
-                            belleza natural.</p>
-                        <div class="social-links">
-                            <a href="#" class="text-light me-3"><i
-                                    class="fab fa-facebook fa-lg"></i></a>
-                            <a href="#" class="text-light me-3"><i
-                                    class="fab fa-instagram fa-lg"></i></a>
-                            <a href="#" class="text-light me-3"><i
-                                    class="fab fa-whatsapp fa-lg"></i></a>
-                            <a href="#" class="text-light"><i
-                                    class="fab fa-tiktok fa-lg"></i></a>
+                    <div class="col-lg-6" data-aos="fade-up">
+                        <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+                            <h2 class="h3 mb-4">Nuestros Inicios</h2>
+                            <p class="text-muted">Beautiful Girl comenzó a principios de 2025 como un emprendimiento innovador. Juliana Rodríguez, nuestra fundadora, identificó la necesidad de crear una experiencia de compra personalizada en el mundo de la cosmética. Con su experiencia como maquilladora profesional, decidió crear una tienda que combine productos de calidad con asesoramiento experto.</p>
+                            <p class="text-muted">En pocos meses, hemos logrado crear una comunidad vibrante de clientas que confían en nuestros productos y servicios.</p>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-6">
-                        <h5 class="mb-3">Enlaces Rápidos</h5>
-                        <ul class="list-unstyled">
-                            <li class="mb-2"><a href="../index.html"
-                                    class="text-light text-decoration-none">Inicio</a></li>
-                            <li class="mb-2"><a href="products.html"
-                                    class="text-light text-decoration-none">Productos</a></li>
-                            <li class="mb-2"><a href="about.html"
-                                    class="text-light text-decoration-none">Nosotros</a></li>
-                            <li class="mb-2"><a href="contact.html"
-                                    class="text-light text-decoration-none">Contacto</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h5 class="mb-3">Categorías</h5>
-                        <ul class="list-unstyled">
-                            <li class="mb-2"><a href="#"
-                                    class="text-light text-decoration-none">Cuidado
-                                    Facial</a></li>
-                            <li class="mb-2"><a href="#"
-                                    class="text-light text-decoration-none">Cuidado
-                                    Corporal</a></li>
-                            <li class="mb-2"><a href="#"
-                                    class="text-light text-decoration-none">Maquillaje</a></li>
-                            <li class="mb-2"><a href="#"
-                                    class="text-light text-decoration-none">Fragancias</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h5 class="mb-3">Contacto</h5>
-                        <ul class="list-unstyled">
-                            <li class="mb-2"><i
-                                    class="fas fa-map-marker-alt me-2"></i>Bogotá,
-                                Colombia</li>
-                            <li class="mb-2"><i
-                                    class="fas fa-phone me-2"></i>+57 320 477
-                                9222</li>
-                            <li class="mb-2"><i
-                                    class="fas fa-envelope me-2"></i>info@beautifulgirl.com</li>
-                            <li class="mb-2"><i
-                                    class="fas fa-clock me-2"></i>Lun - Sáb:
-                                9:00 - 18:00</li>
-                        </ul>
+                    <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                        <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+                            <h2 class="h3 mb-4">Nuestra Misión</h2>
+                            <p class="text-muted">En Beautiful Girl, nuestra misión es empoderar a cada mujer para que se sienta bella y segura. Creemos que la belleza es única y personal, y nos dedicamos a proporcionar productos y consejos que realcen la belleza natural de cada persona.</p>
+                            <p class="text-muted">Nos esforzamos por ofrecer una experiencia de compra excepcional, con asesoramiento personalizado y productos cuidadosamente seleccionados.</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="text-center py-3 border-top border-secondary">
-                <small>&copy; 2025 Beautiful Girl. Todos los derechos
-                    reservados.</small>
-            </div>
-        </footer>
+        </section>
 
-        <!-- Bootstrap JS -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- AOS Animation -->
-        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-        <script>
+        <!-- Valores Section -->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center mb-5" data-aos="fade-up">Nuestros Valores</h2>
+                <div class="row g-4">
+                    <div class="col-md-4" data-aos="fade-up">
+                        <div class="text-center p-4">
+                            <i class="fas fa-heart fa-3x text-primary mb-4"></i>
+                            <h3 class="h5 mb-3">Calidad</h3>
+                            <p class="text-muted mb-0">Seleccionamos cuidadosamente cada producto para garantizar los mejores resultados.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="text-center p-4">
+                            <i class="fas fa-leaf fa-3x text-primary mb-4"></i>
+                            <h3 class="h5 mb-3">Sustentabilidad</h3>
+                            <p class="text-muted mb-0">Comprometidos con productos eco-friendly y empaques reciclables.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="text-center p-4">
+                            <i class="fas fa-smile fa-3x text-primary mb-4"></i>
+                            <h3 class="h5 mb-3">Satisfacción</h3>
+                            <p class="text-muted mb-0">Tu felicidad es nuestra prioridad. Garantía de satisfacción en cada compra.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logros Section -->
+        <section class="py-5">
+            <div class="container">
+                <h2 class="text-center mb-5" data-aos="fade-up">Nuestros Logros</h2>
+                <div class="row g-4">
+                    <div class="col-6 col-md-3" data-aos="fade-up">
+                        <div class="text-center">
+                            <h3 class="display-4 fw-bold text-primary mb-2">500+</h3>
+                            <p class="text-muted">Clientes Satisfechas</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
+                        <div class="text-center">
+                            <h3 class="display-4 fw-bold text-primary mb-2">50+</h3>
+                            <p class="text-muted">Productos Exclusivos</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="200">
+                        <div class="text-center">
+                            <h3 class="display-4 fw-bold text-primary mb-2">4.8</h3>
+                            <p class="text-muted">Calificación Promedio</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="300">
+                        <div class="text-center">
+                            <h3 class="display-4 fw-bold text-primary mb-2">6</h3>
+                            <p class="text-muted">Meses de Experiencia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Equipo Section -->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center mb-5" data-aos="fade-up">Nuestros Fundadores</h2>
+                <div class="row g-4">
+                    <div class="col-md-3" data-aos="fade-up">
+                        <div class="card border-0 shadow-sm testimonio-cuadro">
+                            <img src="../assets/img/juliana.jpeg" class="card-img-top" alt="Juliana Rodríguez" style="height: 300px; object-fit: cover;">
+                            <div class="card-body text-center">
+                                <h3 class="h5 mb-2">Juliana Rodríguez</h3>
+                                <p class="text-muted mb-3">CEO y Fundadora</p>
+                                <p class="small text-muted">Especialista en dirección estratégica y desarrollo de productos cosméticos.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
+                        <div class="card border-0 shadow-sm testimonio-cuadro">
+                                <img src="../assets/img/dana_rojas.jpeg" class="card-img-top" alt="Dana Rojas" style="height: 300px; object-fit: cover;">
+                            <div class="card-body text-center">
+                                <h3 class="h5 mb-2">Dana Rojas</h3>
+                                <p class="text-muted mb-3">Directora Creativa</p>
+                                <p class="small text-muted">Experta en tendencias de belleza y marketing digital.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card border-0 shadow-sm testimonio-cuadro">
+                            <img src="../assets/img/juana.jpeg" class="card-img-top" alt="Juana Ortiz" style="height: 300px; object-fit: cover;">
+                            <div class="card-body text-center">
+                                <h3 class="h5 mb-2">Juana Ortiz</h3>
+                                <p class="text-muted mb-3">Directora de Operaciones</p>
+                                <p class="small text-muted">Responsable de logística y relaciones con proveedores.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
+                        <div class="card border-0 shadow-sm testimonio-asim-1">
+                            <img src="../assets/images/founders/laura.jpg" class="card-img-top" alt="Laura Zuñiga" style="height: 300px; object-fit: cover;">
+                            <div class="card-body text-center">
+                                <h3 class="h5 mb-2">Laura Zuñiga</h3>
+                                <p class="text-muted mb-3">Directora Financiera</p>
+                                <p class="small text-muted">Encargada de la gestión financiera y desarrollo del negocio.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonios Section -->
+        <section class="py-5">
+            <div class="container">
+                <h2 class="text-center mb-5" data-aos="fade-up">Lo Que Dicen Nuestras Clientas</h2>
+                <div class="row g-4">
+                    <div class="col-md-4" data-aos="fade-up">
+                        <div class="card border-0 shadow-sm testimonio-asim-2">
+                            <div class="card-body p-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                </div>
+                                <p class="text-muted mb-3">"Los productos son increíbles y el servicio al cliente es excepcional. Siempre encuentro lo que necesito."</p>
+                                <div class="d-flex align-items-center">
+                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle me-3" alt="María Pérez">
+                                    <div>
+                                        <h4 class="h6 mb-1">María Pérez</h4>
+                                        <p class="small text-muted mb-0">Cliente desde Mayo 2025</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                </div>
+                                <p class="text-muted mb-3">"Excelente atención y productos de calidad. Recomiendo Beautiful Girl a todos los que buscan lo mejor en cosmética."</p>
+                                <div class="d-flex align-items-center">
+                                    <img src="../assets/img/founders/santiago.jpeg" class="rounded-circle me-3" alt="Santiago Pinzón" style="width: 110px; height: 110px; object-fit: cover; box-shadow: 0 4px 16px rgba(123,47,242,0.15);">
+                                    <div>
+                                        <h4 class="h6 mb-1">Santiago Pinzón</h4>
+                                        <p class="small text-muted mb-0">Cliente desde Marzo 2025</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card border-0 shadow-sm testimonio-asim-3">
+                            <div class="card-body p-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                </div>
+                                <p class="text-muted mb-3">"Me encanta la atención personalizada y los consejos de belleza que siempre recibo. ¡Son los mejores!"</p>
+                                <div class="d-flex align-items-center">
+                                    <img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle me-3" alt="Laura Martínez">
+                                    <div>
+                                        <h4 class="h6 mb-1">Laura Martínez</h4>
+                                        <p class="small text-muted mb-0">Cliente desde Febrero 2025</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="h5 mb-3">Beautiful Girl</h3>
+                    <p class="text-muted">Tu destino de belleza favorito</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="h5 mb-3">Enlaces Rápidos</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="products.html" class="text-muted text-decoration-none">Productos</a></li>
+                        <li class="mb-2"><a href="about.html" class="text-muted text-decoration-none">Sobre Nosotros</a></li>
+                        <li class="mb-2"><a href="contact.html" class="text-muted text-decoration-none">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="h5 mb-3">Contacto</h3>
+                    <ul class="list-unstyled text-muted">
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i> +1234567890</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@beautifulgirl.com</li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="h5 mb-3">Síguenos</h3>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white fs-5"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center text-muted">
+                <p class="mb-0">&copy; 2025 Beautiful Girl. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
         AOS.init({
             duration: 800,
             once: true
         });
     </script>
-    </body>
+</body>
 </html>

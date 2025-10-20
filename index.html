@@ -19,7 +19,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand fw-bold" href="#">
-                    <span class="text-primary">Beautiful</span>Girl
+                    <img src="assets/img/logo.png" alt="Logo Beautiful Girl" style="height: 40px; margin-right: 10px; vertical-align: middle;"> <span class="text-primary">Beautiful</span>Girl
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
@@ -110,10 +110,10 @@
                         <div class="position-relative" style="height: 600px;">
                             <!-- Imagen Principal -->
                             <div class="position-absolute top-50 start-50 translate-middle" style="width: 400px; height: 500px; z-index: 2;">
-                                <img src="assets/img/hero-main.jpg" alt="Beautiful Girl" class="w-100 h-100 object-fit-cover rounded-4 shadow-lg" style="object-position: center;">
+                                <img src="assets/img/logo.png" alt="Logo Beautiful Girl" class="w-100 h-100 object-fit-contain rounded-4 shadow-lg" style="object-position: center; background: #fff; padding: 32px;">
                             </div>
                             <!-- Tarjeta Flotante Superior -->
-                            <div class="floating-card shadow-lg bg-white p-4 position-absolute floating" style="top: 10%; right: 0; width: 300px; border-radius: 15px; z-index: 3;">
+                            <div class="floating-card shadow-lg bg-white p-4 position-absolute floating" style="top: 5%; left: 0; width: 300px; border-radius: 15px; z-index: 3;">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0">
                                         <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
@@ -127,7 +127,7 @@
                                 </div>
                             </div>
                             <!-- Tarjeta Flotante Inferior -->
-                            <div class="floating-card shadow-lg bg-white p-4 position-absolute floating" style="bottom: 15%; left: 0; width: 300px; border-radius: 15px; z-index: 3; animation-delay: 0.3s;">
+                            <div class="floating-card shadow-lg bg-white p-4 position-absolute floating" style="bottom: 5%; right: 0; width: 300px; border-radius: 15px; z-index: 3; animation-delay: 0.3s;">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0">
                                         <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
@@ -210,50 +210,41 @@
         </section>
     </main>
 
-    <footer class="bg-dark text-light py-5">
-        <div class="container py-4">
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
             <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <h5 class="mb-3">Beautiful Girl</h5>
-                    <p class="mb-3">Tu destino de belleza favorito, donde encontrarás los mejores productos para resaltar tu belleza natural.</p>
-                    <div class="social-links">
-                        <a href="#" class="text-light me-3"><i class="fab fa-facebook fa-lg"></i></a>
-                        <a href="#" class="text-light me-3"><i class="fab fa-instagram fa-lg"></i></a>
-                        <a href="#" class="text-light me-3"><i class="fab fa-whatsapp fa-lg"></i></a>
-                        <a href="#" class="text-light"><i class="fab fa-tiktok fa-lg"></i></a>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="h5 mb-3">Beautiful Girl</h3>
+                    <p class="text-muted">Tu destino de belleza favorito</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="h5 mb-3">Enlaces Rápidos</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="pages/products.html" class="text-muted text-decoration-none">Productos</a></li>
+                        <li class="mb-2"><a href="pages/about.html" class="text-muted text-decoration-none">Sobre Nosotros</a></li>
+                        <li class="mb-2"><a href="pages/contact.html" class="text-muted text-decoration-none">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="h5 mb-3">Contacto</h3>
+                    <ul class="list-unstyled text-muted">
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i> +1234567890</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@beautystore.com</li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="h5 mb-3">Síguenos</h3>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white fs-5"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="fab fa-twitter"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-6">
-                    <h5 class="mb-3">Enlaces Rápidos</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="index.html" class="text-light text-decoration-none">Inicio</a></li>
-                        <li class="mb-2"><a href="pages/products.html" class="text-light text-decoration-none">Productos</a></li>
-                        <li class="mb-2"><a href="pages/about.html" class="text-light text-decoration-none">Nosotros</a></li>
-                        <li class="mb-2"><a href="pages/contact.html" class="text-light text-decoration-none">Contacto</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="mb-3">Categorías</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Cuidado Facial</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Cuidado Corporal</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Maquillaje</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none">Fragancias</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="mb-3">Contacto</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>Bogotá, Colombia</li>
-                        <li class="mb-2"><i class="fas fa-phone me-2"></i>+57 320 477 9222</li>
-                        <li class="mb-2"><i class="fas fa-envelope me-2"></i>info@beautifulgirl.com</li>
-                        <li class="mb-2"><i class="fas fa-clock me-2"></i>Lun - Sáb: 9:00 - 18:00</li>
-                    </ul>
-                </div>
             </div>
-        </div>
-        <div class="text-center py-3 border-top border-secondary">
-            <small>&copy; 2025 Beautiful Girl. Todos los derechos reservados.</small>
+            <hr class="my-4">
+            <div class="text-center text-muted">
+                <p class="mb-0">&copy; 2025 Beautiful Girl. Todos los derechos reservados.</p>
+            </div>
         </div>
     </footer>
 
