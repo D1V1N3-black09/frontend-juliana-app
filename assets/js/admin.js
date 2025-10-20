@@ -5,77 +5,48 @@
  */
 
 // ==========================================
-// DATOS DE PRODUCTOS (Simulados para el proyecto escolar)
+// DATOS DE PRODUCTOS (Cargados desde JSON)
 // ==========================================
-let products = [
-    {
-        id: 1,
-        name: 'Crema Hidratante Premium',
-        category: 'Cuidado Facial',
-        price: 45000,
-        stock: 25,
-        status: 'visible',
-        description: 'Crema hidratante con ácido hialurónico y vitamina E',
-        image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=200&h=200&fit=crop'
-    },
-    {
-        id: 2,
-        name: 'Labial Mate Rosa',
-        category: 'Maquillaje',
-        price: 28000,
-        stock: 50,
-        status: 'visible',
-        description: 'Labial de larga duración con acabado mate',
-        image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=200&h=200&fit=crop'
-    },
-    {
-        id: 3,
-        name: 'Perfume Floral Elegance',
-        category: 'Fragancias',
-        price: 120000,
-        stock: 15,
-        status: 'visible',
-        description: 'Fragancia femenina con notas florales y frutales',
-        image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=200&h=200&fit=crop'
-    },
-    {
-        id: 4,
-        name: 'Serum Anti-Edad',
-        category: 'Cuidado Facial',
-        price: 65000,
-        stock: 20,
-        status: 'visible',
-        description: 'Serum con retinol y colágeno para pieles maduras',
-        image: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=200&h=200&fit=crop'
-    },
-    {
-        id: 5,
-        name: 'Loción Corporal Nutritiva',
-        category: 'Cuidado Corporal',
-        price: 35000,
-        stock: 30,
-        status: 'hidden',
-        description: 'Loción hidratante con manteca de karité',
-        image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=200&fit=crop'
-    },
-    {
-        id: 6,
-        name: 'Máscara de Pestañas Volumen',
-        category: 'Maquillaje',
-        price: 32000,
-        stock: 40,
-        status: 'visible',
-        description: 'Máscara de pestañas con efecto volumen extremo',
-        image: 'https://images.unsplash.com/photo-1631214524020-7e18db4a8b39?w=200&h=200&fit=crop'
-    }
-];
+let products = [];
 
-// Cargar productos del localStorage si existen
-if (localStorage.getItem('beautifulgirl_products')) {
+// Variables de paginación y filtros
+let currentPage = 1;
+let itemsPerPage = 10;
+let filteredProducts = [];
+
+// ==========================================
+// CARGA DE PRODUCTOS DESDE JSON
+// ==========================================
+async function cargarProductosAdmin() {
     try {
-        products = JSON.parse(localStorage.getItem('beautifulgirl_products'));
-    } catch (e) {
-        console.error('Error cargando productos:', e);
+        const response = await fetch('../../data/products.json');
+        if (!response.ok) throw new Error('Error al cargar productos');
+        
+        products = await response.json();
+        
+        // Inicializar productos filtrados con todos los productos
+        filteredProducts = [...products];
+        
+        // Cargar productos en la tabla
+        loadProductsTable();
+        
+    } catch (error) {
+        console.error('Error cargando productos:', error);
+        
+        // Si no se puede cargar el JSON, intentar cargar del localStorage
+        const storedProducts = localStorage.getItem('beautifulgirl_products');
+        if (storedProducts) {
+            try {
+                products = JSON.parse(storedProducts);
+                filteredProducts = [...products];
+                loadProductsTable();
+                showNotification('Productos cargados desde el almacenamiento local', 'info');
+            } catch (e) {
+                showNotification('Error al cargar los productos', 'danger');
+            }
+        } else {
+            showNotification('No se pudieron cargar los productos. Recarga la página.', 'danger');
+        }
     }
 }
 
@@ -86,8 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Verificar que estamos en la página del dashboard
     if (!document.getElementById('productsTableBody')) return;
 
-    // Cargar productos en la tabla
-    loadProductsTable();
+    // Cargar productos desde JSON
+    cargarProductosAdmin();
 
     // Inicializar gráficos
     initializeCharts();
@@ -110,6 +81,41 @@ document.addEventListener('DOMContentLoaded', function() {
         productImage.addEventListener('input', updateImagePreview);
     }
 
+    // Configurar filtros
+    const searchProduct = document.getElementById('searchProduct');
+    const filterCategory = document.getElementById('filterCategory');
+    const filterStatus = document.getElementById('filterStatus');
+    const itemsPerPageSelect = document.getElementById('itemsPerPage');
+
+    if (searchProduct) {
+        searchProduct.addEventListener('input', function() {
+            currentPage = 1;
+            applyFilters();
+        });
+    }
+
+    if (filterCategory) {
+        filterCategory.addEventListener('change', function() {
+            currentPage = 1;
+            applyFilters();
+        });
+    }
+
+    if (filterStatus) {
+        filterStatus.addEventListener('change', function() {
+            currentPage = 1;
+            applyFilters();
+        });
+    }
+
+    if (itemsPerPageSelect) {
+        itemsPerPageSelect.addEventListener('change', function() {
+            itemsPerPage = parseInt(this.value);
+            currentPage = 1;
+            loadProductsTable();
+        });
+    }
+
     // Configurar botón de cerrar sesión
     const logoutBtn = document.querySelector('.logout-btn');
     if (logoutBtn) {
@@ -124,30 +130,168 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ==========================================
+// GESTIÓN DE FILTROS Y PAGINACIÓN
+// ==========================================
+
+/**
+ * Aplica los filtros a los productos
+ */
+function applyFilters() {
+    const searchTerm = document.getElementById('searchProduct')?.value.toLowerCase() || '';
+    const categoryFilter = document.getElementById('filterCategory')?.value || '';
+    const statusFilter = document.getElementById('filterStatus')?.value || '';
+
+    filteredProducts = products.filter(product => {
+        const matchSearch = searchTerm === '' || 
+                           product.name.toLowerCase().includes(searchTerm) ||
+                           product.id.toString().includes(searchTerm);
+        const matchCategory = categoryFilter === '' || product.category === categoryFilter;
+        const matchStatus = statusFilter === '' || product.status === statusFilter;
+
+        return matchSearch && matchCategory && matchStatus;
+    });
+
+    loadProductsTable();
+}
+
+/**
+ * Renderiza los controles de paginación
+ */
+function renderPagination() {
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+    const paginationControls = document.getElementById('paginationControls');
+    
+    if (!paginationControls) return;
+
+    if (totalPages <= 1) {
+        paginationControls.innerHTML = '';
+        return;
+    }
+
+    let paginationHTML = '';
+
+    // Botón anterior
+    paginationHTML += `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+        </li>
+    `;
+
+    // Páginas numeradas
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage < maxVisiblePages - 1) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    if (startPage > 1) {
+        paginationHTML += `
+            <li class="page-item">
+                <a class="page-link" href="#" onclick="changePage(1); return false;">1</a>
+            </li>
+        `;
+        if (startPage > 2) {
+            paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        paginationHTML += `
+            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="changePage(${i}); return false;">${i}</a>
+            </li>
+        `;
+    }
+
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+            paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+        paginationHTML += `
+            <li class="page-item">
+                <a class="page-link" href="#" onclick="changePage(${totalPages}); return false;">${totalPages}</a>
+            </li>
+        `;
+    }
+
+    // Botón siguiente
+    paginationHTML += `
+        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+        </li>
+    `;
+
+    paginationControls.innerHTML = paginationHTML;
+}
+
+/**
+ * Cambia la página actual
+ */
+function changePage(page) {
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+    if (page < 1 || page > totalPages) return;
+    
+    currentPage = page;
+    loadProductsTable();
+}
+
+/**
+ * Actualiza la información de paginación
+ */
+function updatePaginationInfo() {
+    const paginationInfo = document.getElementById('paginationInfo');
+    if (!paginationInfo) return;
+
+    const start = (currentPage - 1) * itemsPerPage + 1;
+    const end = Math.min(currentPage * itemsPerPage, filteredProducts.length);
+    const total = filteredProducts.length;
+
+    paginationInfo.textContent = `Mostrando ${start} - ${end} de ${total} productos`;
+}
+
+// ==========================================
 // GESTIÓN DE TABLA DE PRODUCTOS
 // ==========================================
 
 /**
- * Carga todos los productos en la tabla
+ * Carga los productos en la tabla con paginación
  */
 function loadProductsTable() {
     const tbody = document.getElementById('productsTableBody');
     if (!tbody) return;
 
-    if (products.length === 0) {
+    if (filteredProducts.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="7" class="text-center py-4 text-muted">
+                <td colspan="8" class="text-center py-4 text-muted">
                     <i class="fas fa-box-open fa-3x mb-3 d-block"></i>
-                    No hay productos registrados. Haz clic en "Crear Producto" para agregar uno.
+                    ${products.length === 0 
+                        ? 'No hay productos registrados. Haz clic en "Crear Producto" para agregar uno.'
+                        : 'No se encontraron productos con los filtros aplicados.'}
                 </td>
             </tr>
         `;
+        updatePaginationInfo();
+        renderPagination();
         return;
     }
 
-    tbody.innerHTML = products.map(product => `
+    // Calcular productos de la página actual
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const productsToShow = filteredProducts.slice(startIndex, endIndex);
+
+    tbody.innerHTML = productsToShow.map(product => `
         <tr data-product-id="${product.id}">
+            <td>
+                <span class="badge bg-primary">#${product.id}</span>
+            </td>
             <td>
                 <img src="${product.image}" 
                      alt="${product.name}" 
@@ -196,6 +340,10 @@ function loadProductsTable() {
             </td>
         </tr>
     `).join('');
+
+    // Actualizar información y controles de paginación
+    updatePaginationInfo();
+    renderPagination();
 }
 
 // ==========================================
@@ -372,10 +520,13 @@ function handleProductFormSubmit(e) {
 
 /**
  * Guarda los productos en localStorage
+ * NOTA: En un proyecto real, aquí se haría una petición al backend para actualizar el JSON
+ * Para este proyecto escolar, usamos localStorage como simulación de persistencia
  */
 function saveProducts() {
     try {
         localStorage.setItem('beautifulgirl_products', JSON.stringify(products));
+        console.log('Productos guardados correctamente');
     } catch (e) {
         console.error('Error guardando productos en localStorage:', e);
         showNotification('Error al guardar los cambios', 'danger');

@@ -1,0 +1,602 @@
+[
+    {
+        "id": 1,
+        "name": "Base Aura",
+        "price": 49900,
+        "category": "maquillaje",
+        "stock": 15,
+        "description": "Base de maquillaje líquida de larga duración",
+        "image": "../assets/img/base-aura.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 2,
+        "name": "Base Mouse",
+        "price": 45900,
+        "category": "maquillaje",
+        "stock": 20,
+        "description": "Base mousse mate de cobertura media",
+        "image": "../assets/img/base-mouse.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 3,
+        "name": "Base Queen",
+        "price": 55900,
+        "category": "maquillaje",
+        "stock": 10,
+        "description": "Base de alta cobertura efecto porcelana",
+        "image": "../assets/img/base-queen.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 4,
+        "name": "Primer Pop",
+        "price": 39900,
+        "category": "maquillaje",
+        "stock": 25,
+        "description": "Primer facial hidratante",
+        "image": "../assets/img/primer-pop.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 5,
+        "name": "Primer Summer",
+        "price": 42900,
+        "category": "maquillaje",
+        "stock": 20,
+        "description": "Primer facial efecto bronceado",
+        "image": "../assets/img/primer-summer.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 6,
+        "name": "Primer Watermelon",
+        "price": 41900,
+        "category": "maquillaje",
+        "stock": 18,
+        "description": "Primer facial refrescante",
+        "image": "../assets/img/primer-watermelon.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 7,
+        "name": "Primer Carrusel",
+        "price": 44900,
+        "category": "maquillaje",
+        "stock": 15,
+        "description": "Primer facial iluminador",
+        "image": "../assets/img/primer-carrusel.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 8,
+        "name": "Pestañina Fresh",
+        "price": 35900,
+        "category": "maquillaje",
+        "stock": 25,
+        "description": "Máscara de pestañas waterproof",
+        "image": "../assets/img/pestanina-fresh.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 9,
+        "name": "Pestañina Boom",
+        "price": 32900,
+        "category": "maquillaje",
+        "stock": 18,
+        "description": "Máscara voluminizadora",
+        "image": "../assets/img/pestanina-boom.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 10,
+        "name": "Pestañina Pastel",
+        "price": 34900,
+        "category": "maquillaje",
+        "stock": 22,
+        "description": "Máscara alargadora de pestañas",
+        "image": "../assets/img/pestanina-pastel.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 11,
+        "name": "Crema Hidratante",
+        "price": 45900,
+        "category": "facial",
+        "stock": 30,
+        "description": "Crema hidratante facial 24h",
+        "image": "../assets/img/crema-hidratante.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 12,
+        "name": "Agua de Rosas",
+        "price": 29900,
+        "category": "facial",
+        "stock": 25,
+        "description": "Tónico facial refrescante",
+        "image": "../assets/img/agua-rosas.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 13,
+        "name": "Bruma Facial",
+        "price": 39900,
+        "category": "facial",
+        "stock": 20,
+        "description": "Bruma fijadora de maquillaje",
+        "image": "../assets/img/bruma-facial.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 14,
+        "name": "Aceite Desmaquillante",
+        "price": 42900,
+        "category": "facial",
+        "stock": 15,
+        "description": "Aceite limpiador facial",
+        "image": "../assets/img/aceite-desmaquillante.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 15,
+        "name": "Mascarilla Acné",
+        "price": 35900,
+        "category": "facial",
+        "stock": 20,
+        "description": "Mascarilla facial anti-acné",
+        "image": "../assets/img/mascarilla-acne.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 16,
+        "name": "Mascarilla Ojos",
+        "price": 25900,
+        "category": "facial",
+        "stock": 30,
+        "description": "Parches hidratantes para ojos",
+        "image": "../assets/img/mascarilla-ojos.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 17,
+        "name": "Toallas Desmaquillantes",
+        "price": 19900,
+        "category": "facial",
+        "stock": 40,
+        "description": "Toallas húmedas desmaquillantes",
+        "image": "../assets/img/toallas-desmaquillante.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 18,
+        "name": "Iluminador Alegría",
+        "price": 39900,
+        "category": "maquillaje",
+        "stock": 20,
+        "description": "Iluminador en polvo compacto",
+        "image": "../assets/img/iluminador-alegria.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 19,
+        "name": "Iluminador Wonderland",
+        "price": 42900,
+        "category": "maquillaje",
+        "stock": 15,
+        "description": "Iluminador líquido nacarado",
+        "image": "../assets/img/iluminador-wonderland.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 20,
+        "name": "Contorno Barra",
+        "price": 38900,
+        "category": "maquillaje",
+        "stock": 25,
+        "description": "Contorno facial en barra",
+        "image": "../assets/img/contorno-barra.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 21,
+        "name": "Contorno Chocolate",
+        "price": 41900,
+        "category": "maquillaje",
+        "stock": 20,
+        "description": "Contorno en polvo tono chocolate",
+        "image": "../assets/img/contorno-chocolate.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 22,
+        "name": "Contorno Cupcake",
+        "price": 39900,
+        "category": "maquillaje",
+        "stock": 18,
+        "description": "Contorno en crema",
+        "image": "../assets/img/contorno-cupcake.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 23,
+        "name": "Contorno Queen",
+        "price": 44900,
+        "category": "maquillaje",
+        "stock": 15,
+        "description": "Paleta de contorno profesional",
+        "image": "../assets/img/contorno-queen.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 24,
+        "name": "Contorno Star",
+        "price": 43900,
+        "category": "maquillaje",
+        "stock": 20,
+        "description": "Contorno facial iluminador",
+        "image": "../assets/img/contorno-star.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 25,
+        "name": "Corrector Magic",
+        "price": 25900,
+        "category": "maquillaje",
+        "stock": 30,
+        "description": "Corrector de alta cobertura",
+        "image": "../assets/img/corrector-magic.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 26,
+        "name": "Corrector Aura",
+        "price": 28900,
+        "category": "maquillaje",
+        "stock": 25,
+        "description": "Corrector iluminador",
+        "image": "../assets/img/corrector-aura.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 27,
+        "name": "Corrector Naranja",
+        "price": 24900,
+        "category": "maquillaje",
+        "stock": 20,
+        "description": "Corrector color naranja para ojeras",
+        "image": "../assets/img/corrector-naranja.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 28,
+        "name": "Corrector Verde",
+        "price": 24900,
+        "category": "maquillaje",
+        "stock": 20,
+        "description": "Corrector verde para rojeces",
+        "image": "../assets/img/corrector-verde.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 29,
+        "name": "Corrector Magic Mini",
+        "price": 19900,
+        "category": "maquillaje",
+        "stock": 35,
+        "description": "Corrector de viaje",
+        "image": "../assets/img/corrector-magic-mini.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 30,
+        "name": "Polvo Bakery",
+        "price": 38900,
+        "category": "maquillaje",
+        "stock": 20,
+        "description": "Polvo translúcido mate",
+        "image": "../assets/img/polvo-bakery.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 31,
+        "name": "Polvo Hadas",
+        "price": 41900,
+        "category": "maquillaje",
+        "stock": 15,
+        "description": "Polvo iluminador con brillos",
+        "image": "../assets/img/polvo-hadas.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 32,
+        "name": "Polvo Osito",
+        "price": 36900,
+        "category": "maquillaje",
+        "stock": 25,
+        "description": "Polvo compacto suave",
+        "image": "../assets/img/polvo-osito.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 33,
+        "name": "Polvos Banana",
+        "price": 39900,
+        "category": "maquillaje",
+        "stock": 20,
+        "description": "Polvo banana para contorno",
+        "image": "../assets/img/polvos-banana.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 34,
+        "name": "Polvos Golden",
+        "price": 42900,
+        "category": "maquillaje",
+        "stock": 18,
+        "description": "Polvo bronceador dorado",
+        "image": "../assets/img/polvos-golden.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 35,
+        "name": "Kit Labios",
+        "price": 65900,
+        "category": "maquillaje",
+        "stock": 15,
+        "description": "Set completo de labiales",
+        "image": "../assets/img/kit-labios.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 36,
+        "name": "Labial Glazed",
+        "price": 29900,
+        "category": "maquillaje",
+        "stock": 30,
+        "description": "Labial efecto gloss",
+        "image": "../assets/img/labial-glazed.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 37,
+        "name": "Tinta Frutas",
+        "price": 32900,
+        "category": "maquillaje",
+        "stock": 25,
+        "description": "Tinta labial sabor frutas",
+        "image": "../assets/img/tinta-frutas.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 38,
+        "name": "Tinta Jack",
+        "price": 34900,
+        "category": "maquillaje",
+        "stock": 20,
+        "description": "Tinta labial larga duración",
+        "image": "../assets/img/tinta-jack.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 39,
+        "name": "Tinta Villanos",
+        "price": 34900,
+        "category": "maquillaje",
+        "stock": 20,
+        "description": "Tinta labial mate",
+        "image": "../assets/img/tinta-villanos.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 40,
+        "name": "Rubor Lucky",
+        "price": 32900,
+        "category": "maquillaje",
+        "stock": 25,
+        "description": "Rubor en polvo compacto",
+        "image": "../assets/img/rubor-lucky.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 41,
+        "name": "Rubor Star",
+        "price": 34900,
+        "category": "maquillaje",
+        "stock": 20,
+        "description": "Rubor líquido de larga duración",
+        "image": "../assets/img/rubor-star.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 42,
+        "name": "Rubor Stamp",
+        "price": 31900,
+        "category": "maquillaje",
+        "stock": 22,
+        "description": "Rubor en sello",
+        "image": "../assets/img/rubor-stamp.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 43,
+        "name": "Rubor Vergüenza",
+        "price": 33900,
+        "category": "maquillaje",
+        "stock": 18,
+        "description": "Rubor efecto natural",
+        "image": "../assets/img/rubor-verguenza.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 44,
+        "name": "Rubor Villanos",
+        "price": 35900,
+        "category": "maquillaje",
+        "stock": 15,
+        "description": "Rubor intenso mate",
+        "image": "../assets/img/rubor-villanos.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 45,
+        "name": "Sombra Hollywood",
+        "price": 45900,
+        "category": "maquillaje",
+        "stock": 15,
+        "description": "Paleta de sombras metálicas",
+        "image": "../assets/img/sombra-hollywood.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 46,
+        "name": "Sombra Cloud",
+        "price": 42900,
+        "category": "maquillaje",
+        "stock": 18,
+        "description": "Paleta de sombras mate",
+        "image": "../assets/img/sombra-cloud.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 47,
+        "name": "Sombra Jack",
+        "price": 44900,
+        "category": "maquillaje",
+        "stock": 20,
+        "description": "Paleta de sombras Halloween",
+        "image": "../assets/img/sombra-jack.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 48,
+        "name": "Sombra Puppy",
+        "price": 41900,
+        "category": "maquillaje",
+        "stock": 22,
+        "description": "Paleta de sombras kawaii",
+        "image": "../assets/img/sombra-puppy.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 49,
+        "name": "Suero Detox",
+        "price": 55900,
+        "category": "facial",
+        "stock": 20,
+        "description": "Suero facial purificante",
+        "image": "../assets/img/suero-detox.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 50,
+        "name": "Suero Hidratante",
+        "price": 52900,
+        "category": "facial",
+        "stock": 25,
+        "description": "Suero facial hidratante",
+        "image": "../assets/img/suero-hidratante.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 51,
+        "name": "Suero Vitamina C",
+        "price": 58900,
+        "category": "facial",
+        "stock": 18,
+        "description": "Suero facial antioxidante",
+        "image": "../assets/img/suero-vitaminac.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 52,
+        "name": "Protector Solar",
+        "price": 59900,
+        "category": "facial",
+        "stock": 20,
+        "description": "Protector solar facial SPF 50+",
+        "image": "../assets/img/protector-solar.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 53,
+        "name": "Mantequilla Corporal",
+        "price": 49900,
+        "category": "corporal",
+        "stock": 20,
+        "description": "Crema corporal nutritiva",
+        "image": "../assets/img/mantequilla-corporal.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 54,
+        "name": "Kit Furia",
+        "price": 89900,
+        "category": "maquillaje",
+        "stock": 10,
+        "description": "Kit completo de maquillaje",
+        "image": "../assets/img/kit-furia.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 55,
+        "name": "Barra Multi",
+        "price": 45900,
+        "category": "maquillaje",
+        "stock": 15,
+        "description": "Barra multiusos rostro",
+        "image": "../assets/img/barra-multi.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 56,
+        "name": "Contorno Ojos",
+        "price": 38900,
+        "category": "facial",
+        "stock": 25,
+        "description": "Crema contorno de ojos",
+        "image": "../assets/img/contorno-ojos.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 57,
+        "name": "Polvos Jack",
+        "price": 43900,
+        "category": "maquillaje",
+        "stock": 12,
+        "description": "Polvos fijadores edición Halloween",
+        "image": "../assets/img/polvos-jack.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 58,
+        "name": "Polvos Master",
+        "price": 46900,
+        "category": "maquillaje",
+        "stock": 15,
+        "description": "Polvos profesionales HD",
+        "image": "../assets/img/polvos-master.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 59,
+        "name": "Crema Facial",
+        "price": 48900,
+        "category": "facial",
+        "stock": 20,
+        "description": "Crema facial regeneradora",
+        "image": "../assets/img/crema-facial.PNG",
+        "status": "visible"
+    },
+    {
+        "id": 60,
+        "name": "Serum Hidratante",
+        "price": 54900,
+        "category": "facial",
+        "stock": 18,
+        "description": "Serum facial intensivo",
+        "image": "../assets/img/serum-hidratante.PNG",
+        "status": "visible"
+    }
+]
