@@ -1,105 +1,74 @@
-/**
- * SISTEMA DE ADMINISTRACIÓN - BEAUTIFUL GIRL
- * Gestión completa del panel de administración
- * Incluye CRUD de productos, órdenes, clientes y reportes
- */
-
-// ==========================================
-// DATOS GLOBALES
-// ==========================================
 let products = [];
 let orders = [];
 let customers = [];
 
-// Variables de paginación y filtros - Productos
 let currentPage = 1;
 let itemsPerPage = 10;
 let filteredProducts = [];
 
-// Variables de paginación y filtros - Órdenes
 let currentOrdersPage = 1;
 let ordersPerPage = 10;
 let filteredOrders = [];
 
-// Variables de paginación y filtros - Clientes
 let currentCustomersPage = 1;
 let customersPerPage = 10;
 let filteredCustomers = [];
 
-// ==========================================
-// CARGA DE PRODUCTOS DESDE JSON
-// ==========================================
 async function cargarProductosAdmin() {
     try {
-        const response = await fetch('../../data/products.json');
-        if (!response.ok) throw new Error('Error al cargar productos');
-        
-        products = await response.json();
-        
-        // Inicializar productos filtrados con todos los productos
+        products = await API.getAllProducts();
         filteredProducts = [...products];
-        
-        // Cargar productos en la tabla
         loadProductsTable();
         
     } catch (error) {
         console.error('Error cargando productos:', error);
-        
-        // Si no se puede cargar el JSON, intentar cargar del localStorage
-        const storedProducts = localStorage.getItem('beautifulgirl_products');
-        if (storedProducts) {
-            try {
-                products = JSON.parse(storedProducts);
-                filteredProducts = [...products];
-                loadProductsTable();
-                showNotification('Productos cargados desde el almacenamiento local', 'info');
-            } catch (e) {
-                showNotification('Error al cargar los productos', 'danger');
-            }
-        } else {
-            showNotification('No se pudieron cargar los productos. Recarga la página.', 'danger');
-        }
+        showNotification('No se pudieron cargar los productos. Verifica que el backend esté activo.', 'danger');
     }
 }
 
-// ==========================================
-// INICIALIZACIÓN DEL DASHBOARD
-// ==========================================
-document.addEventListener('DOMContentLoaded', function() {
-    // Verificar que estamos en la página del dashboard
+
+
+
+document.addEventListener('DOMContentLoaded', async function() {
+    
     const dashboardCheck = document.getElementById('section-dashboard');
     if (!dashboardCheck) return;
 
-    // Inicializar navegación del sidebar
+    
     initializeSidebarNavigation();
 
-    // Cargar todos los datos
+    
     cargarProductosAdmin();
-    loadDemoOrders();
-    loadDemoCustomers();
+    await loadDemoOrders();
+    await loadDemoCustomers();
 
-    // Inicializar gráficos
+    
     initializeCharts();
 
-    // Configurar botón de agregar producto
+    
     const addProductBtn = document.getElementById('addProductBtn');
     if (addProductBtn) {
         addProductBtn.addEventListener('click', openCreateProductModal);
     }
 
-    // Configurar formulario de productos
+    
     const productForm = document.getElementById('productForm');
     if (productForm) {
         productForm.addEventListener('submit', handleProductFormSubmit);
     }
 
-    // Configurar vista previa de imagen
+    
     const productImage = document.getElementById('productImage');
     if (productImage) {
         productImage.addEventListener('input', updateImagePreview);
     }
 
-    // Configurar filtros
+    const usePlaceholder = document.getElementById('usePlaceholderImage');
+    if (usePlaceholder) {
+        usePlaceholder.addEventListener('change', handlePlaceholderToggle);
+    }
+
+    
     const searchProduct = document.getElementById('searchProduct');
     const filterCategory = document.getElementById('filterCategory');
     const filterStatus = document.getElementById('filterStatus');
@@ -134,12 +103,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Configurar botones de cerrar sesión (navbar y sidebar)
+    
     const logoutBtns = document.querySelectorAll('.logout-btn');
     logoutBtns.forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', async function(e) {
             e.preventDefault();
-            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+            // Mostrar modal de confirmación de logout
+            const confirmed = await showLogoutConfirm();
+            if (confirmed) {
                 sessionStorage.removeItem('user');
                 sessionStorage.removeItem('userType');
                 window.location.href = '../login.html';
@@ -148,13 +119,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// ==========================================
-// GESTIÓN DE FILTROS Y PAGINACIÓN
-// ==========================================
 
-/**
- * Aplica los filtros a los productos
- */
+
+
+
 function applyFilters() {
     const searchTerm = document.getElementById('searchProduct')?.value.toLowerCase() || '';
     const categoryFilter = document.getElementById('filterCategory')?.value || '';
@@ -173,9 +141,6 @@ function applyFilters() {
     loadProductsTable();
 }
 
-/**
- * Renderiza los controles de paginación
- */
 function renderPagination() {
     const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
     const paginationControls = document.getElementById('paginationControls');
@@ -189,7 +154,7 @@ function renderPagination() {
 
     let paginationHTML = '';
 
-    // Botón anterior
+    
     paginationHTML += `
         <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
             <a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">
@@ -198,7 +163,7 @@ function renderPagination() {
         </li>
     `;
 
-    // Páginas numeradas
+    
     const maxVisiblePages = 5;
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
     let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
@@ -237,7 +202,7 @@ function renderPagination() {
         `;
     }
 
-    // Botón siguiente
+    
     paginationHTML += `
         <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
             <a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">
@@ -249,9 +214,6 @@ function renderPagination() {
     paginationControls.innerHTML = paginationHTML;
 }
 
-/**
- * Cambia la página actual
- */
 function changePage(page) {
     const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
     if (page < 1 || page > totalPages) return;
@@ -260,9 +222,6 @@ function changePage(page) {
     loadProductsTable();
 }
 
-/**
- * Actualiza la información de paginación
- */
 function updatePaginationInfo() {
     const paginationInfo = document.getElementById('paginationInfo');
     if (!paginationInfo) return;
@@ -274,13 +233,10 @@ function updatePaginationInfo() {
     paginationInfo.textContent = `Mostrando ${start} - ${end} de ${total} productos`;
 }
 
-// ==========================================
-// GESTIÓN DE TABLA DE PRODUCTOS
-// ==========================================
 
-/**
- * Carga los productos en la tabla con paginación
- */
+
+
+
 function loadProductsTable() {
     const tbody = document.getElementById('productsTableBody');
     if (!tbody) return;
@@ -301,13 +257,13 @@ function loadProductsTable() {
         return;
     }
 
-    // Calcular productos de la página actual
+    
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const productsToShow = filteredProducts.slice(startIndex, endIndex);
 
     tbody.innerHTML = productsToShow.map(product => {
-        // Ajustar ruta de imagen para el dashboard (que está en pages/admin/)
+        
         const imagePath = product.image.replace('../assets/', '../../assets/');
         
         return `
@@ -365,18 +321,15 @@ function loadProductsTable() {
         `;
     }).join('');
 
-    // Actualizar información y controles de paginación
+    
     updatePaginationInfo();
     renderPagination();
 }
 
-// ==========================================
-// OPERACIONES CRUD DE PRODUCTOS
-// ==========================================
 
-/**
- * Abre el modal para crear un nuevo producto
- */
+
+
+
 function openCreateProductModal() {
     const modal = new bootstrap.Modal(document.getElementById('productModal'));
     const modalTitle = document.getElementById('productModalLabel');
@@ -386,15 +339,13 @@ function openCreateProductModal() {
     form.reset();
     delete form.dataset.editingId;
     
-    // Ocultar vista previa
     document.getElementById('imagePreview').style.display = 'none';
+    document.getElementById('productImage').disabled = false;
+    document.getElementById('usePlaceholderImage').checked = false;
     
     modal.show();
 }
 
-/**
- * Edita un producto existente
- */
 function editProduct(productId) {
     const product = products.find(p => p.id === productId);
     if (!product) {
@@ -408,7 +359,6 @@ function editProduct(productId) {
     
     modalTitle.textContent = 'Editar Producto';
     
-    // Llenar el formulario con los datos del producto
     document.getElementById('productName').value = product.name;
     document.getElementById('productCategory').value = product.category;
     document.getElementById('productPrice').value = product.price;
@@ -417,63 +367,78 @@ function editProduct(productId) {
     document.getElementById('productDescription').value = product.description || '';
     document.getElementById('productImage').value = product.image;
     
-    // Mostrar vista previa de la imagen (ajustando ruta para dashboard)
+    const isPlaceholder = product.image.includes('placeholder.png');
+    document.getElementById('usePlaceholderImage').checked = isPlaceholder;
+    document.getElementById('productImage').disabled = isPlaceholder;
+    
     const previewImg = document.getElementById('previewImg');
     const imagePath = product.image.replace('../assets/', '../../assets/');
     previewImg.src = imagePath;
     document.getElementById('imagePreview').style.display = 'block';
     
-    // Guardar ID del producto que se está editando
     form.dataset.editingId = productId;
     
     modal.show();
 }
 
-/**
- * Alterna la visibilidad de un producto (Ocultar/Mostrar)
- */
-function toggleProductVisibility(productId) {
+async function toggleProductVisibility(productId) {
     const product = products.find(p => p.id === productId);
     if (!product) return;
 
     const newStatus = product.status === 'visible' ? 'hidden' : 'visible';
-    product.status = newStatus;
     
-    saveProducts();
-    loadProductsTable();
-    
-    const statusText = newStatus === 'visible' ? 'visible' : 'oculto';
-    showNotification(`Producto "${product.name}" ahora está ${statusText}`, 'success');
+    const productData = {
+        name: product.name,
+        category: product.category,
+        price: product.price,
+        stock: product.stock,
+        status: newStatus,
+        description: product.description,
+        image: product.image
+    };
+
+    try {
+        await API.updateProduct(productId, productData);
+        await cargarProductosAdmin();
+        const statusText = newStatus === 'visible' ? 'visible' : 'oculto';
+        showNotification(`Producto "${product.name}" ahora está ${statusText}`, 'success');
+    } catch (error) {
+        console.error('Error actualizando estado:', error);
+        showNotification('Error al cambiar el estado del producto', 'danger');
+    }
 }
 
-/**
- * Elimina un producto
- */
-function deleteProduct(productId) {
+async function deleteProduct(productId) {
     const product = products.find(p => p.id === productId);
     if (!product) return;
 
-    if (!confirm(`¿Estás seguro de que deseas eliminar "${product.name}"?\n\nEsta acción no se puede deshacer.`)) {
-        return;
-    }
+    // Mostrar modal de confirmación de eliminación
+    const confirmed = await showDeleteConfirm(product.name, 'producto');
+    if (!confirmed) return;
 
-    products = products.filter(p => p.id !== productId);
-    saveProducts();
-    loadProductsTable();
-    
-    showNotification(`Producto "${product.name}" eliminado correctamente`, 'success');
+    try {
+        showLoading('Eliminando producto...', 'Por favor espera');
+        await API.deleteProduct(productId);
+        await cargarProductosAdmin();
+        closeLoading();
+        await showSuccess('¡Producto eliminado!', `"${product.name}" ha sido eliminado correctamente`);
+    } catch (error) {
+        console.error('Error eliminando producto:', error);
+        showNotification('Error al eliminar el producto. Verifica que el backend esté activo.', 'danger');
+    }
 }
 
-/**
- * Maneja el envío del formulario de productos
- */
-function handleProductFormSubmit(e) {
+async function handleProductFormSubmit(e) {
     e.preventDefault();
     
     const form = e.target;
     const editingId = form.dataset.editingId;
     
-    // Recopilar datos del formulario
+    let imageValue = document.getElementById('productImage').value.trim();
+    if (!imageValue) {
+        imageValue = '../assets/img/placeholder.png';
+    }
+    
     const productData = {
         name: document.getElementById('productName').value.trim(),
         category: document.getElementById('productCategory').value,
@@ -481,11 +446,10 @@ function handleProductFormSubmit(e) {
         stock: parseInt(document.getElementById('productStock').value),
         status: document.getElementById('productStatus').value,
         description: document.getElementById('productDescription').value.trim(),
-        image: document.getElementById('productImage').value.trim()
+        image: imageValue
     };
 
-    // Validar datos
-    if (!productData.name || !productData.category || !productData.image) {
+    if (!productData.name || !productData.category) {
         showNotification('Por favor completa todos los campos obligatorios', 'warning');
         return;
     }
@@ -502,65 +466,36 @@ function handleProductFormSubmit(e) {
 
     try {
         if (editingId) {
-            // Actualizar producto existente
-            const index = products.findIndex(p => p.id === parseInt(editingId));
-            if (index !== -1) {
-                products[index] = {
-                    ...products[index],
-                    ...productData
-                };
-                showNotification('Producto actualizado correctamente', 'success');
-            }
+            await API.updateProduct(parseInt(editingId), productData);
+            showNotification('Producto actualizado correctamente', 'success');
         } else {
-            // Crear nuevo producto
-            const newProduct = {
-                id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
-                ...productData
-            };
-            products.push(newProduct);
+            await API.createProduct(productData);
             showNotification('Producto creado correctamente', 'success');
         }
 
-        // Guardar cambios
-        saveProducts();
-        loadProductsTable();
+        await cargarProductosAdmin();
         
-        // Cerrar modal
         const modal = bootstrap.Modal.getInstance(document.getElementById('productModal'));
         modal.hide();
         
-        // Limpiar formulario
         form.reset();
         delete form.dataset.editingId;
         
     } catch (error) {
         console.error('Error guardando producto:', error);
-        showNotification('Error al guardar el producto', 'danger');
+        showNotification('Error al guardar el producto. Verifica que el backend esté activo.', 'danger');
     }
 }
 
-// ==========================================
-// FUNCIONES AUXILIARES
-// ==========================================
-
-/**
- * Guarda los productos en localStorage
- * NOTA: En un proyecto real, aquí se haría una petición al backend para actualizar el JSON
- * Para este proyecto escolar, usamos localStorage como simulación de persistencia
- */
 function saveProducts() {
     try {
         localStorage.setItem('beautifulgirl_products', JSON.stringify(products));
-        console.log('Productos guardados correctamente');
     } catch (e) {
         console.error('Error guardando productos en localStorage:', e);
         showNotification('Error al guardar los cambios', 'danger');
     }
 }
 
-/**
- * Formatea el precio para mostrar
- */
 function formatPrice(price) {
     return new Intl.NumberFormat('es-CO', {
         minimumFractionDigits: 0,
@@ -568,16 +503,29 @@ function formatPrice(price) {
     }).format(price);
 }
 
-/**
- * Actualiza la vista previa de la imagen
- */
+function handlePlaceholderToggle() {
+    const checkbox = document.getElementById('usePlaceholderImage');
+    const imageInput = document.getElementById('productImage');
+    
+    if (checkbox.checked) {
+        imageInput.value = '../assets/img/placeholder.png';
+        imageInput.disabled = true;
+        updateImagePreview();
+    } else {
+        imageInput.disabled = false;
+        if (imageInput.value === '../assets/img/placeholder.png') {
+            imageInput.value = '';
+        }
+        updateImagePreview();
+    }
+}
+
 function updateImagePreview() {
     const imageUrl = document.getElementById('productImage').value;
     const previewContainer = document.getElementById('imagePreview');
     const previewImg = document.getElementById('previewImg');
     
     if (imageUrl.trim()) {
-        // Ajustar ruta si es relativa para que funcione en el dashboard
         let adjustedUrl = imageUrl;
         if (imageUrl.startsWith('../assets/')) {
             adjustedUrl = imageUrl.replace('../assets/', '../../assets/');
@@ -585,7 +533,8 @@ function updateImagePreview() {
         
         previewImg.src = adjustedUrl;
         previewImg.onerror = function() {
-            previewContainer.style.display = 'none';
+            this.src = 'https://via.placeholder.com/200?text=Error+al+cargar';
+            previewContainer.style.display = 'block';
         };
         previewImg.onload = function() {
             previewContainer.style.display = 'block';
@@ -595,11 +544,8 @@ function updateImagePreview() {
     }
 }
 
-/**
- * Sistema de notificaciones con Bootstrap Toast
- */
 function showNotification(message, type = 'info') {
-    // Crear contenedor de toasts si no existe
+    
     let toastContainer = document.querySelector('.toast-container');
     if (!toastContainer) {
         toastContainer = document.createElement('div');
@@ -608,7 +554,7 @@ function showNotification(message, type = 'info') {
         document.body.appendChild(toastContainer);
     }
 
-    // Mapear tipos a colores de Bootstrap
+    
     const bgClass = {
         'success': 'bg-success',
         'danger': 'bg-danger',
@@ -617,7 +563,7 @@ function showNotification(message, type = 'info') {
         'primary': 'bg-primary'
     }[type] || 'bg-info';
 
-    // Crear toast
+    
     const toastEl = document.createElement('div');
     toastEl.className = `toast align-items-center text-white ${bgClass} border-0`;
     toastEl.setAttribute('role', 'alert');
@@ -643,28 +589,124 @@ function showNotification(message, type = 'info') {
     
     toast.show();
     
-    // Eliminar el toast del DOM después de ocultarse
+    
     toastEl.addEventListener('hidden.bs.toast', () => {
         toastEl.remove();
     });
 }
 
-// ==========================================
-// INICIALIZACIÓN DE GRÁFICOS
-// ==========================================
 
-function initializeCharts() {
-    // Gráfico de Ventas por Mes
-    const salesCanvas = document.getElementById('salesChart');
-    if (salesCanvas) {
+
+
+
+let salesChartInstance = null;
+let productsChartInstance = null;
+
+async function loadDashboardStats() {
+    try {
+        const stats = await API.getDashboardStats();
+        
+        // Actualizar Ventas Totales
+        const salesElement = document.getElementById('statTotalSales');
+        if (salesElement) {
+            salesElement.textContent = '$' + formatPrice(stats.total_sales);
+        }
+        const salesChangeElement = document.getElementById('statSalesChange');
+        if (salesChangeElement) {
+            const isPositive = stats.sales_change >= 0;
+            salesChangeElement.className = isPositive ? 'text-success' : 'text-danger';
+            salesChangeElement.innerHTML = `
+                <i class="fas fa-arrow-${isPositive ? 'up' : 'down'} me-1"></i>
+                ${Math.abs(stats.sales_change).toFixed(1)}% vs mes anterior
+            `;
+        }
+
+        // Actualizar Órdenes Nuevas
+        const ordersElement = document.getElementById('statTotalOrders');
+        if (ordersElement) {
+            ordersElement.textContent = stats.total_orders;
+        }
+        const ordersChangeElement = document.getElementById('statOrdersChange');
+        if (ordersChangeElement) {
+            const isPositive = stats.orders_change >= 0;
+            ordersChangeElement.className = isPositive ? 'text-success' : 'text-danger';
+            ordersChangeElement.innerHTML = `
+                <i class="fas fa-arrow-${isPositive ? 'up' : 'down'} me-1"></i>
+                ${Math.abs(stats.orders_change).toFixed(1)}% vs mes anterior
+            `;
+        }
+
+        // Actualizar Clientes Nuevos
+        const customersElement = document.getElementById('statNewCustomers');
+        if (customersElement) {
+            customersElement.textContent = stats.new_customers;
+        }
+        const customersChangeElement = document.getElementById('statCustomersChange');
+        if (customersChangeElement) {
+            const isPositive = stats.customers_change >= 0;
+            customersChangeElement.className = isPositive ? 'text-success' : 'text-danger';
+            customersChangeElement.innerHTML = `
+                <i class="fas fa-arrow-${isPositive ? 'up' : 'down'} me-1"></i>
+                ${Math.abs(stats.customers_change).toFixed(1)}% vs mes anterior
+            `;
+        }
+
+        // Actualizar Visitas
+        const visitsElement = document.getElementById('statTotalVisits');
+        if (visitsElement) {
+            visitsElement.textContent = formatNumber(stats.total_visits);
+        }
+        const visitsChangeElement = document.getElementById('statVisitsChange');
+        if (visitsChangeElement) {
+            const isPositive = stats.visits_change >= 0;
+            visitsChangeElement.className = isPositive ? 'text-success' : 'text-danger';
+            visitsChangeElement.innerHTML = `
+                <i class="fas fa-arrow-${isPositive ? 'up' : 'down'} me-1"></i>
+                ${Math.abs(stats.visits_change).toFixed(1)}% vs mes anterior
+            `;
+        }
+
+    } catch (error) {
+        console.error('Error cargando estadísticas:', error);
+        showNotification('Error al cargar estadísticas', 'warning');
+    }
+}
+
+async function loadSalesChart() {
+    try {
+        const salesData = await API.getSalesChartData(6);
+        
+        const salesCanvas = document.getElementById('salesChart');
+        if (!salesCanvas) return;
+
+        // Preparar datos
+        const monthNames = {
+            '01': 'Ene', '02': 'Feb', '03': 'Mar', '04': 'Abr',
+            '05': 'May', '06': 'Jun', '07': 'Jul', '08': 'Ago',
+            '09': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dic'
+        };
+
+        const labels = salesData.map(item => {
+            const [year, month] = item.month.split('-');
+            return monthNames[month] + ' ' + year.slice(2);
+        });
+
+        const revenues = salesData.map(item => item.total_revenue);
+
+        // Destruir gráfico anterior si existe
+        if (salesChartInstance) {
+            salesChartInstance.destroy();
+        }
+
+        // Crear nuevo gráfico
         const salesCtx = salesCanvas.getContext('2d');
-        new Chart(salesCtx, {
+        salesChartInstance = new Chart(salesCtx, {
             type: 'line',
             data: {
-                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct'],
+                labels: labels,
                 datasets: [{
                     label: 'Ventas ($)',
-                    data: [1200000, 1900000, 1500000, 2500000, 2200000, 3000000, 2800000, 3200000, 2900000, 3500000],
+                    data: revenues,
                     fill: true,
                     backgroundColor: 'rgba(255, 105, 180, 0.1)',
                     borderColor: 'rgba(255, 105, 180, 1)',
@@ -701,25 +743,47 @@ function initializeCharts() {
                 }
             }
         });
+    } catch (error) {
+        console.error('Error cargando gráfico de ventas:', error);
     }
+}
 
-    // Gráfico de Productos más Vendidos
-    const productsCanvas = document.getElementById('productsChart');
-    if (productsCanvas) {
+async function loadProductsChart() {
+    try {
+        const categoriesData = await API.getTopCategories(5);
+        
+        const productsCanvas = document.getElementById('productsChart');
+        if (!productsCanvas) return;
+
+        // Preparar datos
+        const labels = categoriesData.map(item => 
+            item.category.charAt(0).toUpperCase() + item.category.slice(1)
+        );
+        const data = categoriesData.map(item => item.total_sold);
+
+        // Colores para las categorías
+        const colors = [
+            'rgba(255, 105, 180, 0.8)',
+            'rgba(255, 20, 147, 0.8)',
+            'rgba(255, 192, 203, 0.8)',
+            'rgba(219, 112, 147, 0.8)',
+            'rgba(255, 182, 193, 0.8)'
+        ];
+
+        // Destruir gráfico anterior si existe
+        if (productsChartInstance) {
+            productsChartInstance.destroy();
+        }
+
+        // Crear nuevo gráfico
         const productsCtx = productsCanvas.getContext('2d');
-        new Chart(productsCtx, {
+        productsChartInstance = new Chart(productsCtx, {
             type: 'doughnut',
             data: {
-                labels: ['Cuidado Facial', 'Maquillaje', 'Fragancias', 'Cuidado Corporal', 'Cabello'],
+                labels: labels,
                 datasets: [{
-                    data: [300, 250, 200, 150, 100],
-                    backgroundColor: [
-                        'rgba(255, 105, 180, 0.8)',
-                        'rgba(255, 20, 147, 0.8)',
-                        'rgba(255, 192, 203, 0.8)',
-                        'rgba(219, 112, 147, 0.8)',
-                        'rgba(255, 182, 193, 0.8)'
-                    ],
+                    data: data,
+                    backgroundColor: colors,
                     borderWidth: 2,
                     borderColor: '#fff'
                 }]
@@ -734,20 +798,37 @@ function initializeCharts() {
                             padding: 15,
                             usePointStyle: true
                         }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + ' unidades';
+                            }
+                        }
                     }
                 }
             }
         });
+    } catch (error) {
+        console.error('Error cargando gráfico de productos:', error);
     }
 }
 
-// ==========================================
-// NAVEGACIÓN DEL SIDEBAR
-// ==========================================
+function initializeCharts() {
+    // Cargar estadísticas y gráficos con datos reales
+    loadDashboardStats();
+    loadSalesChart();
+    loadProductsChart();
+}
 
-/**
- * Inicializa la navegación entre secciones del sidebar
- */
+function formatNumber(num) {
+    return new Intl.NumberFormat('es-CO').format(num);
+}
+
+
+
+
+
 function initializeSidebarNavigation() {
     const sidebarLinks = document.querySelectorAll('#sidebar .nav-link');
     
@@ -757,32 +838,37 @@ function initializeSidebarNavigation() {
             
             const section = this.dataset.section;
             
-            // Remover clase active de todos los links
+            
             sidebarLinks.forEach(l => l.classList.remove('active'));
             
-            // Agregar clase active al link clickeado
+            
             this.classList.add('active');
             
-            // Ocultar TODAS las secciones con force
+            
             const allSections = document.querySelectorAll('.admin-section');
             allSections.forEach(s => {
                 s.style.display = 'none';
                 s.style.visibility = 'hidden';
             });
             
-            // Mostrar SOLO la sección seleccionada
+            
             const targetSection = document.getElementById(`section-${section}`);
             
             if (targetSection) {
-                // Forzar display block
+                
                 targetSection.style.display = 'block';
                 targetSection.style.visibility = 'visible';
                 
-                // Scroll to top
+                
                 window.scrollTo(0, 0);
                 
-                // Cargar datos específicos de la sección
+                
                 switch(section) {
+                    case 'dashboard':
+                        loadDashboardStats();
+                        loadSalesChart();
+                        loadProductsChart();
+                        break;
                     case 'products':
                         if (products.length > 0) loadProductsTable();
                         break;
@@ -795,84 +881,30 @@ function initializeSidebarNavigation() {
                     case 'reports':
                         initializeReportDates();
                         break;
+                    case 'admin-profile':
+                        loadAdminProfile();
+                        break;
                 }
             }
         });
     });
 }
 
-// ==========================================
-// GESTIÓN DE ÓRDENES
-// ==========================================
 
-/**
- * Carga datos de demostración de órdenes
- */
-function loadDemoOrders() {
-    // Datos de demostración para el proyecto escolar
-    orders = [
-        {
-            id: 1,
-            customer: { name: 'María García', email: 'maria@email.com', phone: '3001234567', address: 'Calle 123 #45-67' },
-            date: '2025-10-15',
-            products: [
-                { name: 'Base Aura', quantity: 2, price: 49900 },
-                { name: 'Labial Matte', quantity: 1, price: 35900 }
-            ],
-            total: 135700,
-            status: 'completed'
-        },
-        {
-            id: 2,
-            customer: { name: 'Ana Rodríguez', email: 'ana@email.com', phone: '3109876543', address: 'Carrera 45 #12-34' },
-            date: '2025-10-16',
-            products: [
-                { name: 'Crema Facial', quantity: 1, price: 65900 },
-                { name: 'Serum Vitamina C', quantity: 1, price: 89900 }
-            ],
-            total: 155800,
-            status: 'processing'
-        },
-        {
-            id: 3,
-            customer: { name: 'Laura Martínez', email: 'laura@email.com', phone: '3201234567', address: 'Avenida 68 #23-45' },
-            date: '2025-10-17',
-            products: [
-                { name: 'Base Mouse', quantity: 1, price: 45900 }
-            ],
-            total: 45900,
-            status: 'pending'
-        },
-        {
-            id: 4,
-            customer: { name: 'Carolina López', email: 'carolina@email.com', phone: '3159876543', address: 'Transversal 12 #34-56' },
-            date: '2025-10-18',
-            products: [
-                { name: 'Máscara de Pestañas', quantity: 2, price: 42900 },
-                { name: 'Delineador', quantity: 1, price: 29900 }
-            ],
-            total: 115700,
-            status: 'completed'
-        },
-        {
-            id: 5,
-            customer: { name: 'Valentina Gómez', email: 'valentina@email.com', phone: '3187654321', address: 'Diagonal 78 #90-12' },
-            date: '2025-10-19',
-            products: [
-                { name: 'Base Queen', quantity: 1, price: 55900 },
-                { name: 'Polvo Compacto', quantity: 1, price: 39900 }
-            ],
-            total: 95800,
-            status: 'processing'
-        }
-    ];
-    
-    filteredOrders = [...orders];
+
+
+
+async function loadDemoOrders() {
+    try {
+        orders = await API.getAllOrders();
+        filteredOrders = [...orders];
+    } catch (error) {
+        console.error('Error al cargar órdenes:', error);
+        orders = [];
+        filteredOrders = [];
+    }
 }
 
-/**
- * Carga la tabla de órdenes
- */
 function loadOrdersTable() {
     const tbody = document.getElementById('ordersTableBody');
     if (!tbody) return;
@@ -928,9 +960,6 @@ function loadOrdersTable() {
     updateOrdersPagination();
 }
 
-/**
- * Actualiza la paginación de órdenes
- */
 function updateOrdersPagination() {
     const paginationInfo = document.getElementById('ordersPaginationInfo');
     const paginationControls = document.getElementById('ordersPaginationControls');
@@ -951,7 +980,7 @@ function updateOrdersPagination() {
         return;
     }
     
-    // Botón anterior
+    
     paginationHTML += `
         <li class="page-item ${currentOrdersPage === 1 ? 'disabled' : ''}">
             <a class="page-link" href="#" onclick="changeOrdersPage(${currentOrdersPage - 1}); return false;">
@@ -960,7 +989,7 @@ function updateOrdersPagination() {
         </li>
     `;
     
-    // Páginas
+    
     for (let i = 1; i <= totalPages; i++) {
         paginationHTML += `
             <li class="page-item ${i === currentOrdersPage ? 'active' : ''}">
@@ -969,7 +998,7 @@ function updateOrdersPagination() {
         `;
     }
     
-    // Botón siguiente
+    
     paginationHTML += `
         <li class="page-item ${currentOrdersPage === totalPages ? 'disabled' : ''}">
             <a class="page-link" href="#" onclick="changeOrdersPage(${currentOrdersPage + 1}); return false;">
@@ -981,9 +1010,6 @@ function updateOrdersPagination() {
     paginationControls.innerHTML = paginationHTML;
 }
 
-/**
- * Cambia la página de órdenes
- */
 function changeOrdersPage(page) {
     const totalPages = Math.ceil(filteredOrders.length / ordersPerPage);
     if (page < 1 || page > totalPages) return;
@@ -991,9 +1017,6 @@ function changeOrdersPage(page) {
     loadOrdersTable();
 }
 
-/**
- * Muestra el detalle de una orden
- */
 function viewOrderDetail(orderId) {
     const order = orders.find(o => o.id === orderId);
     if (!order) return;
@@ -1027,7 +1050,7 @@ function viewOrderDetail(orderId) {
     
     document.getElementById('updateOrderStatus').value = order.status;
     
-    // Configurar botón de guardar
+    
     const saveBtn = document.getElementById('saveOrderStatusBtn');
     saveBtn.onclick = function() {
         const newStatus = document.getElementById('updateOrderStatus').value;
@@ -1040,31 +1063,31 @@ function viewOrderDetail(orderId) {
     modal.show();
 }
 
-// ==========================================
-// GESTIÓN DE CLIENTES
-// ==========================================
 
-/**
- * Carga datos de demostración de clientes
- */
-function loadDemoCustomers() {
-    customers = [
-        { id: 1, name: 'María García', email: 'maria@email.com', phone: '3001234567', orders: 5, totalSpent: 678500, registerDate: '2025-01-15' },
-        { id: 2, name: 'Ana Rodríguez', email: 'ana@email.com', phone: '3109876543', orders: 3, totalSpent: 467200, registerDate: '2025-02-20' },
-        { id: 3, name: 'Laura Martínez', email: 'laura@email.com', phone: '3201234567', orders: 8, totalSpent: 1234500, registerDate: '2025-01-10' },
-        { id: 4, name: 'Carolina López', email: 'carolina@email.com', phone: '3159876543', orders: 4, totalSpent: 578900, registerDate: '2025-03-05' },
-        { id: 5, name: 'Valentina Gómez', email: 'valentina@email.com', phone: '3187654321', orders: 6, totalSpent: 892300, registerDate: '2025-02-15' },
-        { id: 6, name: 'Sofía Hernández', email: 'sofia@email.com', phone: '3124567890', orders: 2, totalSpent: 234000, registerDate: '2025-04-01' },
-        { id: 7, name: 'Isabella Díaz', email: 'isabella@email.com', phone: '3176543210', orders: 7, totalSpent: 1056700, registerDate: '2025-01-25' },
-        { id: 8, name: 'Camila Torres', email: 'camila@email.com', phone: '3198765432', orders: 5, totalSpent: 723400, registerDate: '2025-03-10' }
-    ];
-    
-    filteredCustomers = [...customers];
+
+
+
+async function loadDemoCustomers() {
+    try {
+        const users = await API.getAllUsersWithStats();
+        customers = users.map(user => ({
+            id: user.id,
+            name: `${user.first_name} ${user.last_name}`,
+            email: user.email,
+            phone: user.phone || 'N/A',
+            orders: user.total_orders,
+            totalSpent: parseFloat(user.total_spent),
+            registerDate: user.created_at,
+            role: user.role
+        }));
+        filteredCustomers = [...customers];
+    } catch (error) {
+        console.error('Error al cargar clientes:', error);
+        customers = [];
+        filteredCustomers = [];
+    }
 }
 
-/**
- * Carga la tabla de clientes
- */
 function loadCustomersTable() {
     const tbody = document.getElementById('customersTableBody');
     if (!tbody) return;
@@ -1072,7 +1095,7 @@ function loadCustomersTable() {
     if (filteredCustomers.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="7" class="text-center py-4 text-muted">
+                <td colspan="9" class="text-center py-4 text-muted">
                     <i class="fas fa-users fa-3x mb-3 d-block"></i>
                     No hay clientes registrados.
                 </td>
@@ -1085,24 +1108,35 @@ function loadCustomersTable() {
     const endIndex = startIndex + customersPerPage;
     const customersToShow = filteredCustomers.slice(startIndex, endIndex);
     
-    tbody.innerHTML = customersToShow.map(customer => `
-        <tr>
-            <td><span class="badge bg-primary">#${customer.id}</span></td>
-            <td><strong>${customer.name}</strong></td>
-            <td>${customer.email}</td>
-            <td>${customer.phone}</td>
-            <td><span class="badge bg-info">${customer.orders}</span></td>
-            <td><strong class="text-success">$${formatPrice(customer.totalSpent)}</strong></td>
-            <td>${formatDate(customer.registerDate)}</td>
-        </tr>
-    `).join('');
+    tbody.innerHTML = customersToShow.map(customer => {
+        const roleClass = customer.role === 'ADMIN' ? 'bg-danger' : 'bg-secondary';
+        const roleText = customer.role === 'ADMIN' ? 'Admin' : 'Cliente';
+        
+        return `
+            <tr>
+                <td><span class="badge bg-primary">#${customer.id}</span></td>
+                <td><strong>${customer.name}</strong></td>
+                <td>${customer.email}</td>
+                <td>${customer.phone}</td>
+                <td><span class="badge bg-info">${customer.orders}</span></td>
+                <td><strong class="text-success">$${formatPrice(customer.totalSpent)}</strong></td>
+                <td><span class="badge ${roleClass}">${roleText}</span></td>
+                <td>${formatDate(customer.registerDate)}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-warning" onclick="openEditCustomerModal(${customer.id})" title="Editar cliente">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="deleteCustomer(${customer.id})" title="Eliminar cliente">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
     
     updateCustomersPagination();
 }
 
-/**
- * Actualiza la paginación de clientes
- */
 function updateCustomersPagination() {
     const paginationInfo = document.getElementById('customersPaginationInfo');
     const paginationControls = document.getElementById('customersPaginationControls');
@@ -1123,7 +1157,7 @@ function updateCustomersPagination() {
         return;
     }
     
-    // Botón anterior
+    
     paginationHTML += `
         <li class="page-item ${currentCustomersPage === 1 ? 'disabled' : ''}">
             <a class="page-link" href="#" onclick="changeCustomersPage(${currentCustomersPage - 1}); return false;">
@@ -1132,7 +1166,7 @@ function updateCustomersPagination() {
         </li>
     `;
     
-    // Páginas
+    
     for (let i = 1; i <= totalPages; i++) {
         paginationHTML += `
             <li class="page-item ${i === currentCustomersPage ? 'active' : ''}">
@@ -1141,7 +1175,7 @@ function updateCustomersPagination() {
         `;
     }
     
-    // Botón siguiente
+    
     paginationHTML += `
         <li class="page-item ${currentCustomersPage === totalPages ? 'disabled' : ''}">
             <a class="page-link" href="#" onclick="changeCustomersPage(${currentCustomersPage + 1}); return false;">
@@ -1153,9 +1187,6 @@ function updateCustomersPagination() {
     paginationControls.innerHTML = paginationHTML;
 }
 
-/**
- * Cambia la página de clientes
- */
 function changeCustomersPage(page) {
     const totalPages = Math.ceil(filteredCustomers.length / customersPerPage);
     if (page < 1 || page > totalPages) return;
@@ -1163,13 +1194,127 @@ function changeCustomersPage(page) {
     loadCustomersTable();
 }
 
-// ==========================================
-// SISTEMA DE REPORTES
-// ==========================================
+function openEditCustomerModal(customerId) {
+    const customer = customers.find(c => c.id === customerId);
+    if (!customer) return;
 
-/**
- * Inicializa las fechas del reporte
- */
+    const session = JSON.parse(localStorage.getItem('userSession') || sessionStorage.getItem('userSession'));
+    const isEditingSelf = session && session.id === customerId;
+
+    const modalHTML = `
+        <div class="modal fade" id="editCustomerModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar Cliente</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editCustomerForm">
+                            <input type="hidden" id="editCustomerId" value="${customer.id}">
+                            <div class="mb-3">
+                                <label class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="editCustomerName" value="${customer.name}" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="editCustomerEmail" value="${customer.email}" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="editCustomerPhone" value="${customer.phone}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Rol</label>
+                                <select class="form-select" id="editCustomerRole" ${isEditingSelf ? 'disabled' : ''}>
+                                    <option value="CUSTOMER" ${customer.role === 'CUSTOMER' ? 'selected' : ''}>Cliente</option>
+                                    <option value="ADMIN" ${customer.role === 'ADMIN' ? 'selected' : ''}>Administrador</option>
+                                </select>
+                                ${isEditingSelf ? '<small class="text-muted">No puedes cambiar tu propio rol</small>' : ''}
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="saveCustomerChanges()">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    let existingModal = document.getElementById('editCustomerModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    const modal = new bootstrap.Modal(document.getElementById('editCustomerModal'));
+    modal.show();
+}
+
+async function saveCustomerChanges() {
+    const customerId = document.getElementById('editCustomerId').value;
+    const roleSelect = document.getElementById('editCustomerRole');
+    
+    const session = JSON.parse(localStorage.getItem('userSession') || sessionStorage.getItem('userSession'));
+    const isEditingSelf = session && session.id == customerId;
+
+    if (isEditingSelf && !roleSelect.disabled) {
+        showNotification('No puedes cambiar tu propio rol', 'warning');
+        return;
+    }
+
+    if (roleSelect.disabled) {
+        showNotification('Cambios guardados (rol sin modificar)', 'info');
+        const modal = bootstrap.Modal.getInstance(document.getElementById('editCustomerModal'));
+        modal.hide();
+        return;
+    }
+
+    const newRole = roleSelect.value;
+
+    try {
+        await API.updateUserRole(customerId, newRole);
+        showNotification('Cliente actualizado correctamente', 'success');
+        
+        await loadDemoCustomers();
+        loadCustomersTable();
+        
+        const modal = bootstrap.Modal.getInstance(document.getElementById('editCustomerModal'));
+        modal.hide();
+    } catch (error) {
+        console.error('Error al actualizar cliente:', error);
+        showNotification('Error al actualizar cliente', 'danger');
+    }
+}
+
+async function deleteCustomer(customerId) {
+    const customer = customers.find(c => c.id === customerId);
+    if (!customer) return;
+
+    // Mostrar modal de confirmación de eliminación
+    const confirmed = await showDeleteConfirm(customer.name, 'cliente');
+    if (!confirmed) return;
+
+    try {
+        showLoading('Eliminando cliente...', 'Por favor espera');
+        await API.deleteUser(customerId);
+        closeLoading();
+        await showSuccess('¡Cliente eliminado!', 'El cliente ha sido eliminado correctamente');
+        
+        await loadDemoCustomers();
+        loadCustomersTable();
+    } catch (error) {
+        console.error('Error al eliminar cliente:', error);
+        showNotification('Error al eliminar cliente', 'danger');
+    }
+}
+
+
+
+
+
 function initializeReportDates() {
     const today = new Date();
     const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -1194,9 +1339,6 @@ function initializeReportDates() {
     if (printReportBtn) printReportBtn.addEventListener('click', () => window.print());
 }
 
-/**
- * Genera el reporte según los parámetros
- */
 function generateReport() {
     const reportType = document.getElementById('reportType').value;
     const startDate = new Date(document.getElementById('reportStartDate').value);
@@ -1234,9 +1376,6 @@ function generateReport() {
     displayReportResults(reportData, daysDiff);
 }
 
-/**
- * Genera reporte de ventas
- */
 function generateSalesReport(startDate, endDate) {
     const ordersInRange = orders.filter(o => {
         const orderDate = new Date(o.date);
@@ -1263,9 +1402,6 @@ function generateSalesReport(startDate, endDate) {
     };
 }
 
-/**
- * Genera reporte de productos
- */
 function generateProductsReport() {
     const total = products.length;
     const visible = products.filter(p => p.status === 'visible').length;
@@ -1290,9 +1426,6 @@ function generateProductsReport() {
     };
 }
 
-/**
- * Genera reporte de clientes
- */
 function generateCustomersReport() {
     const total = customers.reduce((sum, c) => sum + c.totalSpent, 0);
     const count = customers.length;
@@ -1316,9 +1449,6 @@ function generateCustomersReport() {
     };
 }
 
-/**
- * Genera reporte de órdenes
- */
 function generateOrdersReport(startDate, endDate) {
     const ordersInRange = orders.filter(o => {
         const orderDate = new Date(o.date);
@@ -1349,9 +1479,6 @@ function generateOrdersReport(startDate, endDate) {
     };
 }
 
-/**
- * Muestra los resultados del reporte
- */
 function displayReportResults(reportData, daysDiff) {
     const resultsDiv = document.getElementById('reportResults');
     resultsDiv.style.display = 'block';
@@ -1361,7 +1488,7 @@ function displayReportResults(reportData, daysDiff) {
     document.getElementById('reportAverage').textContent = '$' + formatPrice(Math.round(reportData.average));
     document.getElementById('reportPeriod').textContent = `${daysDiff} días`;
     
-    // Tabla de datos
+    
     const tableHeaders = document.getElementById('reportTableHeaders');
     const tableBody = document.getElementById('reportTableBody');
     
@@ -1371,20 +1498,17 @@ function displayReportResults(reportData, daysDiff) {
         return `<tr>${values.map(v => `<td>${v}</td>`).join('')}</tr>`;
     }).join('');
     
-    // Gráfico del reporte
+    
     createReportChart(reportData);
     
     showNotification('Reporte generado correctamente', 'success');
 }
 
-/**
- * Crea el gráfico del reporte
- */
 function createReportChart(reportData) {
     const canvas = document.getElementById('reportChart');
     if (!canvas) return;
     
-    // Destruir gráfico anterior si existe
+    
     if (window.reportChartInstance) {
         window.reportChartInstance.destroy();
     }
@@ -1394,7 +1518,7 @@ function createReportChart(reportData) {
     let chartConfig = {};
     
     if (reportData.type === 'sales' || reportData.type === 'orders') {
-        // Gráfico de línea para ventas/órdenes por fecha
+        
         const dates = reportData.data.map(d => d.fecha);
         const amounts = reportData.data.map(d => parseInt(d.monto.replace(/[$,]/g, '')) || parseInt(d.total.replace(/[$,]/g, '')));
         
@@ -1427,7 +1551,7 @@ function createReportChart(reportData) {
             }
         };
     } else if (reportData.type === 'products') {
-        // Gráfico de barras para productos por categoría
+        
         const categories = {};
         products.forEach(p => {
             categories[p.category] = (categories[p.category] || 0) + 1;
@@ -1454,7 +1578,7 @@ function createReportChart(reportData) {
             }
         };
     } else if (reportData.type === 'customers') {
-        // Gráfico de barras para clientes por gasto
+        
         const topCustomers = customers.slice().sort((a, b) => b.totalSpent - a.totalSpent).slice(0, 5);
         
         chartConfig = {
@@ -1487,15 +1611,458 @@ function createReportChart(reportData) {
     window.reportChartInstance = new Chart(ctx, chartConfig);
 }
 
-// ==========================================
-// FUNCIONES AUXILIARES
-// ==========================================
 
-/**
- * Formatea una fecha
- */
+
+
+
 function formatDate(dateString) {
     const date = new Date(dateString);
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
     return date.toLocaleDateString('es-CO', options);
 }
+
+let adminOriginalData = {};
+
+async function loadAdminProfile() {
+    const session = JSON.parse(localStorage.getItem('userSession') || sessionStorage.getItem('userSession'));
+    
+    if (!session || !session.id) {
+        showNotification('No se pudo cargar el perfil', 'danger');
+        return;
+    }
+
+    try {
+        const user = await API.getUser(session.id);
+        
+        const avatarUrl = `https://ui-avatars.com/api/?name=${user.first_name.charAt(0)}&background=0d6efd&color=fff&size=120`;
+        document.getElementById('adminAvatar').src = avatarUrl;
+        document.getElementById('adminProfileName').textContent = `${user.first_name} ${user.last_name}`;
+        document.getElementById('adminProfileEmail').textContent = user.email;
+        
+        document.getElementById('adminFirstName').value = user.first_name;
+        document.getElementById('adminLastName').value = user.last_name;
+        document.getElementById('adminEmail').value = user.email;
+        document.getElementById('adminPhone').value = user.phone || '';
+        document.getElementById('adminCity').value = user.city || '';
+        document.getElementById('adminAddress').value = user.address || '';
+        document.getElementById('adminPostalCode').value = user.postal_code || '';
+        
+        adminOriginalData = {
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            phone: user.phone || '',
+            city: user.city || '',
+            address: user.address || '',
+            postalCode: user.postal_code || ''
+        };
+    } catch (error) {
+        console.error('Error al cargar perfil del admin:', error);
+        showNotification('Error al cargar datos del perfil', 'danger');
+    }
+}
+
+function toggleAdminEditMode() {
+    const inputs = document.querySelectorAll('#adminProfileForm input');
+    inputs.forEach(input => {
+        if (input.id !== 'adminEmail') {
+            input.disabled = false;
+        }
+    });
+    
+    document.getElementById('adminFormButtons').classList.remove('d-none');
+    document.getElementById('adminEditBtn').classList.add('d-none');
+}
+
+function cancelAdminEdit() {
+    document.getElementById('adminFirstName').value = adminOriginalData.firstName;
+    document.getElementById('adminLastName').value = adminOriginalData.lastName;
+    document.getElementById('adminEmail').value = adminOriginalData.email;
+    document.getElementById('adminPhone').value = adminOriginalData.phone;
+    document.getElementById('adminCity').value = adminOriginalData.city;
+    document.getElementById('adminAddress').value = adminOriginalData.address;
+    document.getElementById('adminPostalCode').value = adminOriginalData.postalCode;
+
+    const inputs = document.querySelectorAll('#adminProfileForm input');
+    inputs.forEach(input => input.disabled = true);
+
+    document.getElementById('adminFormButtons').classList.add('d-none');
+    document.getElementById('adminEditBtn').classList.remove('d-none');
+}
+
+async function saveAdminProfile(e) {
+    e.preventDefault();
+    
+    const session = JSON.parse(localStorage.getItem('userSession') || sessionStorage.getItem('userSession'));
+    if (!session || !session.id) return;
+
+    const updatedData = {
+        first_name: document.getElementById('adminFirstName').value,
+        last_name: document.getElementById('adminLastName').value,
+        email: document.getElementById('adminEmail').value,
+        phone: document.getElementById('adminPhone').value,
+        address: document.getElementById('adminAddress').value,
+        city: document.getElementById('adminCity').value,
+        postal_code: document.getElementById('adminPostalCode').value
+    };
+
+    try {
+        await API.updateUser(session.id, updatedData);
+
+        const updatedSession = {
+            ...session,
+            firstName: updatedData.first_name,
+            lastName: updatedData.last_name,
+            email: updatedData.email,
+            phone: updatedData.phone,
+            address: updatedData.address,
+            city: updatedData.city,
+            postalCode: updatedData.postal_code
+        };
+
+        if (localStorage.getItem('userSession')) {
+            localStorage.setItem('userSession', JSON.stringify(updatedSession));
+        } else {
+            sessionStorage.setItem('userSession', JSON.stringify(updatedSession));
+        }
+
+        showNotification('Perfil actualizado correctamente', 'success');
+
+        const inputs = document.querySelectorAll('#adminProfileForm input');
+        inputs.forEach(input => input.disabled = true);
+
+        document.getElementById('adminFormButtons').classList.add('d-none');
+        document.getElementById('adminEditBtn').classList.remove('d-none');
+
+        await loadAdminProfile();
+
+        if (typeof updateNavbar === 'function') {
+            updateNavbar();
+        }
+    } catch (error) {
+        console.error('Error al actualizar perfil:', error);
+        showNotification('Error al actualizar perfil', 'danger');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const adminEditBtn = document.getElementById('adminEditBtn');
+    const adminCancelBtn = document.getElementById('adminCancelBtn');
+    const adminProfileForm = document.getElementById('adminProfileForm');
+    
+    if (adminEditBtn) {
+        adminEditBtn.addEventListener('click', toggleAdminEditMode);
+    }
+    
+    if (adminCancelBtn) {
+        adminCancelBtn.addEventListener('click', cancelAdminEdit);
+    }
+    
+    if (adminProfileForm) {
+        adminProfileForm.addEventListener('submit', saveAdminProfile);
+    }
+});
+
+
+// ============================================
+// SISTEMA DE REPORTES PROFESIONALES
+// ============================================
+
+// ============================================
+// SISTEMA DE REPORTES MEJORADO
+// ============================================
+
+let selectedReportType = null;
+let selectedFormat = null;
+let selectedPeriod = 'month'; // 'today', 'week', 'month', 'year', 'custom'
+let customDays = 30;
+let customStartDate = null;
+let customEndDate = null;
+
+// Nombres de reportes para mostrar
+const reportNames = {
+    'general': 'Reporte General',
+    'sales': 'Reporte de Ventas',
+    'products': 'Reporte de Productos',
+    'inventory': 'Reporte de Inventario',
+    'customers': 'Reporte de Clientes'
+};
+
+// Cargar tipos de reportes disponibles
+async function loadReportTypes() {
+    try {
+        const response = await fetch(`${API_URL}/reports/types`);
+        const data = await response.json();
+        
+        const container = document.getElementById('reportTypesContainer');
+        if (!container) return;
+        
+        container.innerHTML = data.types.map(type => `
+            <div class="col-md-6 col-lg-4">
+                <div class="card report-type-card h-100" onclick="selectReportType('${type.id}')" id="report-card-${type.id}">
+                    <div class="card-body text-center p-4">
+                        <i class="fas ${type.icon} fa-3x mb-3" style="color: #667eea;"></i>
+                        <h5 class="card-title fw-bold">${type.name}</h5>
+                        <p class="card-text text-muted small">${type.description}</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+    } catch (error) {
+        console.error('Error cargando tipos de reportes:', error);
+        showNotification('Error al cargar tipos de reportes', 'danger');
+    }
+}
+
+// Seleccionar tipo de reporte
+function selectReportType(reportType) {
+    selectedReportType = reportType;
+    
+    // Actualizar UI de tarjetas
+    document.querySelectorAll('.report-type-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    
+    const selectedCard = document.getElementById(`report-card-${reportType}`);
+    if (selectedCard) {
+        selectedCard.classList.add('selected');
+    }
+    
+    updateGenerateButton();
+}
+
+// Seleccionar formato (Excel o PDF) - EXCLUSIVO
+function selectFormat(format) {
+    selectedFormat = format;
+    
+    // Remover selección de ambas tarjetas
+    const excelCard = document.getElementById('format-card-excel');
+    const pdfCard = document.getElementById('format-card-pdf');
+    
+    if (excelCard && pdfCard) {
+        excelCard.classList.remove('selected');
+        pdfCard.classList.remove('selected');
+        
+        // Resetear iconos
+        excelCard.querySelector('i').className = 'far fa-circle me-2';
+        pdfCard.querySelector('i').className = 'far fa-circle me-2';
+        
+        // Aplicar selección al formato elegido
+        if (format === 'excel') {
+            excelCard.classList.add('selected');
+            excelCard.querySelector('i').className = 'fas fa-check-circle me-2';
+        } else if (format === 'pdf') {
+            pdfCard.classList.add('selected');
+            pdfCard.querySelector('i').className = 'fas fa-check-circle me-2';
+        }
+    }
+    
+    updateGenerateButton();
+}
+
+// Obtener nombre legible del período
+function getPeriodName(period, days = 30) {
+    const periodNames = {
+        'today': 'Hoy',
+        'week': 'Última Semana',
+        'month': 'Último Mes',
+        'year': 'Último Año',
+        'custom': `Últimos ${days} días`
+    };
+    return periodNames[period] || periodNames['month'];
+}
+
+// Actualizar el botón de generar según selecciones
+function updateGenerateButton() {
+    const btn = document.getElementById('generateReportBtn');
+    const btnText = document.getElementById('generateBtnText');
+    const summary = document.getElementById('reportConfigSummary');
+    
+    if (!btn || !btnText || !summary) return;
+    
+    // Verificar que todas las selecciones estén completas
+    if (selectedReportType && selectedPeriod && selectedFormat) {
+        btn.disabled = false;
+        btn.classList.remove('btn-secondary');
+        btn.classList.add('btn-primary');
+        
+        // Actualizar texto del botón
+        const formatName = selectedFormat === 'excel' ? 'Excel' : 'PDF';
+        btnText.innerHTML = `<i class="fas fa-file-${selectedFormat === 'excel' ? 'excel' : 'pdf'} me-2"></i>Generar Reporte ${formatName}`;
+        
+        // Actualizar resumen
+        const reportName = reportNames[selectedReportType] || 'Reporte';
+        const periodName = getPeriodName(selectedPeriod, customDays);
+        summary.innerHTML = `<i class="fas fa-check-circle text-success me-2"></i><strong>Configuración:</strong> ${reportName} | ${periodName} | Formato ${formatName}`;
+        
+    } else {
+        btn.disabled = true;
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-secondary');
+        
+        // Mensajes según lo que falte
+        if (!selectedReportType) {
+            btnText.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>Selecciona un tipo de reporte';
+            summary.innerHTML = '<i class="fas fa-info-circle text-muted me-2"></i>Paso 1: Selecciona el tipo de reporte';
+        } else if (!selectedFormat) {
+            btnText.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>Selecciona un formato';
+            summary.innerHTML = '<i class="fas fa-info-circle text-muted me-2"></i>Paso 3: Selecciona el formato de descarga';
+        }
+    }
+}
+
+// Manejar cambio de período
+function handlePeriodChange(period) {
+    selectedPeriod = period;
+    
+    const customDateRange = document.getElementById('customDateRange');
+    const customDaysInput = document.getElementById('customDays');
+    
+    if (period === 'custom') {
+        // Mostrar selector de rango personalizado
+        if (customDateRange) {
+            customDateRange.style.display = 'block';
+        }
+    } else {
+        // Ocultar selector personalizado y establecer días predefinidos
+        if (customDateRange) {
+            customDateRange.style.display = 'none';
+        }
+        
+        // Establecer días según el período seleccionado
+        switch(period) {
+            case 'today':
+                customDays = 1;
+                break;
+            case 'week':
+                customDays = 7;
+                break;
+            case 'month':
+                customDays = 30;
+                break;
+            case 'year':
+                customDays = 365;
+                break;
+        }
+        
+        if (customDaysInput) {
+            customDaysInput.value = customDays;
+        }
+    }
+    
+    updateGenerateButton();
+}
+
+// Generar y descargar reporte
+async function generateReport() {
+    if (!selectedReportType || !selectedFormat) {
+        await showWarning('Configuración incompleta', 'Por favor completa todas las selecciones');
+        return;
+    }
+    
+    try {
+        await showLoading('Generando reporte...', 'Esto puede tomar unos segundos');
+        
+        // Construir URL con parámetros de período
+        let url = `${API_URL}/reports/${selectedFormat}/${selectedReportType}`;
+        
+        // Agregar parámetros de período
+        if (selectedPeriod === 'custom' && customStartDate && customEndDate) {
+            url += `?start=${customStartDate}&end=${customEndDate}`;
+        } else {
+            url += `?days=${customDays}`;
+        }
+        
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error('Error al generar el reporte');
+        }
+        
+        // Obtener el blob del archivo
+        const blob = await response.blob();
+        
+        // Crear nombre de archivo
+        const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+        const extension = selectedFormat === 'excel' ? 'xlsx' : 'pdf';
+        const filename = `BeautifulGirl_${selectedReportType}_${timestamp}.${extension}`;
+        
+        // Descargar archivo
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(downloadUrl);
+        document.body.removeChild(a);
+        
+        await closeLoading();
+        await showSuccess(
+            '¡Reporte Generado!',
+            `El reporte ha sido descargado exitosamente como <strong>${filename}</strong>`
+        );
+        
+    } catch (error) {
+        console.error('Error generando reporte:', error);
+        await closeLoading();
+        await showError(
+            'Error al Generar Reporte',
+            'No se pudo generar el reporte. Verifica que el backend esté activo y las librerías instaladas.'
+        );
+    }
+}
+
+// Event listeners para el sistema de reportes
+document.addEventListener('DOMContentLoaded', function() {
+    // Cargar tipos de reportes al mostrar sección
+    const reportsLink = document.querySelector('[data-section="reports"]');
+    if (reportsLink) {
+        reportsLink.addEventListener('click', function() {
+            setTimeout(() => {
+                loadReportTypes();
+            }, 100);
+        });
+    }
+    
+    // Listeners para botones de período rápido
+    document.querySelectorAll('input[name="quickPeriod"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            handlePeriodChange(e.target.value);
+        });
+    });
+    
+    // Listener para días personalizados
+    const customDaysInput = document.getElementById('customDays');
+    if (customDaysInput) {
+        customDaysInput.addEventListener('input', (e) => {
+            customDays = parseInt(e.target.value) || 30;
+            updateGenerateButton();
+        });
+    }
+    
+    // Listeners para fechas personalizadas
+    const customStartDateInput = document.getElementById('customStartDate');
+    const customEndDateInput = document.getElementById('customEndDate');
+    
+    if (customStartDateInput) {
+        customStartDateInput.addEventListener('change', (e) => {
+            customStartDate = e.target.value;
+            updateGenerateButton();
+        });
+    }
+    
+    if (customEndDateInput) {
+        customEndDateInput.addEventListener('change', (e) => {
+            customEndDate = e.target.value;
+            updateGenerateButton();
+        });
+    }
+    
+    // Listener para botón de generar reporte
+    const generateBtn = document.getElementById('generateReportBtn');
+    if (generateBtn) {
+        generateBtn.addEventListener('click', generateReport);
+    }
+});

@@ -1,75 +1,22 @@
-// Datos de ejemplo del usuario (en producción vendrían del backend)
-let userData = {
-    firstName: 'María',
-    lastName: 'González',
-    email: 'maria.gonzalez@ejemplo.com',
-    phone: '+57 300 123 4567',
-    address: 'Calle 123 #45-67',
-    city: 'Bogotá',
-    postalCode: '110111'
-};
 
-// Pedidos de ejemplo (en producción vendrían del backend)
-const orders = [
-    {
-        id: 'ORD-2025-001',
-        date: '2025-10-15',
-        products: ['Labial Mate Rosa', 'Sombras Palette Nude'],
-        total: 89900,
-        status: 'Entregado',
-        items: [
-            { name: 'Labial Mate Rosa', quantity: 1, price: 45000 },
-            { name: 'Sombras Palette Nude', quantity: 1, price: 44900 }
-        ]
-    },
-    {
-        id: 'ORD-2025-002',
-        date: '2025-10-10',
-        products: ['Base Líquida', 'Máscara de Pestañas'],
-        total: 125000,
-        status: 'En Camino',
-        items: [
-            { name: 'Base Líquida', quantity: 1, price: 75000 },
-            { name: 'Máscara de Pestañas', quantity: 1, price: 50000 }
-        ]
-    },
-    {
-        id: 'ORD-2025-003',
-        date: '2025-10-05',
-        products: ['Rubor Compacto', 'Iluminador'],
-        total: 95000,
-        status: 'Procesando',
-        items: [
-            { name: 'Rubor Compacto', quantity: 1, price: 42000 },
-            { name: 'Iluminador', quantity: 1, price: 53000 }
-        ]
-    }
-];
-
-// Variables globales
+let userData = {};
 let isEditing = false;
 let originalData = {};
 
-// Inicializar página
 document.addEventListener('DOMContentLoaded', function() {
-    // Verificar sesión
     checkUserSession();
-    
-    // Cargar datos del usuario
     loadUserData();
-    
-    // Cargar pedidos
     loadOrders();
     
-    // Event Listeners
+    
     document.getElementById('editBtn').addEventListener('click', toggleEditMode);
     document.getElementById('cancelBtn').addEventListener('click', cancelEdit);
     document.getElementById('profileForm').addEventListener('submit', saveProfile);
     
-    // Actualizar contador del carrito
+    
     updateCartCount();
     
-    // Smooth scroll para enlaces del sidebar
+    
     document.querySelectorAll('.list-group-item-action').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -81,169 +28,238 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Verificar sesión del usuario
+
 function checkUserSession() {
     const session = JSON.parse(localStorage.getItem('userSession') || sessionStorage.getItem('userSession'));
     
     if (!session) {
-        // Si no hay sesión, redirigir al login
         window.location.href = 'login.html';
         return;
     }
-    
-    // Actualizar nombre en el navbar
-    if (session.firstName) {
-        document.getElementById('userName').textContent = session.firstName;
+
+    const userNameElement = document.getElementById('userName');
+    if (userNameElement && session.firstName) {
+        userNameElement.textContent = session.firstName;
     }
 }
 
-// Cargar datos del usuario
-function loadUserData() {
-    // En producción, estos datos vendrían del backend
+
+async function loadUserData() {
     const session = JSON.parse(localStorage.getItem('userSession') || sessionStorage.getItem('userSession'));
     
-    // Si hay datos en la sesión, usarlos
-    if (session) {
-        userData = {
-            firstName: session.firstName || userData.firstName,
-            lastName: session.lastName || userData.lastName,
-            email: session.email || userData.email,
-            phone: session.phone || userData.phone,
-            address: session.address || userData.address,
-            city: session.city || userData.city,
-            postalCode: session.postalCode || userData.postalCode
-        };
-    }
-    
-    // Cargar datos en el formulario
-    document.getElementById('firstName').value = userData.firstName;
-    document.getElementById('lastName').value = userData.lastName;
-    document.getElementById('email').value = userData.email;
-    document.getElementById('phone').value = userData.phone;
-    document.getElementById('address').value = userData.address || '';
-    document.getElementById('city').value = userData.city || '';
-    document.getElementById('postalCode').value = userData.postalCode || '';
-    
-    // Actualizar sidebar
-    document.getElementById('profileName').textContent = `${userData.firstName} ${userData.lastName}`;
-    document.getElementById('profileEmail').textContent = userData.email;
-}
+    if (!session || !session.id) return;
 
-// Activar/desactivar modo edición
-function toggleEditMode() {
-    isEditing = true;
-    
-    // Guardar datos originales
-    originalData = { ...userData };
-    
-    // Habilitar campos
-    const inputs = document.querySelectorAll('#profileForm input');
-    inputs.forEach(input => {
-        if (input.id !== 'email') { // El email no se puede cambiar
-            input.disabled = false;
-        }
-    });
-    
-    // Mostrar botones de guardar/cancelar
-    document.getElementById('formButtons').classList.remove('d-none');
-    document.getElementById('editBtn').classList.add('d-none');
-}
-
-// Cancelar edición
-function cancelEdit() {
-    isEditing = false;
-    
-    // Restaurar datos originales
-    userData = { ...originalData };
-    loadUserData();
-    
-    // Deshabilitar campos
-    const inputs = document.querySelectorAll('#profileForm input');
-    inputs.forEach(input => input.disabled = true);
-    
-    // Ocultar botones de guardar/cancelar
-    document.getElementById('formButtons').classList.add('d-none');
-    document.getElementById('editBtn').classList.remove('d-none');
-}
-
-// Guardar perfil
-function saveProfile(e) {
-    e.preventDefault();
-    
-    // Obtener datos del formulario
-    userData = {
-        firstName: document.getElementById('firstName').value,
-        lastName: document.getElementById('lastName').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        address: document.getElementById('address').value,
-        city: document.getElementById('city').value,
-        postalCode: document.getElementById('postalCode').value
-    };
-    
-    // Actualizar sesión
-    const session = JSON.parse(localStorage.getItem('userSession') || sessionStorage.getItem('userSession'));
-    if (session) {
-        const updatedSession = { ...session, ...userData };
+    try {
+        const user = await API.getUser(session.id);
         
+        userData = {
+            id: user.id,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            phone: user.phone || '',
+            address: user.address || '',
+            city: user.city || '',
+            postalCode: user.postal_code || '',
+            role: user.role
+        };
+
+        document.getElementById('firstName').value = userData.firstName;
+        document.getElementById('lastName').value = userData.lastName;
+        document.getElementById('email').value = userData.email;
+        document.getElementById('phone').value = userData.phone;
+        document.getElementById('address').value = userData.address;
+        document.getElementById('city').value = userData.city;
+        document.getElementById('postalCode').value = userData.postalCode;
+
+        document.getElementById('profileName').textContent = `${userData.firstName} ${userData.lastName}`;
+        document.getElementById('profileEmail').textContent = userData.email;
+
+        const statusBadge = document.querySelector('.badge.bg-success');
+        if (statusBadge) {
+            if (user.role === 'ADMIN') {
+                statusBadge.className = 'badge bg-primary';
+                statusBadge.textContent = 'Administrador';
+            } else {
+                statusBadge.className = 'badge bg-success';
+                statusBadge.textContent = 'Cliente Activo';
+            }
+        }
+
+        const updatedSession = {
+            ...session,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            email: user.email,
+            phone: user.phone || '',
+            address: user.address || '',
+            city: user.city || '',
+            postalCode: user.postal_code || '',
+            role: user.role,
+            isAdmin: user.role === 'ADMIN'
+        };
+
         if (localStorage.getItem('userSession')) {
             localStorage.setItem('userSession', JSON.stringify(updatedSession));
         } else {
             sessionStorage.setItem('userSession', JSON.stringify(updatedSession));
         }
+    } catch (error) {
+        console.error('Error al cargar usuario:', error);
+        showNotification('Error al cargar datos del usuario', 'danger');
     }
+}
+
+
+function toggleEditMode() {
+    isEditing = true;
     
-    // En producción, aquí se enviarían los datos al backend
-    showNotification('Perfil actualizado correctamente', 'success');
     
-    // Deshabilitar modo edición
+    originalData = { ...userData };
+    
+    
+    const inputs = document.querySelectorAll('#profileForm input');
+    inputs.forEach(input => {
+        if (input.id !== 'email') { 
+            input.disabled = false;
+        }
+    });
+    
+    
+    document.getElementById('formButtons').classList.remove('d-none');
+    document.getElementById('editBtn').classList.add('d-none');
+}
+
+
+function cancelEdit() {
     isEditing = false;
+
+    document.getElementById('firstName').value = originalData.firstName;
+    document.getElementById('lastName').value = originalData.lastName;
+    document.getElementById('email').value = originalData.email;
+    document.getElementById('phone').value = originalData.phone;
+    document.getElementById('address').value = originalData.address;
+    document.getElementById('city').value = originalData.city;
+    document.getElementById('postalCode').value = originalData.postalCode;
+
     const inputs = document.querySelectorAll('#profileForm input');
     inputs.forEach(input => input.disabled = true);
-    
+
     document.getElementById('formButtons').classList.add('d-none');
     document.getElementById('editBtn').classList.remove('d-none');
-    
-    // Actualizar sidebar
-    loadUserData();
 }
 
-// Cargar pedidos
-function loadOrders() {
-    const ordersTable = document.getElementById('ordersTable');
+
+async function saveProfile(e) {
+    e.preventDefault();
     
-    if (orders.length === 0) {
-        return; // Mantener el mensaje por defecto
+    const session = JSON.parse(localStorage.getItem('userSession') || sessionStorage.getItem('userSession'));
+    if (!session || !session.id) return;
+
+    const updatedData = {
+        first_name: document.getElementById('firstName').value,
+        last_name: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        address: document.getElementById('address').value,
+        city: document.getElementById('city').value,
+        postal_code: document.getElementById('postalCode').value
+    };
+
+    try {
+        await API.updateUser(session.id, updatedData);
+
+        const updatedSession = {
+            ...session,
+            firstName: updatedData.first_name,
+            lastName: updatedData.last_name,
+            email: updatedData.email,
+            phone: updatedData.phone,
+            address: updatedData.address,
+            city: updatedData.city,
+            postalCode: updatedData.postal_code
+        };
+
+        if (localStorage.getItem('userSession')) {
+            localStorage.setItem('userSession', JSON.stringify(updatedSession));
+        } else {
+            sessionStorage.setItem('userSession', JSON.stringify(updatedSession));
+        }
+
+        showNotification('Perfil actualizado correctamente', 'success');
+
+        isEditing = false;
+        const inputs = document.querySelectorAll('#profileForm input');
+        inputs.forEach(input => input.disabled = true);
+
+        document.getElementById('formButtons').classList.add('d-none');
+        document.getElementById('editBtn').classList.remove('d-none');
+
+        await loadUserData();
+
+        if (typeof updateNavbar === 'function') {
+            updateNavbar();
+        }
+    } catch (error) {
+        console.error('Error al actualizar:', error);
+        showNotification('Error al actualizar perfil', 'danger');
     }
-    
-    ordersTable.innerHTML = orders.map(order => {
-        const statusClass = getStatusClass(order.status);
-        const statusIcon = getStatusIcon(order.status);
-        
-        return `
-            <tr>
-                <td><strong>${order.id}</strong></td>
-                <td>${formatDate(order.date)}</td>
-                <td>
-                    <div class="small text-muted">
-                        ${order.products.slice(0, 2).join(', ')}
-                        ${order.products.length > 2 ? `<br><small>+${order.products.length - 2} más</small>` : ''}
-                    </div>
-                </td>
-                <td><strong>$${order.total.toLocaleString('es-CO')}</strong></td>
-                <td><span class="badge ${statusClass}">${statusIcon} ${order.status}</span></td>
-                <td>
-                    <button class="btn btn-sm btn-outline-primary" onclick="viewOrderDetail('${order.id}')">
-                        <i class="fas fa-eye me-1"></i>Ver
-                    </button>
-                </td>
-            </tr>
-        `;
-    }).join('');
 }
 
-// Ver detalle del pedido
+
+async function loadOrders() {
+    const ordersTable = document.getElementById('ordersTable');
+    const session = JSON.parse(localStorage.getItem('userSession') || sessionStorage.getItem('userSession'));
+    
+    if (!session || !session.id) {
+        ordersTable.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">No hay pedidos disponibles.</td></tr>';
+        return;
+    }
+
+    try {
+        const orders = await API.getUserOrders(session.id);
+        
+        if (orders.length === 0) {
+            ordersTable.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">No tienes pedidos aún.</td></tr>';
+            return;
+        }
+        
+        ordersTable.innerHTML = orders.map(order => {
+            const statusClass = getStatusClass(order.status);
+            const statusIcon = getStatusIcon(order.status);
+            const productNames = order.products.map(p => p.name);
+            
+            return `
+                <tr>
+                    <td><strong>#${order.id}</strong></td>
+                    <td>${formatDate(order.date)}</td>
+                    <td>
+                        <div class="small text-muted">
+                            ${productNames.slice(0, 2).join(', ')}
+                            ${productNames.length > 2 ? `<br><small>+${productNames.length - 2} más</small>` : ''}
+                        </div>
+                    </td>
+                    <td><strong>$${order.total.toLocaleString('es-CO')}</strong></td>
+                    <td><span class="badge ${statusClass}">${statusIcon} ${translateStatus(order.status)}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" onclick="viewOrderDetail(${order.id})">
+                            <i class="fas fa-eye me-1"></i>Ver
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        window.userOrders = orders;
+    } catch (error) {
+        console.error('Error al cargar órdenes:', error);
+        ordersTable.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-danger">Error al cargar pedidos.</td></tr>';
+    }
+}
+
+
 function viewOrderDetail(orderId) {
+    const orders = window.userOrders || [];
     const order = orders.find(o => o.id === orderId);
     if (!order) return;
     
@@ -255,7 +271,7 @@ function viewOrderDetail(orderId) {
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <h6 class="text-muted small mb-1">Número de Pedido</h6>
-                    <p class="mb-0"><strong>${order.id}</strong></p>
+                    <p class="mb-0"><strong>#${order.id}</strong></p>
                 </div>
                 <div class="col-md-6 mb-3">
                     <h6 class="text-muted small mb-1">Fecha</h6>
@@ -263,7 +279,7 @@ function viewOrderDetail(orderId) {
                 </div>
                 <div class="col-md-6 mb-3">
                     <h6 class="text-muted small mb-1">Estado</h6>
-                    <p class="mb-0"><span class="badge ${statusClass}">${order.status}</span></p>
+                    <p class="mb-0"><span class="badge ${statusClass}">${translateStatus(order.status)}</span></p>
                 </div>
                 <div class="col-md-6 mb-3">
                     <h6 class="text-muted small mb-1">Total</h6>
@@ -283,7 +299,7 @@ function viewOrderDetail(orderId) {
                     </tr>
                 </thead>
                 <tbody>
-                    ${order.items.map(item => `
+                    ${order.products.map(item => `
                         <tr>
                             <td>${item.name}</td>
                             <td class="text-center">${item.quantity}</td>
@@ -310,52 +326,62 @@ function viewOrderDetail(orderId) {
     modal.show();
 }
 
-// Obtener clase CSS según el estado
+
+function translateStatus(status) {
+    const statusMap = {
+        'pending': 'Pendiente',
+        'processing': 'Procesando',
+        'completed': 'Completado',
+        'cancelled': 'Cancelado'
+    };
+    return statusMap[status] || status;
+}
+
 function getStatusClass(status) {
     switch(status) {
-        case 'Entregado':
+        case 'completed':
             return 'bg-success';
-        case 'En Camino':
+        case 'processing':
             return 'bg-info';
-        case 'Procesando':
+        case 'pending':
             return 'bg-warning text-dark';
-        case 'Cancelado':
+        case 'cancelled':
             return 'bg-danger';
         default:
             return 'bg-secondary';
     }
 }
 
-// Obtener icono según el estado
+
 function getStatusIcon(status) {
     switch(status) {
-        case 'Entregado':
+        case 'completed':
             return '<i class="fas fa-check-circle"></i>';
-        case 'En Camino':
+        case 'processing':
             return '<i class="fas fa-truck"></i>';
-        case 'Procesando':
+        case 'pending':
             return '<i class="fas fa-clock"></i>';
-        case 'Cancelado':
+        case 'cancelled':
             return '<i class="fas fa-times-circle"></i>';
         default:
             return '<i class="fas fa-box"></i>';
     }
 }
 
-// Formatear fecha
+
 function formatDate(dateString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('es-CO', options);
 }
 
-// Actualizar contador del carrito
+
 function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const count = cart.reduce((sum, item) => sum + item.qty, 0);
     document.querySelector('.cart-count').textContent = count;
 }
 
-// Mostrar notificación
+
 function showNotification(message, type = 'info') {
     const toast = document.createElement('div');
     toast.className = `toast align-items-center text-white bg-${type} border-0`;
