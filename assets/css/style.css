@@ -83,6 +83,18 @@ body {
     -webkit-backdrop-filter: blur(10px);
 }
 
+.navbar-brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px;
+}
+
+.navbar-brand img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+}
+
 .navbar-nav .nav-link {
     color: var(--pink-dark) !important;
     transition: color 0.3s ease;
@@ -700,6 +712,267 @@ h3 i {
 }
 
 /* ========== FIN MEJORAS DE CONTRASTE ========== */
+
+/* ========== TEAM CARDS (FOUNDERS SECTION) ========== */
+.team-card {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    border-radius: 16px !important;
+    width: 100%;
+    height: 100%;
+}
+
+.team-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(204, 31, 93, 0.25) !important;
+}
+
+.team-img-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 350px;
+    width: 100%;
+    background: linear-gradient(135deg, var(--pink-lighter) 0%, var(--pink-light) 100%);
+    flex-shrink: 0;
+}
+
+.team-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s ease;
+}
+
+.team-card:hover .team-img-wrapper img {
+    transform: scale(1.1);
+}
+
+.team-card .card-body {
+    padding: 1.75rem 1.5rem;
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+}
+
+.team-card h3 {
+    color: var(--pink-dark) !important;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.team-card .text-primary {
+    color: var(--pink-accent) !important;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+}
+
+.team-card .small {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-top: auto;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+/* Asegurar altura uniforme en todas las cards */
+.team-card.h-100 {
+    display: flex;
+    flex-direction: column;
+    height: 100% !important;
+}
+
+.team-card .card-body.d-flex {
+    flex: 0 0 auto;
+}
+
+/* Hacer que todas las columnas tengan la misma altura */
+[class*="col-"] .team-card {
+    min-height: 570px;
+}
+
+/* Responsive para team cards */
+@media (max-width: 1399px) {
+    .team-img-wrapper {
+        height: 320px;
+    }
+    
+    .team-card .card-body {
+        height: 200px;
+    }
+    
+    [class*="col-"] .team-card {
+        min-height: 520px;
+    }
+}
+
+@media (max-width: 991px) {
+    .team-img-wrapper {
+        height: 300px;
+    }
+    
+    .team-card .card-body {
+        height: 200px;
+    }
+    
+    [class*="col-"] .team-card {
+        min-height: 500px;
+    }
+}
+
+@media (max-width: 767px) {
+    .team-img-wrapper {
+        height: 350px;
+    }
+    
+    .team-card .card-body {
+        height: auto;
+        min-height: 180px;
+    }
+    
+    [class*="col-"] .team-card {
+        min-height: auto;
+    }
+}
+
+/* ========== FIN TEAM CARDS ========== */
+
+/* ========== TESTIMONIAL CARDS - REDISEÑO COMPLETO ========== */
+.testimonial-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(204, 31, 93, 0.08);
+    min-height: 320px;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(204, 31, 93, 0.15) !important;
+    border-color: var(--pink-accent);
+}
+
+.testimonial-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.testimonial-stars {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.testimonial-stars i {
+    color: #ffc107;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.testimonial-card:hover .testimonial-stars i {
+    transform: scale(1.1);
+}
+
+.testimonial-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.testimonial-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #555;
+    font-style: italic;
+    position: relative;
+    padding-left: 1.5rem;
+    margin: 0;
+}
+
+.testimonial-text::before {
+    content: '"';
+    position: absolute;
+    left: 0;
+    top: -10px;
+    font-size: 3rem;
+    color: var(--pink-light);
+    font-family: Georgia, serif;
+    line-height: 1;
+}
+
+.testimonial-footer {
+    border-top: 1px solid var(--pink-lighter);
+    padding-top: 1.25rem;
+}
+
+.testimonial-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--pink-lighter);
+    margin-right: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-card:hover .testimonial-avatar {
+    border-color: var(--pink-accent);
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(204, 31, 93, 0.3);
+}
+
+.testimonial-author {
+    flex: 1;
+}
+
+.author-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--pink-dark);
+    margin: 0 0 0.25rem 0;
+}
+
+.author-date {
+    font-size: 0.85rem;
+    color: #888;
+    margin: 0;
+}
+
+/* Asegurar que todas las cards tengan altura uniforme */
+.testimonial-card.h-100 {
+    height: 100%;
+}
+
+/* Responsive para testimonials */
+@media (max-width: 991px) {
+    .testimonial-card {
+        min-height: 280px;
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .testimonial-card {
+        min-height: auto;
+    }
+    
+    .testimonial-text {
+        font-size: 0.95rem;
+    }
+}
+
+/* ========== FIN TESTIMONIAL CARDS ========== */
 
 /* Responsive */
 @media (max-width: 600px) {

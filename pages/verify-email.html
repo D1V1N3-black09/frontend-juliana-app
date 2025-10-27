@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificar Email - Beautiful Girl</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <style>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Verificar Email - Beautiful Girl</title>
+        <!-- Bootstrap CSS -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+        <!-- Font Awesome -->
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="../assets/css/style.css">
+        <!-- SweetAlert2 CSS -->
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <style>
         body {
             padding-top: 76px;
         }
@@ -180,101 +184,120 @@
             color: var(--pink-accent);
         }
     </style>
-</head>
-<body>
-    <!-- Navbar -->
-    <header class="fixed-top">
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand fw-bold" href="../index.html">
-                    <span class="text-primary">Beautiful</span>Girl
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
+    </head>
+    <body>
+        <!-- Navbar -->
+        <header class="fixed-top">
+            <nav
+                class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+                <div class="container">
+                    <a class="navbar-brand fw-bold" href="../index.html">
+                        <img src="../assets/img/logo.png"
+                            alt="Beautiful Girl Logo">
+                        <span class="text-primary">Beautiful</span>Girl
+                    </a>
+                    <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                    href="../index.html">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                    href="products.html">Productos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                    href="about.html">Nosotros</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                    href="contact.html">Contacto</a>
+                            </li>
+                            <li class="nav-item ms-3">
+                                <a href="login.html"
+                                    class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-user me-1"></i> Iniciar
+                                    Sesión
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Verification Section -->
+        <section class="verification-section">
+            <div class="verification-container">
+                <div class="verify-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+
+                <h3 class="mb-3">Verifica tu Email</h3>
+                <p class="text-muted mb-4">
+                    Hemos enviado un código de 6 dígitos a<br>
+                    <strong class="text-primary" id="userEmail">tu correo
+                        electrónico</strong>
+                </p>
+
+                <div class="otp-inputs">
+                    <input type="text" class="otp-input" maxlength="1" id="otp1"
+                        autofocus>
+                    <input type="text" class="otp-input" maxlength="1"
+                        id="otp2">
+                    <input type="text" class="otp-input" maxlength="1"
+                        id="otp3">
+                    <input type="text" class="otp-input" maxlength="1"
+                        id="otp4">
+                    <input type="text" class="otp-input" maxlength="1"
+                        id="otp5">
+                    <input type="text" class="otp-input" maxlength="1"
+                        id="otp6">
+                </div>
+
+                <div class="timer" id="timer">
+                    <i class="fas fa-clock"></i>
+                    <span id="timerText">15:00</span>
+                </div>
+
+                <div class="info-box">
+                    <i class="fas fa-info-circle"></i>
+                    <small>
+                        <strong>Importante:</strong> El código expira en 15
+                        minutos.
+                        Revisa tu carpeta de spam si no lo recibes.
+                    </small>
+                </div>
+
+                <button class="btn btn-verify" id="verifyBtn" disabled>
+                    <i class="fas fa-check-circle me-2"></i>Verificar Email
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="../index.html">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="products.html">Productos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="about.html">Nosotros</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contacto</a>
-                        </li>
-                        <li class="nav-item ms-3">
-                            <a href="login.html" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-user me-1"></i> Iniciar Sesión
-                            </a>
-                        </li>
-                    </ul>
+
+                <button class="btn btn-resend" id="resendBtn">
+                    <i class="fas fa-paper-plane me-2"></i>Reenviar Código
+                </button>
+
+                <div class="text-center mt-4">
+                    <a href="login.html" class="back-link">
+                        <i class="fas fa-arrow-left me-2"></i>Volver al Login
+                    </a>
                 </div>
             </div>
-        </nav>
-    </header>
+        </section>
 
-    <!-- Verification Section -->
-    <section class="verification-section">
-        <div class="verification-container">
-            <div class="verify-icon">
-                <i class="fas fa-envelope"></i>
-            </div>
-
-            <h3 class="mb-3">Verifica tu Email</h3>
-            <p class="text-muted mb-4">
-                Hemos enviado un código de 6 dígitos a<br>
-                <strong class="text-primary" id="userEmail">tu correo electrónico</strong>
-            </p>
-
-            <div class="otp-inputs">
-                <input type="text" class="otp-input" maxlength="1" id="otp1" autofocus>
-                <input type="text" class="otp-input" maxlength="1" id="otp2">
-                <input type="text" class="otp-input" maxlength="1" id="otp3">
-                <input type="text" class="otp-input" maxlength="1" id="otp4">
-                <input type="text" class="otp-input" maxlength="1" id="otp5">
-                <input type="text" class="otp-input" maxlength="1" id="otp6">
-            </div>
-
-            <div class="timer" id="timer">
-                <i class="fas fa-clock"></i>
-                <span id="timerText">15:00</span>
-            </div>
-
-            <div class="info-box">
-                <i class="fas fa-info-circle"></i>
-                <small>
-                    <strong>Importante:</strong> El código expira en 15 minutos.
-                    Revisa tu carpeta de spam si no lo recibes.
-                </small>
-            </div>
-
-            <button class="btn btn-verify" id="verifyBtn" disabled>
-                <i class="fas fa-check-circle me-2"></i>Verificar Email
-            </button>
-
-            <button class="btn btn-resend" id="resendBtn">
-                <i class="fas fa-paper-plane me-2"></i>Reenviar Código
-            </button>
-
-            <div class="text-center mt-4">
-                <a href="login.html" class="back-link">
-                    <i class="fas fa-arrow-left me-2"></i>Volver al Login
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Custom Scripts -->
-    <script src="../assets/js/sweetalert-config.js"></script>
-    <script>
+        <!-- Bootstrap JS -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- SweetAlert2 -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- Custom Scripts -->
+        <script src="../assets/js/sweetalert-config.js"></script>
+        <script>
         // Variables globales
         let userEmail = '';
         let timerInterval = null;
@@ -570,5 +593,5 @@
             document.getElementById('verifyBtn').disabled = true;
         }
     </script>
-</body>
+    </body>
 </html>

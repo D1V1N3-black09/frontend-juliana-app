@@ -1320,12 +1320,25 @@ function viewOrderDetail(orderId) {
     
     
     const saveBtn = document.getElementById('saveOrderStatusBtn');
-    saveBtn.onclick = function() {
+    saveBtn.onclick = async function() {
         const newStatus = document.getElementById('updateOrderStatus').value;
-        order.status = newStatus;
-        loadOrdersTable();
-        modal.hide();
-        showNotification('Estado de la orden actualizado correctamente', 'success');
+        
+        try {
+            // Llamar a la API para actualizar el estado en el backend
+            await API.updateOrderStatus(order.id, newStatus);
+            
+            // Actualizar el estado local
+            order.status = newStatus;
+            
+            // Recargar la tabla de órdenes
+            await loadOrdersTable();
+            
+            modal.hide();
+            showNotification('Estado de la orden actualizado correctamente', 'success');
+        } catch (error) {
+            console.error('Error al actualizar estado:', error);
+            showNotification('Error al actualizar el estado de la orden', 'danger');
+        }
     };
     
     modal.show();
