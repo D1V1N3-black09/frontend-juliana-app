@@ -15,9 +15,25 @@
         <link
             href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"
             rel="stylesheet">
+        <!-- SweetAlert2 CSS -->
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
         <!-- Custom CSS -->
         <link rel="stylesheet" href="../../assets/css/style.css">
+        <link rel="stylesheet" href="../../assets/css/sweetalert-custom.css">
         <style>
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            padding-top: 0 !important;
+        }
+        .container-fluid {
+            padding: 0;
+            margin: 0;
+        }
+        .row {
+            margin: 0;
+        }
         .sidebar {
             min-height: 100vh;
             box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
@@ -26,13 +42,73 @@
             position: -webkit-sticky;
             position: sticky;
             top: 0;
-            height: calc(100vh - 48px);
-            padding-top: .5rem;
+            height: 100vh;
+            padding-top: 0.5rem;
+            padding-bottom: 1rem;
             overflow-x: hidden;
             overflow-y: auto;
         }
         .admin-content {
-            padding-top: 1.5rem;
+            padding-top: 0;
+            margin-top: 0;
+        }
+        .admin-section {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        .admin-section[style*="display: none"] {
+            display: none !important;
+        }
+        .admin-section[style*="display: block"] {
+            display: block !important;
+        }
+        .hover-shadow {
+            transition: all 0.3s ease;
+        }
+        .hover-shadow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+        }
+        .report-type-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .report-type-card:hover {
+            border-color: #667eea;
+            transform: scale(1.02);
+        }
+        .report-type-card.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+        
+        /* Estilos para tarjetas de formato */
+        .format-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #dee2e6;
+        }
+        .format-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .format-card.selected {
+            border-width: 3px !important;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+            transform: scale(1.02);
+        }
+        #format-card-excel.selected {
+            border-color: #198754 !important;
+            box-shadow: 0 0 20px rgba(25, 135, 84, 0.3) !important;
+        }
+        #format-card-pdf.selected {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 20px rgba(220, 53, 69, 0.3) !important;
+        }
+        
+        .bg-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
     </style>
     </head>
@@ -41,41 +117,47 @@
             <div class="row">
                 <!-- Sidebar -->
                 <nav id="sidebar"
-                    class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                    class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse show">
                     <div class="position-sticky sidebar-sticky pt-3">
-                        <div class="text-center mb-4">
-                            <h6
-                                class="sidebar-heading px-3 mt-4 mb-1 text-muted">
-                                <span>Panel de Administración</span>
-                            </h6>
+                        <div class="text-center mb-4 pb-3 border-bottom">
+                            <h4 class="fw-bold mb-1">
+                                <span class="text-primary">Beautiful</span><span
+                                    class="text-dark">Girl</span>
+                            </h4>
+                            <span class="badge bg-danger">Panel Admin</span>
                         </div>
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link active" href="#dashboard">
+                                <a class="nav-link active" href="#"
+                                    data-section="dashboard">
                                     <i class="fas fa-tachometer-alt me-2"></i>
                                     Dashboard
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#products">
+                                <a class="nav-link" href="#"
+                                    data-section="products">
                                     <i class="fas fa-box me-2"></i>
                                     Productos
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#orders">
+                                <a class="nav-link" href="#"
+                                    data-section="orders">
                                     <i class="fas fa-shopping-cart me-2"></i>
                                     Órdenes
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#customers">
+                                <a class="nav-link" href="#"
+                                    data-section="customers">
                                     <i class="fas fa-users me-2"></i>
                                     Clientes
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#reports">
+                                <a class="nav-link" href="#"
+                                    data-section="reports">
                                     <i class="fas fa-chart-bar me-2"></i>
                                     Reportes
                                 </a>
@@ -83,6 +165,16 @@
                         </ul>
 
                         <hr class="my-3">
+
+                        <ul class="nav flex-column mb-3">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"
+                                    data-section="admin-profile">
+                                    <i class="fas fa-user-circle me-2"></i>
+                                    Mi Perfil
+                                </a>
+                            </li>
+                        </ul>
 
                         <div class="px-3">
                             <button
@@ -101,104 +193,1371 @@
                     <div
                         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">Dashboard</h1>
-                        <div class="btn-toolbar mb-2 mb-md-0">
-                            <div class="btn-group me-2">
-                                <button type="button"
-                                    class="btn btn-sm btn-outline-secondary">Compartir</button>
-                                <button type="button"
-                                    class="btn btn-sm btn-outline-secondary">Exportar</button>
+                    </div>
+
+                    <!-- Sección Dashboard -->
+                    <div id="section-dashboard" class="admin-section">
+                        <!-- Dashboard Content -->
+                        <div class="row g-4 mb-4">
+                            <!-- Stats Cards -->
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h6 class="text-muted mb-2">Ventas
+                                            Totales</h6>
+                                        <h3 class="mb-0" id="statTotalSales">
+                                            <span
+                                                class="spinner-border spinner-border-sm"
+                                                role="status"></span>
+                                        </h3>
+                                        <small class="text-muted"
+                                            id="statSalesChange">
+                                            Cargando...
+                                        </small>
+                                    </div>
+                                </div>
                             </div>
-                            <button type="button"
-                                class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                                <i class="fas fa-calendar me-1"></i>
-                                Esta semana
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h6 class="text-muted mb-2">Órdenes
+                                            Nuevas</h6>
+                                        <h3 class="mb-0" id="statTotalOrders">
+                                            <span
+                                                class="spinner-border spinner-border-sm"
+                                                role="status"></span>
+                                        </h3>
+                                        <small class="text-muted"
+                                            id="statOrdersChange">
+                                            Cargando...
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h6 class="text-muted mb-2">Clientes
+                                            Nuevos</h6>
+                                        <h3 class="mb-0" id="statNewCustomers">
+                                            <span
+                                                class="spinner-border spinner-border-sm"
+                                                role="status"></span>
+                                        </h3>
+                                        <small class="text-muted"
+                                            id="statCustomersChange">
+                                            Cargando...
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h6 class="text-muted mb-2">Visitas</h6>
+                                        <h3 class="mb-0" id="statTotalVisits">
+                                            <span
+                                                class="spinner-border spinner-border-sm"
+                                                role="status"></span>
+                                        </h3>
+                                        <small class="text-muted"
+                                            id="statVisitsChange">
+                                            Cargando...
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-12 col-lg-8">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Ventas por
+                                            Mes</h5>
+                                        <canvas id="salesChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Productos más
+                                            Vendidos</h5>
+                                        <canvas id="productsChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Fin Sección Dashboard -->
+
+                    <!-- Sección de Gestión de Productos -->
+                    <div id="section-products" class="admin-section"
+                        style="display:none;">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-header bg-white py-3">
+                                        <div
+                                            class="d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-0"><i
+                                                    class="fas fa-box me-2"></i>Gestión
+                                                de Productos</h5>
+                                            <button class="btn btn-primary"
+                                                id="addProductBtn">
+                                                <i
+                                                    class="fas fa-plus me-2"></i>Crear
+                                                Producto
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- Filtros -->
+                                        <div class="row mb-3 g-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label"><i
+                                                        class="fas fa-search me-2"></i>Buscar
+                                                    Producto</label>
+                                                <input type="text"
+                                                    class="form-control"
+                                                    id="searchProduct"
+                                                    placeholder="Buscar por nombre o ID...">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label"><i
+                                                        class="fas fa-filter me-2"></i>Categoría</label>
+                                                <select class="form-select"
+                                                    id="filterCategory">
+                                                    <option value>Todas las
+                                                        categorías</option>
+                                                    <option
+                                                        value="maquillaje">Maquillaje</option>
+                                                    <option
+                                                        value="facial">Cuidado
+                                                        Facial</option>
+                                                    <option
+                                                        value="corporal">Cuidado
+                                                        Corporal</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label"><i
+                                                        class="fas fa-eye me-2"></i>Estado</label>
+                                                <select class="form-select"
+                                                    id="filterStatus">
+                                                    <option value>Todos los
+                                                        estados</option>
+                                                    <option
+                                                        value="visible">Visibles</option>
+                                                    <option
+                                                        value="hidden">Ocultos</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="form-label"><i
+                                                        class="fas fa-list me-2"></i>Por
+                                                    página</label>
+                                                <select class="form-select"
+                                                    id="itemsPerPage">
+                                                    <option value="5">5</option>
+                                                    <option value="10"
+                                                        selected>10</option>
+                                                    <option
+                                                        value="25">25</option>
+                                                    <option
+                                                        value="50">50</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tabla de productos -->
+                                        <div class="table-responsive">
+                                            <table
+                                                class="table table-hover align-middle"
+                                                id="productsTable">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th
+                                                            style="width: 60px; cursor: pointer;"
+                                                            onclick="sortProducts('id')">
+                                                            ID <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-id"></i>
+                                                        </th>
+                                                        <th
+                                                            style="width: 80px;">Imagen</th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortProducts('name')">
+                                                            Nombre <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-name"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortProducts('category')">
+                                                            Categoría <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-category"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortProducts('price')">
+                                                            Precio <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-price"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortProducts('stock')">
+                                                            Stock <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-stock"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortProducts('status')">
+                                                            Estado <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-status"></i>
+                                                        </th>
+                                                        <th
+                                                            style="width: 200px;">Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="productsTableBody">
+                                                    <!-- Los productos se cargarán dinámicamente -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- Paginación -->
+                                        <div
+                                            class="d-flex justify-content-between align-items-center mt-3">
+                                            <div class="text-muted">
+                                                <span
+                                                    id="paginationInfo">Mostrando
+                                                    0 de 0 productos</span>
+                                            </div>
+                                            <nav
+                                                aria-label="Paginación de productos">
+                                                <ul class="pagination mb-0"
+                                                    id="paginationControls">
+                                                    <!-- Controles de paginación se generarán dinámicamente -->
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fin Sección Productos -->
+
+                    <!-- Sección de Órdenes -->
+                    <div id="section-orders" class="admin-section"
+                        style="display:none;">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-header bg-white py-3">
+                                        <h5 class="mb-0"><i
+                                                class="fas fa-shopping-cart me-2"></i>Gestión
+                                            de Órdenes</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- Filtros de órdenes -->
+                                        <div class="row mb-3 g-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label"><i
+                                                        class="fas fa-search me-2"></i>Buscar
+                                                    Orden</label>
+                                                <input type="text"
+                                                    class="form-control"
+                                                    id="searchOrder"
+                                                    placeholder="Buscar por ID o cliente...">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label"><i
+                                                        class="fas fa-filter me-2"></i>Estado</label>
+                                                <select class="form-select"
+                                                    id="filterOrderStatus">
+                                                    <option value>Todos los
+                                                        estados</option>
+                                                    <option
+                                                        value="pending">Pendiente</option>
+                                                    <option
+                                                        value="processing">En
+                                                        Proceso</option>
+                                                    <option
+                                                        value="completed">Completada</option>
+                                                    <option
+                                                        value="cancelled">Cancelada</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label"><i
+                                                        class="fas fa-calendar me-2"></i>Fecha</label>
+                                                <input type="date"
+                                                    class="form-control"
+                                                    id="filterOrderDate">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="form-label"><i
+                                                        class="fas fa-list me-2"></i>Por
+                                                    página</label>
+                                                <select class="form-select"
+                                                    id="ordersPerPage">
+                                                    <option
+                                                        value="5">5</option>
+                                                    <option value="10"
+                                                        selected>10</option>
+                                                    <option
+                                                        value="25">25</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tabla de órdenes -->
+                                        <div class="table-responsive">
+                                            <table
+                                                class="table table-hover align-middle"
+                                                id="ordersTable">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th
+                                                            style="width: 80px; cursor: pointer;"
+                                                            onclick="sortOrders('id')">
+                                                            ID <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-order-id"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortOrders('customer')">
+                                                            Cliente <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-order-customer"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortOrders('date')">
+                                                            Fecha <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-order-date"></i>
+                                                        </th>
+                                                        <th>Productos</th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortOrders('total')">
+                                                            Total <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-order-total"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortOrders('status')">
+                                                            Estado <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-order-status"></i>
+                                                        </th>
+                                                        <th
+                                                            style="width: 150px;">Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="ordersTableBody">
+                                                    <!-- Las órdenes se cargarán dinámicamente -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- Paginación de órdenes -->
+                                        <div
+                                            class="d-flex justify-content-between align-items-center mt-3">
+                                            <div class="text-muted">
+                                                <span
+                                                    id="ordersPaginationInfo">Mostrando
+                                                    0 de 0 órdenes</span>
+                                            </div>
+                                            <nav
+                                                aria-label="Paginación de órdenes">
+                                                <ul class="pagination mb-0"
+                                                    id="ordersPaginationControls">
+                                                    <!-- Controles de paginación -->
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fin Sección Órdenes -->
+
+                    <!-- Sección de Clientes -->
+                    <div id="section-customers" class="admin-section"
+                        style="display:none;">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-header bg-white py-3">
+                                        <h5 class="mb-0"><i
+                                                class="fas fa-users me-2"></i>Gestión
+                                            de Clientes</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- Filtros de clientes -->
+                                        <div class="row mb-3 g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label"><i
+                                                        class="fas fa-search me-2"></i>Buscar
+                                                    Cliente</label>
+                                                <input type="text"
+                                                    class="form-control"
+                                                    id="searchCustomer"
+                                                    placeholder="Buscar por nombre o email...">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label"><i
+                                                        class="fas fa-sort me-2"></i>Ordenar
+                                                    por</label>
+                                                <select class="form-select"
+                                                    id="sortCustomers">
+                                                    <option
+                                                        value="name">Nombre</option>
+                                                    <option
+                                                        value="orders">Órdenes</option>
+                                                    <option
+                                                        value="total">Total
+                                                        Gastado</option>
+                                                    <option
+                                                        value="date">Fecha
+                                                        Registro</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label"><i
+                                                        class="fas fa-list me-2"></i>Por
+                                                    página</label>
+                                                <select class="form-select"
+                                                    id="customersPerPage">
+                                                    <option
+                                                        value="5">5</option>
+                                                    <option value="10"
+                                                        selected>10</option>
+                                                    <option
+                                                        value="25">25</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tabla de clientes -->
+                                        <div class="table-responsive">
+                                            <table
+                                                class="table table-hover align-middle"
+                                                id="customersTable">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th
+                                                            style="width: 60px; cursor: pointer;"
+                                                            onclick="sortCustomers('id')">
+                                                            ID <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-customer-id"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortCustomers('name')">
+                                                            Nombre <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-customer-name"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortCustomers('email')">
+                                                            Email <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-customer-email"></i>
+                                                        </th>
+                                                        <th>Teléfono</th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortCustomers('orders')">
+                                                            Órdenes <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-customer-orders"></i>
+                                                        </th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortCustomers('totalSpent')">
+                                                            Total Gastado <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-customer-totalSpent"></i>
+                                                        </th>
+                                                        <th>Rol</th>
+                                                        <th
+                                                            style="cursor: pointer;"
+                                                            onclick="sortCustomers('registerDate')">
+                                                            Fecha Registro <i
+                                                                class="fas fa-sort"
+                                                                id="sort-icon-customer-registerDate"></i>
+                                                        </th>
+                                                        <th
+                                                            style="width: 120px;">Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody
+                                                    id="customersTableBody">
+                                                    <!-- Los clientes se cargarán dinámicamente -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- Paginación de clientes -->
+                                        <div
+                                            class="d-flex justify-content-between align-items-center mt-3">
+                                            <div class="text-muted">
+                                                <span
+                                                    id="customersPaginationInfo">Mostrando
+                                                    0 de 0 clientes</span>
+                                            </div>
+                                            <nav
+                                                aria-label="Paginación de clientes">
+                                                <ul class="pagination mb-0"
+                                                    id="customersPaginationControls">
+                                                    <!-- Controles de paginación -->
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fin Sección Clientes -->
+
+                    <!-- Sección de Reportes -->
+                    <div id="section-reports" class="admin-section"
+                        style="display:none;">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <!-- Header Principal -->
+                                <div class="card border-0 shadow-lg mb-4">
+                                    <div
+                                        class="card-header bg-gradient text-white py-4"
+                                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1">
+                                                <h4 class="mb-1 fw-bold">
+                                                    <i
+                                                        class="fas fa-chart-line me-2"></i>
+                                                    Reportes
+
+                                                </h4>
+                                                <p class="mb-0 opacity-75">
+                                                    Genera reportes
+                                                    en Excel y PDF
+                                                </p>
+                                            </div>
+                                            <div class="text-end">
+                                                <i
+                                                    class="fas fa-file-invoice fa-3x opacity-50"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Configuración de Reporte -->
+                                <div class="card border-0 shadow-sm mb-4">
+                                    <div class="card-header bg-light py-3">
+                                        <h5 class="mb-0 fw-bold text-dark">
+                                            <i
+                                                class="fas fa-cog me-2 text-primary"></i>
+                                            Configuración del Reporte
+                                        </h5>
+                                    </div>
+                                    <div class="card-body p-4">
+                                        <!-- Paso 1: Tipo de Reporte -->
+                                        <div class="mb-4">
+                                            <div
+                                                class="d-flex align-items-center mb-3">
+                                                <span
+                                                    class="badge bg-primary rounded-circle me-2"
+                                                    style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 16px;">1</span>
+                                                <h6
+                                                    class="mb-0 fw-bold">Selecciona
+                                                    el Tipo de Reporte</h6>
+                                            </div>
+                                            <div class="row g-3"
+                                                id="reportTypesContainer">
+                                                <!-- Se llenará dinámicamente -->
+                                            </div>
+                                        </div>
+
+                                        <hr class="my-4">
+
+                                        <!-- Paso 2: Período de Tiempo -->
+                                        <div class="mb-4">
+                                            <div
+                                                class="d-flex align-items-center mb-3">
+                                                <span
+                                                    class="badge bg-primary rounded-circle me-2"
+                                                    style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 16px;">2</span>
+                                                <h6
+                                                    class="mb-0 fw-bold">Selecciona
+                                                    el Período</h6>
+                                            </div>
+                                            <div class="row g-3">
+                                                <!-- Período Rápido -->
+                                                <div class="col-md-8">
+                                                    <label
+                                                        class="form-label fw-semibold">
+                                                        <i
+                                                            class="fas fa-calendar-day me-2 text-info"></i>
+                                                        Período Rápido
+                                                    </label>
+                                                    <div class="btn-group w-100"
+                                                        role="group"
+                                                        id="quickPeriodButtons">
+                                                        <input type="radio"
+                                                            class="btn-check"
+                                                            name="quickPeriod"
+                                                            id="period-today"
+                                                            value="today">
+                                                        <label
+                                                            class="btn btn-outline-primary"
+                                                            for="period-today">
+                                                            <i
+                                                                class="fas fa-sun me-1"></i>
+                                                            Hoy
+                                                        </label>
+
+                                                        <input type="radio"
+                                                            class="btn-check"
+                                                            name="quickPeriod"
+                                                            id="period-week"
+                                                            value="week">
+                                                        <label
+                                                            class="btn btn-outline-primary"
+                                                            for="period-week">
+                                                            <i
+                                                                class="fas fa-calendar-week me-1"></i>
+                                                            Esta Semana
+                                                        </label>
+
+                                                        <input type="radio"
+                                                            class="btn-check"
+                                                            name="quickPeriod"
+                                                            id="period-month"
+                                                            value="month"
+                                                            checked>
+                                                        <label
+                                                            class="btn btn-outline-primary"
+                                                            for="period-month">
+                                                            <i
+                                                                class="fas fa-calendar-alt me-1"></i>
+                                                            Este Mes
+                                                        </label>
+
+                                                        <input type="radio"
+                                                            class="btn-check"
+                                                            name="quickPeriod"
+                                                            id="period-year"
+                                                            value="year">
+                                                        <label
+                                                            class="btn btn-outline-primary"
+                                                            for="period-year">
+                                                            <i
+                                                                class="fas fa-calendar me-1"></i>
+                                                            Este Año
+                                                        </label>
+
+                                                        <input type="radio"
+                                                            class="btn-check"
+                                                            name="quickPeriod"
+                                                            id="period-custom"
+                                                            value="custom">
+                                                        <label
+                                                            class="btn btn-outline-secondary"
+                                                            for="period-custom">
+                                                            <i
+                                                                class="fas fa-edit me-1"></i>
+                                                            Personalizado
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Rango Personalizado -->
+                                                <div class="col-md-4">
+                                                    <label
+                                                        class="form-label fw-semibold">
+                                                        <i
+                                                            class="fas fa-calendar-check me-2 text-warning"></i>
+                                                        Días a Incluir
+                                                    </label>
+                                                    <input type="number"
+                                                        class="form-control"
+                                                        id="customDays"
+                                                        placeholder="Ej: 30"
+                                                        min="1" max="365"
+                                                        value="30"
+                                                        style="height: 48px;">
+                                                    <small
+                                                        class="text-muted">Entre
+                                                        1 y 365 días</small>
+                                                </div>
+                                            </div>
+
+                                            <!-- Rango de Fechas Personalizado -->
+                                            <div class="row g-3 mt-2"
+                                                id="customDateRange"
+                                                style="display: none;">
+                                                <div class="col-md-6">
+                                                    <label
+                                                        class="form-label fw-semibold">Fecha
+                                                        Inicio</label>
+                                                    <input type="date"
+                                                        class="form-control"
+                                                        id="startDate">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label
+                                                        class="form-label fw-semibold">Fecha
+                                                        Fin</label>
+                                                    <input type="date"
+                                                        class="form-control"
+                                                        id="endDate">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr class="my-4">
+
+                                        <!-- Paso 3: Formato de Exportación -->
+                                        <div class="mb-4">
+                                            <div
+                                                class="d-flex align-items-center mb-3">
+                                                <span
+                                                    class="badge bg-primary rounded-circle me-2"
+                                                    style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 16px;">3</span>
+                                                <h6
+                                                    class="mb-0 fw-bold">Selecciona
+                                                    el Formato</h6>
+                                            </div>
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <div
+                                                        class="card format-card border-2 h-100"
+                                                        id="format-card-excel"
+                                                        onclick="selectFormat('excel')"
+                                                        style="cursor: pointer; transition: all 0.3s; border-color: #198754 !important;">
+                                                        <div
+                                                            class="card-body text-center p-4">
+                                                            <div class="mb-3">
+                                                                <i
+                                                                    class="fas fa-file-excel fa-4x text-success"></i>
+                                                            </div>
+                                                            <h5
+                                                                class="card-title fw-bold text-success mb-3">
+                                                                <i
+                                                                    class="fas fa-check-circle me-2"></i>
+                                                                Excel (.xlsx)
+                                                            </h5>
+                                                            <p
+                                                                class="card-text text-muted mb-3">
+                                                                Ideal para
+                                                                análisis
+                                                                profundo y
+                                                                manipulación de
+                                                                datos
+                                                            </p>
+                                                            <div
+                                                                class="text-start">
+                                                                <div
+                                                                    class="d-flex align-items-start mb-2">
+                                                                    <i
+                                                                        class="fas fa-check text-success me-2 mt-1"></i>
+                                                                    <small>Gráficos
+                                                                        interactivos
+                                                                        integrados</small>
+                                                                </div>
+                                                                <div
+                                                                    class="d-flex align-items-start mb-2">
+                                                                    <i
+                                                                        class="fas fa-check text-success me-2 mt-1"></i>
+                                                                    <small>Datos
+                                                                        editables
+                                                                        y
+                                                                        personalizables</small>
+                                                                </div>
+                                                                <div
+                                                                    class="d-flex align-items-start mb-2">
+                                                                    <i
+                                                                        class="fas fa-check text-success me-2 mt-1"></i>
+                                                                    <small>Formato
+                                                                        condicional
+                                                                        con
+                                                                        colores</small>
+                                                                </div>
+                                                                <div
+                                                                    class="d-flex align-items-start">
+                                                                    <i
+                                                                        class="fas fa-check text-success me-2 mt-1"></i>
+                                                                    <small>Compatible
+                                                                        con
+                                                                        Office y
+                                                                        Google
+                                                                        Sheets</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div
+                                                        class="card format-card border-2 h-100"
+                                                        id="format-card-pdf"
+                                                        onclick="selectFormat('pdf')"
+                                                        style="cursor: pointer; transition: all 0.3s; border-color: #dee2e6 !important;">
+                                                        <div
+                                                            class="card-body text-center p-4">
+                                                            <div class="mb-3">
+                                                                <i
+                                                                    class="fas fa-file-pdf fa-4x text-danger"></i>
+                                                            </div>
+                                                            <h5
+                                                                class="card-title fw-bold text-danger mb-3">
+                                                                <i
+                                                                    class="far fa-circle me-2"></i>
+                                                                PDF (.pdf)
+                                                            </h5>
+                                                            <p
+                                                                class="card-text text-muted mb-3">
+                                                                Perfecto para
+                                                                presentaciones
+                                                                formales e
+                                                                impresión
+                                                            </p>
+                                                            <div
+                                                                class="text-start">
+                                                                <div
+                                                                    class="d-flex align-items-start mb-2">
+                                                                    <i
+                                                                        class="fas fa-check text-danger me-2 mt-1"></i>
+                                                                    <small>Diseño
+                                                                        profesional
+                                                                        inmutable</small>
+                                                                </div>
+
+                                                                <div
+                                                                    class="d-flex align-items-start mb-2">
+                                                                    <i
+                                                                        class="fas fa-check text-danger me-2 mt-1"></i>
+                                                                    <small>Listo
+                                                                        para
+                                                                        imprimir
+                                                                        y
+                                                                        compartir</small>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Botón de Generación -->
+                                        <div class="text-center mt-4">
+                                            <button
+                                                class="btn btn-lg btn-primary px-5 py-3 shadow-lg"
+                                                id="generateReportBtn" disabled
+                                                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                                                <i
+                                                    class="fas fa-magic me-2"></i>
+                                                <span
+                                                    id="generateBtnText">Selecciona
+                                                    un tipo de reporte</span>
+                                            </button>
+                                            <div class="mt-3">
+                                                <small class="text-muted"
+                                                    id="reportConfigSummary">
+                                                    Configura tu reporte arriba
+                                                    para continuar
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Estado de Generación -->
+                                        <div class="text-center mt-4"
+                                            id="downloadStatus"
+                                            style="display: none;">
+                                            <div
+                                                class="spinner-border text-primary me-2"
+                                                role="status">
+                                                <span
+                                                    class="visually-hidden">Generando...</span>
+                                            </div>
+                                            <span
+                                                class="text-muted fw-semibold">Generando
+                                                tu reporte
+                                                personalizado...</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Info Adicional -->
+                                <div class="card border-0 shadow-sm"
+                                    style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);">
+                                    <div class="card-body p-4">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-8">
+                                                <h6 class="fw-bold mb-2">
+                                                    <i
+                                                        class="fas fa-lightbulb text-warning me-2"></i>
+                                                    Información sobre los
+                                                    Reportes
+                                                </h6>
+                                                <ul class="mb-0 small">
+                                                    <li class="mb-1">Los
+                                                        reportes se generan con
+                                                        <strong>datos en tiempo
+                                                            real</strong> de la
+                                                        base de datos</li>
+
+                                                    <li class="mb-1">Los
+                                                        archivos se descargan
+                                                        automáticamente con
+                                                        nombre único y
+                                                        fecha</li>
+                                                    <li class="mb-0">Puedes
+                                                        generar
+                                                        <strong>múltiples
+                                                            reportes</strong>
+                                                        con diferentes
+                                                        configuraciones</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-4 text-center">
+                                                <i
+                                                    class="fas fa-award fa-4x text-primary opacity-25"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fin Sección Reportes -->
+
+                    <!-- Sección Mi Perfil Admin -->
+                    <div id="section-admin-profile" class="admin-section"
+                        style="display:none;">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div
+                                    class="d-flex justify-content-between align-items-center mb-4">
+                                    <h2 class="mb-0"><i
+                                            class="fas fa-user-circle me-2"></i>Mi
+                                        Perfil</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Información del Perfil -->
+                            <div class="col-lg-4 mb-4">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body text-center py-5">
+                                        <div class="mb-4">
+                                            <img id="adminAvatar" src
+                                                alt="Avatar"
+                                                class="rounded-circle border border-3 border-primary"
+                                                width="120" height="120">
+                                        </div>
+                                        <h4 id="adminProfileName"
+                                            class="mb-2">Cargando...</h4>
+                                        <p id="adminProfileEmail"
+                                            class="text-muted mb-3">admin@example.com</p>
+                                        <span
+                                            class="badge bg-danger fs-6 px-3 py-2">
+                                            <i
+                                                class="fas fa-shield-alt me-2"></i>Administrador
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Formulario de Edición -->
+                            <div class="col-lg-8 mb-4">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-header bg-white py-3">
+                                        <h5 class="mb-0"><i
+                                                class="fas fa-edit me-2"></i>Información
+                                            Personal</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="adminProfileForm">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label for="adminFirstName"
+                                                        class="form-label">
+                                                        <i
+                                                            class="fas fa-user me-2"></i>Nombre
+                                                    </label>
+                                                    <input type="text"
+                                                        class="form-control"
+                                                        id="adminFirstName"
+                                                        disabled>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="adminLastName"
+                                                        class="form-label">
+                                                        <i
+                                                            class="fas fa-user me-2"></i>Apellido
+                                                    </label>
+                                                    <input type="text"
+                                                        class="form-control"
+                                                        id="adminLastName"
+                                                        disabled>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label for="adminEmail"
+                                                        class="form-label">
+                                                        <i
+                                                            class="fas fa-envelope me-2"></i>Email
+                                                    </label>
+                                                    <input type="email"
+                                                        class="form-control"
+                                                        id="adminEmail"
+                                                        disabled>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="adminPhone"
+                                                        class="form-label">
+                                                        <i
+                                                            class="fas fa-phone me-2"></i>Teléfono
+                                                    </label>
+                                                    <input type="text"
+                                                        class="form-control"
+                                                        id="adminPhone"
+                                                        disabled>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="adminCity"
+                                                        class="form-label">
+                                                        <i
+                                                            class="fas fa-city me-2"></i>Ciudad
+                                                    </label>
+                                                    <input type="text"
+                                                        class="form-control"
+                                                        id="adminCity" disabled>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <label for="adminAddress"
+                                                        class="form-label">
+                                                        <i
+                                                            class="fas fa-map-marker-alt me-2"></i>Dirección
+                                                    </label>
+                                                    <input type="text"
+                                                        class="form-control"
+                                                        id="adminAddress"
+                                                        disabled>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="adminPostalCode"
+                                                        class="form-label">
+                                                        <i
+                                                            class="fas fa-mail-bulk me-2"></i>Código
+                                                        Postal
+                                                    </label>
+                                                    <input type="text"
+                                                        class="form-control"
+                                                        id="adminPostalCode"
+                                                        disabled>
+                                                </div>
+                                            </div>
+
+                                            <div class="mt-4">
+                                                <button type="button"
+                                                    class="btn btn-primary"
+                                                    id="adminEditBtn">
+                                                    <i
+                                                        class="fas fa-edit me-2"></i>Editar
+                                                    Perfil
+                                                </button>
+                                                <div id="adminFormButtons"
+                                                    class="d-none">
+                                                    <button type="submit"
+                                                        class="btn btn-success">
+                                                        <i
+                                                            class="fas fa-save me-2"></i>Guardar
+                                                        Cambios
+                                                    </button>
+                                                    <button type="button"
+                                                        class="btn btn-secondary"
+                                                        id="adminCancelBtn">
+                                                        <i
+                                                            class="fas fa-times me-2"></i>Cancelar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Fin Sección Mi Perfil Admin -->
+
+                </main>
+            </div>
+        </div>
+
+        <!-- Modal para Crear/Editar Producto -->
+        <div class="modal fade" id="productModal" tabindex="-1"
+            aria-labelledby="productModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="productModalLabel">Crear
+                            Producto</h5>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <form id="productForm">
+                        <div class="modal-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="productName"
+                                        class="form-label">Nombre del
+                                        Producto
+                                        *</label>
+                                    <input type="text" class="form-control"
+                                        id="productName" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="productCategory"
+                                        class="form-label">Categoría
+                                        *</label>
+                                    <select class="form-select"
+                                        id="productCategory" required>
+                                        <option
+                                            value>Seleccionar...</option>
+                                        <option
+                                            value="maquillaje">Maquillaje</option>
+                                        <option value="facial">Cuidado
+                                            Facial</option>
+                                        <option value="corporal">Cuidado
+                                            Corporal</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="productPrice"
+                                        class="form-label">Precio *</label>
+                                    <div class="input-group">
+                                        <span
+                                            class="input-group-text">$</span>
+                                        <input type="number"
+                                            class="form-control"
+                                            id="productPrice" min="0"
+                                            step="0.01" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="productStock"
+                                        class="form-label">Stock *</label>
+                                    <input type="number"
+                                        class="form-control"
+                                        id="productStock" min="0" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="productStatus"
+                                        class="form-label">Estado *</label>
+                                    <select class="form-select"
+                                        id="productStatus" required>
+                                        <option
+                                            value="visible">Visible</option>
+                                        <option
+                                            value="hidden">Oculto</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="productDescription"
+                                        class="form-label">Descripción</label>
+                                    <textarea class="form-control"
+                                        id="productDescription"
+                                        rows="3"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label for="productImage"
+                                        class="form-label">Ruta de la Imagen
+                                        *</label>
+                                    <input type="text" class="form-control"
+                                        id="productImage"
+                                        placeholder="../assets/img/producto.jpg o https://ejemplo.com/imagen.jpg">
+                                    <small class="text-muted">Ingresa la ruta
+                                        local o URL de la imagen del
+                                        producto</small>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input"
+                                            type="checkbox"
+                                            id="usePlaceholderImage">
+                                        <label class="form-check-label"
+                                            for="usePlaceholderImage">
+                                            Usar imagen por defecto
+                                            (placeholder)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="image-preview"
+                                        id="imagePreview"
+                                        style="display: none;">
+                                        <label class="form-label">Vista
+                                            Previa:</label>
+                                        <img id="previewImg" src
+                                            alt="Preview"
+                                            class="img-thumbnail"
+                                            style="max-width: 200px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Guardar
+                                Producto
                             </button>
                         </div>
-                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-                    <!-- Dashboard Content -->
-                    <div class="row g-4 mb-4">
-                        <!-- Stats Cards -->
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h6 class="text-muted mb-2">Ventas
-                                        Totales</h6>
-                                    <h3 class="mb-0">$12,345</h3>
-                                    <small class="text-success">
-                                        <i class="fas fa-arrow-up me-1"></i>
-                                        12% vs mes anterior
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h6 class="text-muted mb-2">Órdenes
-                                        Nuevas</h6>
-                                    <h3 class="mb-0">123</h3>
-                                    <small class="text-success">
-                                        <i class="fas fa-arrow-up me-1"></i>
-                                        5% vs mes anterior
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h6 class="text-muted mb-2">Clientes
-                                        Nuevos</h6>
-                                    <h3 class="mb-0">45</h3>
-                                    <small class="text-success">
-                                        <i class="fas fa-arrow-up me-1"></i>
-                                        8% vs mes anterior
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h6 class="text-muted mb-2">Visitas</h6>
-                                    <h3 class="mb-0">1,234</h3>
-                                    <small class="text-danger">
-                                        <i class="fas fa-arrow-down me-1"></i>
-                                        3% vs mes anterior
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
+        <!-- Modal para Ver Detalles de Orden -->
+        <div class="modal fade" id="orderDetailModal" tabindex="-1"
+            aria-labelledby="orderDetailModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"
+                            id="orderDetailModalLabel">Detalles de la Orden
+                            #<span id="orderDetailId"></span></h5>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
+                    <div class="modal-body">
+                        <!-- Info del cliente -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i
+                                        class="fas fa-user me-2"></i>Información
+                                    del Cliente</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Nombre:</strong> <span
+                                                id="orderCustomerName"></span></p>
+                                        <p><strong>Email:</strong> <span
+                                                id="orderCustomerEmail"></span></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Teléfono:</strong> <span
+                                                id="orderCustomerPhone"></span></p>
+                                        <p><strong>Dirección:</strong> <span
+                                                id="orderCustomerAddress"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                    <!-- Charts -->
-                    <div class="row g-4">
-                        <div class="col-12 col-lg-8">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title">Ventas por Mes</h5>
-                                    <canvas id="salesChart"></canvas>
+                        <!-- Productos de la orden -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i
+                                        class="fas fa-box me-2"></i>Productos</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Producto</th>
+                                                <th>Cantidad</th>
+                                                <th>Precio Unit.</th>
+                                                <th>Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="orderProductsList">
+                                            <!-- Productos dinámicos -->
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="3"
+                                                    class="text-end"><strong>Total:</strong></td>
+                                                <td><strong
+                                                        id="orderTotalAmount">$0</strong></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-lg-4">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title">Productos más
-                                        Vendidos</h5>
-                                    <canvas id="productsChart"></canvas>
-                                </div>
+
+                        <!-- Estado y fecha -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Estado:</strong> <span
+                                        id="orderStatus"
+                                        class="badge"></span></p>
+                                <p><strong>Fecha:</strong> <span
+                                        id="orderDate"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label"><strong>Cambiar
+                                        Estado:</strong></label>
+                                <select class="form-select"
+                                    id="updateOrderStatus">
+                                    <option
+                                        value="pending">Pendiente</option>
+                                    <option value="processing">En
+                                        Proceso</option>
+                                    <option
+                                        value="completed">Completada</option>
+                                    <option
+                                        value="cancelled">Cancelada</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                </main>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary"
+                            id="saveOrderStatusBtn">
+                            <i class="fas fa-save me-2"></i>Guardar Cambios
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Bootstrap Bundle with Popper -->
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- SweetAlert2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <!-- Chart.js -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <!-- DataTables -->
@@ -206,6 +1565,10 @@
             src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
         <script
             src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+        <!-- API -->
+        <script src="../../assets/js/api.js"></script>
+        <!-- SweetAlert Config -->
+        <script src="../../assets/js/sweetalert-config.js"></script>
         <!-- Custom JS -->
         <script src="../../assets/js/auth.js"></script>
         <script src="../../assets/js/admin.js"></script>

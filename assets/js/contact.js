@@ -1,4 +1,4 @@
-// Manejo del formulario de contacto
+
 document.addEventListener('DOMContentLoaded', function() {
     const contactForm = document.getElementById('contactForm');
     
@@ -6,14 +6,14 @@ document.addEventListener('DOMContentLoaded', function() {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Validación del formulario
+            
             if (!contactForm.checkValidity()) {
                 e.stopPropagation();
                 contactForm.classList.add('was-validated');
                 return;
             }
 
-            // Recoger datos del formulario
+            
             const formData = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
@@ -22,10 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 newsletter: document.getElementById('newsletter').checked
             };
 
-            // Simular envío del formulario
+            
             showLoadingState(true);
             
-            // Simulación de envío (reemplazar con llamada real al backend)
+            
             setTimeout(() => {
                 showLoadingState(false);
                 showSuccessMessage();
@@ -60,7 +60,7 @@ function showSuccessMessage() {
     const form = document.getElementById('contactForm');
     form.insertAdjacentHTML('beforebegin', alertHTML);
 
-    // Remover la alerta después de 5 segundos
+    
     setTimeout(() => {
         const alert = document.querySelector('.alert');
         if (alert) {

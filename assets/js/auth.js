@@ -1,186 +1,252 @@
-// ============================================
-// SISTEMA DE AUTENTICACIÓN - Beautiful Girl
-// ============================================
-// Proyecto Escolar - Sistema Simple de Login
-//
-// CREDENCIALES PARA PRUEBAS:
-// ---------------------------
-// ADMINISTRADOR:
-//   Email: admin@beautifulgirl.com
-//   Password: admin123
-//   Acceso: Dashboard de Administración
-//
-// CLIENTE DE PRUEBA:
-//   Email: cliente@ejemplo.com
-//   Password: cliente123
-//   Acceso: Perfil de Cliente
-//
-// NOTA: En producción real, las credenciales 
-// estarían en una base de datos segura
-// ============================================
 
-// Credenciales de administrador
-const ADMIN_EMAIL = 'admin@beautifulgirl.com';
-const ADMIN_PASSWORD = 'admin123';
 
-// Credenciales de cliente de ejemplo
-const CUSTOMER_EMAIL = 'cliente@ejemplo.com';
-const CUSTOMER_PASSWORD = 'cliente123';
 
-// Event Listeners
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Verificar si hay una sesión activa
     checkSession();
 
-    // Manejar el formulario de login
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', handleLogin);
     }
 
-    // Manejar el cierre de sesión
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        registerForm.addEventListener('submit', handleRegister);
+    }
+
     const logoutBtn = document.querySelector('.logout-btn');
     if (logoutBtn) {
-        logoutBtn.addEventListener('click', handleLogout);
+        logoutBtn.addEventListener('click', async function(event) {
+            event.preventDefault();
+            await handleLogout();
+        });
     }
 });
 
-// ============================================
-// FUNCIÓN PRINCIPAL DE LOGIN
-// ============================================
-function handleLogin(e) {
+async function handleLogin(e) {
     e.preventDefault();
     
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const remember = document.getElementById('remember').checked;
 
-    // ========================================
-    // VALIDACIÓN 1: ¿Es el ADMINISTRADOR?
-    // ========================================
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-        // Crear sesión de administrador
+    try {
+        const user = await API.login(email, password);
+        
         const session = {
-            email: email,
-            firstName: 'Admin',
-            lastName: 'Beautiful Girl',
-            isAdmin: true,
+            id: user.id,
+            email: user.email,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            phone: user.phone,
+            address: user.address,
+            city: user.city,
+            postalCode: user.postal_code,
+            role: user.role,
+            isAdmin: user.role === 'ADMIN',
             timestamp: new Date().getTime()
         };
 
-        // Guardar sesión
         if (remember) {
             localStorage.setItem('userSession', JSON.stringify(session));
         } else {
             sessionStorage.setItem('userSession', JSON.stringify(session));
         }
 
-        // Mostrar notificación y redirigir al dashboard
-        showNotification('¡Bienvenido Administrador!', 'success');
-        setTimeout(() => {
-            window.location.href = '../pages/admin/dashboard.html';
-        }, 1000);
-        return;
-    }
-
-    // ========================================
-    // VALIDACIÓN 2: ¿Es un CLIENTE?
-    // ========================================
-    if (email === CUSTOMER_EMAIL && password === CUSTOMER_PASSWORD) {
-        // Crear sesión de cliente
-        const session = {
-            email: email,
-            firstName: 'María',
-            lastName: 'González',
-            phone: '+57 300 123 4567',
-            address: 'Calle 123 #45-67',
-            city: 'Bogotá',
-            postalCode: '110111',
-            isAdmin: false,
-            timestamp: new Date().getTime()
-        };
-
-        // Guardar sesión
-        if (remember) {
-            localStorage.setItem('userSession', JSON.stringify(session));
-        } else {
-            sessionStorage.setItem('userSession', JSON.stringify(session));
+        const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+        if (localCart.length > 0) {
+            try {
+                await API.syncCart(user.id, localCart);
+                localStorage.removeItem('cart');
+            } catch (error) {
+                console.error('Error al sincronizar carrito:', error);
+            }
         }
 
-        // Mostrar notificación y redirigir al perfil
-        showNotification('¡Bienvenida María!', 'success');
+        // Mostrar bienvenida simple (verificación de email deshabilitada)
+        showNotification(`¡Bienvenid@ ${user.first_name}!`, 'success');
+        
+        const redirectTo = localStorage.getItem('redirectAfterLogin');
+        localStorage.removeItem('redirectAfterLogin');
+        
         setTimeout(() => {
-            window.location.href = '../pages/profile.html';
+            if (redirectTo) {
+                window.location.href = redirectTo;
+            } else if (user.role === 'ADMIN') {
+                window.location.href = './admin/dashboard.html';
+            } else {
+                window.location.href = './profile.html';
+            }
         }, 1000);
+    } catch (error) {
+        showNotification(error.message, 'danger');
+    }
+}
+
+async function handleRegister(e) {
+    e.preventDefault();
+    
+    const fullName = document.getElementById('name').value.trim();
+    const nameParts = fullName.split(' ');
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(' ') || nameParts[0];
+    
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const terms = document.getElementById('terms').checked;
+
+    if (!terms) {
+        showNotification('Debes aceptar los términos y condiciones', 'warning');
         return;
     }
 
-    // ========================================
-    // VALIDACIÓN 3: Credenciales incorrectas
-    // ========================================
-    showNotification('Email o contraseña incorrectos', 'danger');
+    if (password !== confirmPassword) {
+        showNotification('Las contraseñas no coinciden', 'warning');
+        return;
+    }
+
+    if (password.length < 8) {
+        showNotification('La contraseña debe tener al menos 8 caracteres', 'warning');
+        return;
+    }
+
+    try {
+        const userData = {
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            password: password,
+            phone: phone
+        };
+
+        // Usar el nuevo endpoint de registro con verificación
+        const response = await fetch('http://localhost:5000/api/email-verification/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || 'Error al registrar usuario');
+        }
+
+        // Si requiere verificación, guardar email y redirigir
+        if (data.requires_verification) {
+            sessionStorage.setItem('verificationEmail', email);
+            
+            await Swal.fire({
+                icon: 'success',
+                title: '¡Registro Exitoso!',
+                html: `
+                    <p>${data.message}</p>
+                    <p><strong>Revisa tu email</strong> para el código de verificación.</p>
+                `,
+                confirmButtonText: 'Verificar Email'
+            });
+
+            // Redirigir a página de verificación
+            window.location.href = './verify-email.html';
+        } else {
+            // Registro sin verificación (backward compatibility)
+            showNotification('¡Registro exitoso! Ahora puedes iniciar sesión', 'success');
+            setTimeout(() => {
+                window.location.href = './login.html';
+            }, 1500);
+        }
+    } catch (error) {
+        showNotification(error.message, 'danger');
+    }
 }
 
-// ============================================
-// FUNCIÓN DE CIERRE DE SESIÓN
-// ============================================
-function handleLogout() {
-    // Limpiar toda la sesión
-    localStorage.removeItem('userSession');
-    sessionStorage.removeItem('userSession');
+
+
+
+async function handleLogout() {
+    // Mostrar modal de confirmación de logout
+    const confirmed = await showLogoutConfirm();
     
-    // Mostrar mensaje
-    showNotification('Sesión cerrada exitosamente', 'info');
-    
-    // Redireccionar al inicio después de un momento
-    setTimeout(() => {
-        window.location.href = '../index.html';
-    }, 500);
+    // Solo cerrar sesión si el usuario confirmó
+    if (confirmed) {
+        localStorage.removeItem('userSession');
+        sessionStorage.removeItem('userSession');
+        
+        showSuccess('Sesión cerrada', 'Has cerrado sesión exitosamente');
+        
+        setTimeout(() => {
+            window.location.href = '../../index.html';
+        }, 500);
+    }
+    // Si canceló, no hacer nada (la sesión permanece activa)
 }
 
-// ============================================
-// FUNCIÓN DE VERIFICACIÓN DE SESIÓN
-// ============================================
-// Esta función protege las páginas y redirige
-// a los usuarios según su tipo de cuenta
-// ============================================
+
+
+
+
+
+
 function checkSession() {
-    // Obtener sesión activa
+    
     const sessionData = localStorage.getItem('userSession') || sessionStorage.getItem('userSession');
     const session = sessionData ? JSON.parse(sessionData) : null;
     
-    // Detectar en qué página estamos
+    
     const currentPath = window.location.pathname;
     const isAdminPage = currentPath.includes('/admin/');
     const isProfilePage = currentPath.includes('/profile.html');
     const isLoginPage = currentPath.includes('/login.html');
     
-    // ========================================
-    // CASO 1: Usuario NO autenticado
-    // ========================================
+    
+    
+    
     if (!session) {
-        // Si intenta acceder a página protegida, redirigir a login
+        
         if (isAdminPage || isProfilePage) {
             window.location.href = '../pages/login.html';
         }
         return;
     }
     
-    // ========================================
-    // CASO 2: Usuario SÍ autenticado
-    // ========================================
     
-    // Si es ADMIN y está en página de admin, todo OK
+    
+    
+    
+    
     if (session.isAdmin && isAdminPage) {
         return;
     }
     
-    // Si es CLIENTE y está en su perfil, todo OK
+    
     if (!session.isAdmin && isProfilePage) {
         return;
     }
     
-    // Si está en login y ya tiene sesión, redirigir a su área
+    
     if (isLoginPage) {
         if (session.isAdmin) {
             window.location.href = '../pages/admin/dashboard.html';
@@ -190,13 +256,13 @@ function checkSession() {
         return;
     }
     
-    // Si ADMIN intenta acceder a área de cliente
+    
     if (session.isAdmin && isProfilePage) {
         window.location.href = '../pages/admin/dashboard.html';
         return;
     }
     
-    // Si CLIENTE intenta acceder a área de admin
+    
     if (!session.isAdmin && isAdminPage) {
         showNotification('No tienes permisos para acceder a esta área', 'danger');
         setTimeout(() => {
@@ -206,7 +272,7 @@ function checkSession() {
     }
 }
 
-// Utilidades
+
 function showNotification(message, type = 'info') {
     const toast = document.createElement('div');
     toast.className = `toast align-items-center text-white bg-${type} border-0`;
